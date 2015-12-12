@@ -363,7 +363,7 @@ class EditReconciliationController:UIViewController,ReconciliationHeaderDelegate
 		_transactionKeys.insert(transaction.key, atIndex: index)
         let path = NSIndexPath(forRow: index, inSection: 0)
         if _transactionKeys.count > 5 {
-            self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: index-1, inSection: 0), atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
+            self.tableView.scrollToRowAtIndexPath(path, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
         }
         self.tableView.insertRowsAtIndexPaths([path], withRowAnimation: UITableViewRowAnimation.Top)
         self.tableView.selectRowAtIndexPath(path, animated: true, scrollPosition: .Middle)

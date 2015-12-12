@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="AccountView" customModule="My_Money" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="40"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Checking" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="faV-1g-PHm">
+                    <rect key="frame" x="8" y="12" width="69" height="20"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="64,000" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MWh-Py-7ZJ">
+                    <rect key="frame" x="524" y="12" width="50" height="20"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EmbossedArrow" translatesAutoresizingMaskIntoConstraints="NO" id="eF1-ec-eKK">
+                    <rect key="frame" x="582" y="14" width="10" height="17"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="17" id="Za5-0T-PwX"/>
+                        <constraint firstAttribute="width" constant="10" id="e5z-NB-CJG"/>
+                    </constraints>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zTi-qL-XeY">
+                    <rect key="frame" x="0.0" y="2" width="600" height="40"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="3al-TV-2jj"/>
+                    </constraints>
+                    <state key="normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="buttonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="39s-OO-Ktg"/>
+                    </connections>
+                </button>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="zTi-qL-XeY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="5Yn-wH-jYq"/>
+                <constraint firstItem="faV-1g-PHm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="8Ii-T1-9Ht"/>
+                <constraint firstItem="zTi-qL-XeY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="8oO-u1-4Zk"/>
+                <constraint firstAttribute="bottom" secondItem="faV-1g-PHm" secondAttribute="bottom" constant="8" id="Cea-Qr-veK"/>
+                <constraint firstItem="faV-1g-PHm" firstAttribute="centerY" secondItem="MWh-Py-7ZJ" secondAttribute="centerY" id="Pd3-Ec-27B"/>
+                <constraint firstAttribute="bottom" secondItem="faV-1g-PHm" secondAttribute="bottom" constant="8" id="ZcC-B9-idf"/>
+                <constraint firstItem="eF1-ec-eKK" firstAttribute="leading" secondItem="MWh-Py-7ZJ" secondAttribute="trailing" constant="8" id="bbP-A4-m1D"/>
+                <constraint firstItem="faV-1g-PHm" firstAttribute="centerY" secondItem="zTi-qL-XeY" secondAttribute="centerY" id="c8H-Fx-bec"/>
+                <constraint firstItem="zTi-qL-XeY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="dsn-Dh-oSc"/>
+                <constraint firstAttribute="bottom" secondItem="zTi-qL-XeY" secondAttribute="bottom" id="iK2-1V-AaX"/>
+                <constraint firstAttribute="trailing" secondItem="zTi-qL-XeY" secondAttribute="trailing" id="jjB-WY-fyD"/>
+                <constraint firstAttribute="trailing" secondItem="zTi-qL-XeY" secondAttribute="trailing" id="oE3-DS-t1U"/>
+                <constraint firstItem="eF1-ec-eKK" firstAttribute="centerY" secondItem="MWh-Py-7ZJ" secondAttribute="centerY" id="qKd-Kx-Jxb"/>
+                <constraint firstAttribute="trailing" secondItem="eF1-ec-eKK" secondAttribute="trailing" constant="8" id="xMX-C9-bLR"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="5Yn-wH-jYq"/>
+                    <exclude reference="dsn-Dh-oSc"/>
+                    <exclude reference="iK2-1V-AaX"/>
+                    <exclude reference="jjB-WY-fyD"/>
+                    <exclude reference="ZcC-B9-idf"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="accountBalance" destination="MWh-Py-7ZJ" id="unC-d1-f41"/>
+                <outlet property="accountButton" destination="zTi-qL-XeY" id="KQ0-e1-FjL"/>
+                <outlet property="accountName" destination="faV-1g-PHm" id="x1J-KE-Tkw"/>
+                <outlet property="arrowConstraint" destination="xMX-C9-bLR" id="xcM-CU-ltx"/>
+            </connections>
+            <point key="canvasLocation" x="791" y="375"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="EmbossedArrow" width="10" height="17"/>
+    </resources>
+</document>

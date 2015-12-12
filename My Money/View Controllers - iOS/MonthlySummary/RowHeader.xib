@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view tag="2" contentMode="scaleToFill" id="KwJ-i0-Gfr" customClass="UICollectionViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="120" height="25"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Electronics &amp; Repair" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="GLf-QV-N5N">
+                    <rect key="frame" x="4" y="5" width="108" height="15"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                    <color key="textColor" red="0.92542613640000004" green="0.1228131903" blue="0.1367673854" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" red="1" green="0.77010324929999996" blue="0.60726730969999998" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="centerX" secondItem="GLf-QV-N5N" secondAttribute="centerX" constant="-0.5" id="6yl-Ap-u5F"/>
+                <constraint firstAttribute="trailing" secondItem="GLf-QV-N5N" secondAttribute="trailing" constant="8" id="Dak-3j-4iV"/>
+                <constraint firstItem="GLf-QV-N5N" firstAttribute="leading" secondItem="KwJ-i0-Gfr" secondAttribute="leading" constant="4" id="cer-0v-iZk"/>
+                <constraint firstAttribute="centerY" secondItem="GLf-QV-N5N" secondAttribute="centerY" id="gQ4-4n-wmW"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="6yl-Ap-u5F"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="267" y="163.5"/>
+        </view>
+    </objects>
+</document>

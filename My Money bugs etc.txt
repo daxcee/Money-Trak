@@ -1,0 +1,26 @@
+TODO
+when user changes reconciliation date, remove any items that are AFTER new date. (show alert)
+
+changing recurring amount causes problems with amount available
+
+Integrate with calendar
+
+Tutorial
+
+inserting of new items in reconciliation isn't very smooth and doesn't hilight
+entering beginning and ending balance on reconciliations should show commas before editing
+
+editing location at same address more than 3x should render address without location
+find a way to sort recurring transactions
+
+When saving as fully reconciled, processing upcoming, saving recurring, need to show progress wheel
+When entering amount in transaction, don't want to scroll tableview
+
+Transactions: Show this month and last by default. Add "show more" at bottom to show an additional month at a time
+
+Bugs:
+When adding a transition, it subtracts from total available even if the account isn't toward total available.
+
+Reconciliations should automatically add 30 days to last date
+
+Reconciliations shouldn't allow you to add transactions later than reconciliation date

@@ -1469,8 +1469,8 @@ final class DBRow {
 extension ALBNoSQLDB {
 	final class SQLiteCore:NSThread {
 		var _sqliteDB:COpaquePointer = nil
-		var _lock = NSCondition()
-		var _blocks = [Any]()
+		var threadLock = NSCondition()
+		var queuedBlocks = [Any]()
 		
 		private let SQLITE_TRANSIENT = unsafeBitCast(-1, sqlite3_destructor_type.self)
 		
@@ -1719,28 +1719,28 @@ extension ALBNoSQLDB {
 		}
 		
 		func addBlock(block:Any) {
-			_lock.lock()
-			_blocks.append(block)
-			_lock.signal()
-			_lock.unlock()
+			threadLock.lock()
+			queuedBlocks.append(block)
+			threadLock.signal()
+			threadLock.unlock()
 		}
 		
 		override func main() {
 			while true {
-				_lock.lock()
-
-				while _blocks.count == 0 {
-					_lock.wait()
+				threadLock.lock()
+				
+				while queuedBlocks.count == 0 {
+					threadLock.wait()
 				}
 				
-				while _blocks.count > 0 {
-					if let block = _blocks.first as? ()->() {
-						_blocks.removeFirst()
+				while queuedBlocks.count > 0 {
+					if let block = queuedBlocks.first as? ()->() {
+						queuedBlocks.removeFirst()
 						block();
 					}
 				}
 				
-				_lock.unlock()
+				threadLock.unlock()
 			}
 		}
 	}

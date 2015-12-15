@@ -239,7 +239,7 @@ final class ALBNoSQLDB {
 					return []
 				}
 				
-				let valueType = db.typeOfValue(condition.value)
+				let valueType = SQLiteCore.typeOfValue(condition.value)
 				
 				if currentSet != condition.set {
 					currentSet = condition.set
@@ -885,36 +885,6 @@ final class ALBNoSQLDB {
 		return db._dateFormatter.dateFromString(stringValue)
 	}
 	
-	private func typeOfValue(value:AnyObject) -> ValueType {
-		var valueType = ValueType.unknown
-		
-		if value is [String] {
-			valueType = .stringArray
-		} else {
-			if value is [Int] {
-				valueType = .intArray
-			} else {
-				if value is [Double] {
-					valueType = .doubleArray
-				} else {
-					if value is String {
-						valueType = .string
-					} else {
-						if value is Int {
-							valueType = .int
-						} else {
-							if value is Double {
-								valueType = .double
-							}
-						}
-					}
-				}
-			}
-		}
-		
-		return valueType
-	}
-	
 	// MARK: - Initialization Methods
 	static let sharedInstance = ALBNoSQLDB()
 	
@@ -1044,7 +1014,7 @@ extension ALBNoSQLDB {
 		var arrayValues = [AnyObject]()
 		
 		for (objectKey,objectValue) in objectValues {
-			let valueType = typeOfValue(objectValue)
+			let valueType = SQLiteCore.typeOfValue(objectValue)
 			if valueType == .stringArray || valueType == .intArray || valueType == .doubleArray {
 				arrayKeys.append(objectKey)
 				arrayTypes.append(valueType)
@@ -1065,7 +1035,7 @@ extension ALBNoSQLDB {
 				var placeHolders = "'\(key)','\(addedDateTime)','\(updatedDateTime)',\(deleteDateTime),'\(joinedArrayKeys)'"
 				
 				for (objectKey,objectValue) in objectValues {
-					let valueType = typeOfValue(objectValue)
+					let valueType = SQLiteCore.typeOfValue(objectValue)
 					if valueType == .int || valueType == .double || valueType == .string {
 						sql += ",\(objectKey)"
 						placeHolders += ",?"
@@ -1077,7 +1047,7 @@ extension ALBNoSQLDB {
 				tableHasKey = true
 				sql = "update \(table) set updatedDateTime='\(updatedDateTime)',autoDeleteDateTime=\(deleteDateTime),hasArrayValues='\(joinedArrayKeys)'"
 				for (objectKey,objectValue) in objectValues {
-					let valueType = typeOfValue(objectValue)
+					let valueType = SQLiteCore.typeOfValue(objectValue)
 					if valueType == .int || valueType == .double || valueType == .string {
 						sql += ",\(objectKey)=?"
 					}
@@ -1411,7 +1381,7 @@ extension ALBNoSQLDB {
 			}
 			
 			if !found {
-				let valueType = typeOfValue(value)
+				let valueType = SQLiteCore.typeOfValue(value)
 				assert(valueType != .unknown, "column types are .int, double, string or arrays of these types")
 				
 				if valueType == .int || valueType == .double || valueType == .string {
@@ -1642,7 +1612,7 @@ extension ALBNoSQLDB {
 					var index:Int32 = 1
 					
 					for (_,objectValue) in objectValues {
-						let valueType = self.typeOfValue(objectValue)
+						let valueType = SQLiteCore.typeOfValue(objectValue)
 						if valueType == .int || valueType == .double || valueType == .string {
 							status = self.bindValue(dbps, index: index, value: objectValue)
 							if status != SQLITE_OK {
@@ -1671,7 +1641,7 @@ extension ALBNoSQLDB {
 		
 		func bindValue(statement:COpaquePointer, index:Int32, value:AnyObject) -> Int32 {
 			var status = SQLITE_OK
-			let valueType = typeOfValue(value)
+			let valueType = SQLiteCore.typeOfValue(value)
 			var int64Value:Int64 = 0
 			
 			if valueType == .int {
@@ -1692,7 +1662,7 @@ extension ALBNoSQLDB {
 			return status
 		}
 		
-		func typeOfValue(value:AnyObject) -> ValueType {
+		class func typeOfValue(value:AnyObject) -> ValueType {
 			var valueType = ValueType.unknown
 			
 			if value is [String] {

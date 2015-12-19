@@ -466,24 +466,6 @@ class UpcomingTransaction:Transaction {
 	}
 	
 	class func processDate(account:Account) -> NSDate {
-		let defaults = NSUserDefaults.standardUserDefaults()
-		let now = NSDate()
-		let lastCheckDateKey = "lastProcessDate"
-		
-		if let lastCheckDate = defaults.objectForKey(lastCheckDateKey) as? NSDate  {
-			let checkDate = lastCheckDate.addTime(hours: 24, minutes: 0, seconds: 0)
-			if checkDate.laterDate(now) == now {
-				AccountProcessDate.accountProcessDate = [String:NSDate]()
-			}
-		}
-		
-		defaults.setObject(now.midnight(), forKey: lastCheckDateKey)
-		NSUserDefaults.resetStandardUserDefaults()
-		
-		if AccountProcessDate.accountProcessDate[account.key] != nil {
-			return AccountProcessDate.accountProcessDate[account.key]!
-		}
-		
 		var processDate = NSDate().midnight().addDate(years: 0, months: 0, weeks: 0, days: account.updateUpcomingDays)
 		
 		if account.stopUpdatingAtDeposit {

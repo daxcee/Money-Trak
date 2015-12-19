@@ -78,8 +78,7 @@ final class ALBNoSQLDB {
 	private var _syncingEnabled = false
 	private var _unsyncedTables = [String]()
 	private let _dateFormatter:NSDateFormatter
-	private let _deletionQueue = dispatch_queue_create("com.AaronLBratcher.ALBNoSQLDBDeletionQueue", nil)
-	private let _autoDeleteTimer:dispatch_source_t
+	private var _autoDeleteTimer:NSTimer?
 	
 	// MARK: - File Location
 	/**
@@ -331,7 +330,7 @@ final class ALBNoSQLDB {
 		}
 		
 		let sql = selectClause + whereClause
-		//        println(sql)
+//		        print(sql)
 		if let results = db.sqlSelect(sql) {
 			return results.map({$0.values[0] as! String})
 		}
@@ -819,7 +818,7 @@ final class ALBNoSQLDB {
 	*/
 	class func close() {
 		let db = ALBNoSQLDB.sharedInstance
-		dispatch_suspend(db._autoDeleteTimer)
+		db._autoDeleteTimer?.invalidate()
 		dispatch_sync(db._dbQueue) { () -> Void in
 			db._SQLiteCore.close()
 		}
@@ -892,7 +891,6 @@ final class ALBNoSQLDB {
 		_dateFormatter = NSDateFormatter()
 		_dateFormatter.calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
 		_dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'.'SSSZZZZZ"
-		_autoDeleteTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, _deletionQueue)
 		_SQLiteCore.start()
 	}
 	
@@ -933,11 +931,7 @@ final class ALBNoSQLDB {
 			checkSchema()
 			sqlExecute("ANALYZE")
 			
-			dispatch_source_set_timer(_autoDeleteTimer, DISPATCH_TIME_NOW, 60 * NSEC_PER_SEC, 1 * NSEC_PER_SEC); // every 60 seconds, with leeway of 1 second
-			dispatch_source_set_event_handler(_autoDeleteTimer) {[unowned self] in
-				self.autoDelete()
-			}
-			dispatch_resume(_autoDeleteTimer)
+			_autoDeleteTimer = NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: Selector("autoDelete"), userInfo: nil, repeats: true)
 		}
 		
 		return openDBSuccessful

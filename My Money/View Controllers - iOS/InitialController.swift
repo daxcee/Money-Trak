@@ -49,7 +49,6 @@ class InitialController:UIViewController {
 		
 		hideAd()
 		CommonDB.setup()
-		CommonDB.calcAmountAvailable()
 		
 		if !PurchaseKit.sharedInstance.canSync() {
 			PurchaseKit.sharedInstance.loadProductsForScreen(.Sync)
@@ -227,7 +226,7 @@ extension InitialController:ADBannerViewDelegate {
 	
 	func hideAd() {
 		UIView.animateWithDuration(0.5, animations: { () -> Void in
-			self.bannerBottomConstraint.constant = -self.bannerView.frame.size.height
+			self.bannerBottomConstraint.constant = -(self.bannerView.frame.size.height * 2)
 			self.view.layoutIfNeeded()
 		})
 	}

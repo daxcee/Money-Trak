@@ -168,7 +168,6 @@ class CommonDB {
 			
 			defaults.setInteger(amountAvailable, forKey: kAmountAvailableKey)
 			NSUserDefaults.resetStandardUserDefaults()
-			
 			NSNotificationCenter.defaultCenter().postNotificationName(kUpdateTotalAvailableNotification, object: nil)
 		}
 	}
@@ -195,7 +194,7 @@ class CommonDB {
             let today = NSDate().midnight()
             var accountProcessDates = [String:NSDate]()
             
-            if let keys = ALBNoSQLDB.keysInTableForConditions(kUpcomingTransactionsTable, sortOrder:nil, conditions: [deviceCondition,dateCondition]) {
+            if let keys = ALBNoSQLDB.keysInTableForConditions(kUpcomingTransactionsTable, sortOrder:"date", conditions: [deviceCondition,dateCondition]) {
                 var finalRecurringKeys = [String]()
                 for key in keys {
                     let upcomingTransaction = UpcomingTransaction(key: key)!
@@ -205,7 +204,7 @@ class CommonDB {
                     if today.laterDate(upcomingTransaction.date) == today {
                         if upcomingTransaction.recurringTransactionKey != "" {
                             let recurring = RecurringTransaction(key: upcomingTransaction.recurringTransactionKey)!
-                            recurring.transactionCount--
+                            recurring.transactionCount -= 1
                             recurring.save()
                             
                             if recurring.transactionCount <= 0 {

@@ -118,7 +118,7 @@ static CurrentLocation* _locationInstance;
         return;
     }
     
-	self.locationAttempts++;
+	self.locationAttempts += 1;
 	BOOL locationChanged;
 	
 	if((newLocation.coordinate.latitude != oldLocation.coordinate.latitude) && (newLocation.coordinate.longitude != oldLocation.coordinate.longitude))

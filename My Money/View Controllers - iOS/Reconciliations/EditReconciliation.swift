@@ -356,7 +356,7 @@ class EditReconciliationController:UIViewController,ReconciliationHeaderDelegate
 			if date > testDate {
 				break
 			} else {
-				index++
+				index += 1
 			}
 		}
 		

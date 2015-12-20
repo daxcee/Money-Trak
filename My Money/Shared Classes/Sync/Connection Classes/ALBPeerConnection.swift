@@ -124,7 +124,7 @@ class ALBPeerConnection:NSObject,GCDAsyncSocketDelegate {
 		let data = text.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
 		_pendingPackets[_lastTag] = packet
 		_socket.writeData(packet.packetDataUsingData(data), withTimeout: ALBPeerWriteTimeout, tag: _lastTag)
-		_lastTag++
+		_lastTag += 1
 	}
 	
 	/**
@@ -136,7 +136,7 @@ class ALBPeerConnection:NSObject,GCDAsyncSocketDelegate {
 		let packet = ALBPeerPacket(type:.data)
 		_pendingPackets[_lastTag] = packet
 		_socket.writeData(packet.packetDataUsingData(data), withTimeout: ALBPeerWriteTimeout, tag: _lastTag)
-		_lastTag++
+		_lastTag += 1
 	}
 	
 	/**
@@ -179,7 +179,7 @@ class ALBPeerConnection:NSObject,GCDAsyncSocketDelegate {
 		let subData = resource.mappedData!.subdataWithRange(range)
 		_pendingPackets[_lastTag] = packet
 		_socket.writeData(packet.packetDataUsingData(subData), withTimeout: ALBPeerWriteTimeout, tag: _lastTag)
-		_lastTag++
+		_lastTag += 1
 	}
 	
 	// MARK: - Socket Delegate

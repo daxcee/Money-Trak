@@ -207,7 +207,7 @@ struct SummaryMatrix {
                 
                     // move to prior month
                     monthDate = monthDate.addDate(years: 0, months: -1, weeks: 0, days: 0)
-                    monthColumn++
+                    monthColumn += 1
                 } while monthDate.stringValue() > finalDate.stringValue() && monthColumn < maxMonths
                 
                 // calculate total row

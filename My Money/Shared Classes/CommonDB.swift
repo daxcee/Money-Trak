@@ -385,7 +385,7 @@ class CommonDB {
                 upcoming.isNew = true
                 upcoming.date = date
                 upcoming.save()
-                recurringTransaction.transactionCount++
+                recurringTransaction.transactionCount += 1
                 
                 switch recurringTransaction.frequency {
                 case .weekly:
@@ -409,7 +409,7 @@ class CommonDB {
                         complete = true
                     }
                 } else {
-                    remaining--
+                    remaining -= 1
                     if remaining == 0 {
                         complete = true
                     }
@@ -561,7 +561,7 @@ class CommonDB {
                 for key in keys {
                     condition = DBCondition(set: set, objectKey: "categoryKey", conditionOperator: .equal, value: key)
                     conditionSet.append(condition)
-                    set++
+                    set += 1
                 }
             }
             
@@ -570,7 +570,7 @@ class CommonDB {
                 for key in keys {
                     condition = DBCondition(set: set, objectKey: "locationKey", conditionOperator: .equal, value: key)
                     conditionSet.append(condition)
-                    set++
+                    set += 1
                 }
             }
             

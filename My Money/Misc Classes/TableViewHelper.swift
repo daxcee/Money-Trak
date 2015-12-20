@@ -70,13 +70,13 @@ class TableViewHelper {
             if cellSection != cell.section {
                 cellSection = cell.section
                 if row > 0 {
-                    section++
+                    section += 1
                 }
                 row = 0
             }
             
             if cell.visible {
-                row++
+                row += 1
             } else {
                 if cell.name == name {
                     let indexPath = NSIndexPath(forRow: row, inSection: section)
@@ -159,7 +159,7 @@ class TableViewHelper {
         
         for section in cellCount.keys {
             if cellCount[section] > 0 {
-                count++
+                count += 1
             }
         }
         
@@ -213,7 +213,7 @@ class TableViewHelper {
             if cell.section != cellSection {
                 if index > 0 {
                     cellCount[section] = index
-                    section++
+                    section += 1
                 }
                 cellSection = cell.section
                 index = 0
@@ -222,7 +222,7 @@ class TableViewHelper {
             if cell.visible {
                 let indexPath = NSIndexPath(forRow: index, inSection: section)
                 indexedCells[indexPath] = cell
-                index++
+                index += 1
             }
         }
         

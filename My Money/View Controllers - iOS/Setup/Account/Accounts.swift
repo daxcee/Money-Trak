@@ -165,7 +165,7 @@ class AccountsController:UITableViewController,EditAccountDelegate {
             if account.name < testAccount.name {
                 break
             } else {
-                index++
+                index += 1
             }
         }
         
@@ -182,7 +182,7 @@ class AccountsController:UITableViewController,EditAccountDelegate {
                 let indexPath = NSIndexPath(forRow: index, inSection: 0)
                 self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             } else {
-                index++
+                index += 1
             }
         }
     }

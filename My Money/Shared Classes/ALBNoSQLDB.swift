@@ -757,7 +757,7 @@ final class ALBNoSQLDB {
 					let lastSequence = objectValues["lastSequence"] as! Int
 					var index = 0
 					for entry in logEntries {
-						index++
+						index += 1
 						if index % 20 == 0 {
 							if let syncProgress = syncProgress {
 								let percent = (Double(index)/Double(logEntries.count))

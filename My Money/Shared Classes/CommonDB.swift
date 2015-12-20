@@ -103,6 +103,7 @@ class CommonDB {
         dispatch_async(dbProcessingQueue, { () -> Void in
             self.processUpcomingTransactions(false)
             self.checkForNegativeUpcoming(nil)
+			self.removeUnusedLocations()
         })
      }
 	
@@ -858,15 +859,21 @@ class CommonDB {
 	}
 	
 	class func locationForAddress(addressKey:String) -> Location? {
-		let hasKey = ALBNoSQLDB.tableHasKey(table: kLocationAddressesTable, key: addressKey)
-		if hasKey != nil && hasKey! {
-			let locationAddress = LocationAddress(key: addressKey)!
-			let location = Location(key:locationAddress.locationKey)!
-			
-			return location
-		}
+		guard let locationAddress = LocationAddress(key: addressKey), location = Location(key: locationAddress.locationKey) else { return nil }
+		return location
+	}
+	
+	class func removeUnusedLocations() {
+		let latestDate = NSDate().addDate(years: 0, months: -1, weeks: 0, days: 0)
+		let sql = "select l.key from \(kLocationsTable) l left outer join \(kTransactionsTable) t on t.locationKey = l.key left outer join \(kUpcomingTransactionsTable) u on u.locationKey = l.key where t.locationKey is null and u.locationKey is null and l.addedDateTime < '\(latestDate.stringValue())'"
 		
-		return nil
+		let db = ALBNoSQLDB.sharedInstance
+		guard let results = db.sqlSelect(sql) else { return }
+		
+		for row in results {
+			guard let key = row.values[0] as? String else { continue }
+			ALBNoSQLDB.deleteForKey(table: kLocationsTable, key: key)
+		}
 	}
 	
 	//MARK: - Categories

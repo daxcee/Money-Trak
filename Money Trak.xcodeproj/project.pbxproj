@@ -316,6 +316,7 @@
 		894CCD6719A56C6300D79BFA /* Shared Classes */ = {
 			isa = PBXGroup;
 			children = (
+				8982852F1C26DACA00E3C870 /* Traits */,
 				89A443251AEBC02600946BDE /* Sync */,
 				894CCD8D19A6C68200D79BFA /* Account.swift */,
 				894CCD9019A6C6C600D79BFA /* Category.swift */,
@@ -342,6 +343,13 @@
 			);
 			name = Sync;
 			path = "../../../../xcodeprojects/My Money/My Money/View Controllers - iOS/Sync";
+			sourceTree = "<group>";
+		};
+		8982852F1C26DACA00E3C870 /* Traits */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Traits;
 			sourceTree = "<group>";
 		};
 		89A02F4E1B985B310088601D /* Connection Classes */ = {

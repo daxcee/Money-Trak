@@ -225,9 +225,6 @@ extension InitialController:ADBannerViewDelegate {
 	}
 	
 	func hideAd() {
-		UIView.animateWithDuration(0.5, animations: { () -> Void in
-			self.bannerBottomConstraint.constant = -(self.bannerView.frame.size.height * 2)
-			self.view.layoutIfNeeded()
-		})
+		self.bannerBottomConstraint.constant = -self.bannerView.frame.size.height
 	}
 }

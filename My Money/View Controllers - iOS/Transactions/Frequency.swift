@@ -9,77 +9,77 @@
 import Foundation
 import UIKit
 
-class FrenquencyController:UIViewController,UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate {
-    @IBOutlet weak var tableView: UITableView!
-    
-    var transaction = RecurringTransaction()
-
-    private var _helper: TableViewHelper?
-    private var _frequencyItems = [ "Weekly", "Every 2 Weeks", "Monthly", "Every 2 Months", "Every 3 Months",  "Every 6 Months", "Annually"]
-
-    override func viewDidLoad() {
-        _helper = TableViewHelper(tableView: self.tableView)
-        
-        _helper!.addCell(0, cell: tableView.dequeueReusableCellWithIdentifier("StartDate")! , name: "StartDate")
-        _helper!.addCell(0, cell: tableView.dequeueReusableCellWithIdentifier("StartDatePicker")! , name: "StartDatePicker")
-        _helper!.addCell(0, cell: tableView.dequeueReusableCellWithIdentifier("UseEndDate")! , name: "UseEndDate")
-        _helper!.addCell(0, cell: tableView.dequeueReusableCellWithIdentifier("EndDate")! , name: "EndDate")
-        _helper!.addCell(0, cell: tableView.dequeueReusableCellWithIdentifier("EndDatePicker")! , name: "EndDatePicker")
-        _helper!.addCell(0, cell: tableView.dequeueReusableCellWithIdentifier("TransactionCount")! , name: "TransactionCount")
-        _helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier("Frequency")! , name: "Frequency")
-        _helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier("FrequencyPicker")! , name: "FrequencyPicker")
-        
-        _helper!.hideCell("StartDatePicker")
-        _helper!.hideCell("EndDatePicker")
-        _helper!.hideCell("FrequencyPicker")
+class FrenquencyController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
+	@IBOutlet weak var tableView: UITableView!
+	
+	var transaction = RecurringTransaction()
+	
+	private var _helper: TableViewHelper?
+	private var _frequencyItems = ["Weekly", "Every 2 Weeks", "Monthly", "Every 2 Months", "Every 3 Months", "Every 6 Months", "Annually"]
+	
+	override func viewDidLoad() {
+		_helper = TableViewHelper(tableView: self.tableView)
+		
+		_helper!.addCell(0, cell: tableView.dequeueReusableCellWithIdentifier("StartDate")!, name: "StartDate")
+		_helper!.addCell(0, cell: tableView.dequeueReusableCellWithIdentifier("StartDatePicker")!, name: "StartDatePicker")
+		_helper!.addCell(0, cell: tableView.dequeueReusableCellWithIdentifier("UseEndDate")!, name: "UseEndDate")
+		_helper!.addCell(0, cell: tableView.dequeueReusableCellWithIdentifier("EndDate")!, name: "EndDate")
+		_helper!.addCell(0, cell: tableView.dequeueReusableCellWithIdentifier("EndDatePicker")!, name: "EndDatePicker")
+		_helper!.addCell(0, cell: tableView.dequeueReusableCellWithIdentifier("TransactionCount")!, name: "TransactionCount")
+		_helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier("Frequency")!, name: "Frequency")
+		_helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier("FrequencyPicker")!, name: "FrequencyPicker")
+		
+		_helper!.hideCell("StartDatePicker")
+		_helper!.hideCell("EndDatePicker")
+		_helper!.hideCell("FrequencyPicker")
 		if transaction.endDate == nil {
 			_helper!.hideCell("EndDate")
 		} else {
 			_helper!.hideCell("TransactionCount")
 		}
-    }
-
+	}
 	
-    //MARK: - TableView
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return _helper!.numberOfSections()
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return _helper!.numberOfRowsInSection(section)
-    }
-    
-    
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return nil
-    }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let cellName = _helper!.cellNameAtIndexPath(indexPath)
-        
-        if cellName == "StartDatePicker" || cellName == "EndDatePicker" || cellName == "FrequencyPicker" {
-            return 163
-        }
-        
-        return 44
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = _helper!.cellForRowAtIndexPath(indexPath)
-        if let name = _helper!.cellNameAtIndexPath(indexPath) {
-            switch name {
-            case "StartDate":
-                cell.detailTextLabel?.text = transaction.startDate.mediumDateString()
+	
+	// MARK: - TableView
+	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+		return _helper!.numberOfSections()
+	}
+	
+	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return _helper!.numberOfRowsInSection(section)
+	}
+	
+	
+	func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+		return nil
+	}
+	
+	func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+		let cellName = _helper!.cellNameAtIndexPath(indexPath)
+		
+		if cellName == "StartDatePicker" || cellName == "EndDatePicker" || cellName == "FrequencyPicker" {
+			return 163
+		}
+		
+		return 44
+	}
+	
+	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+		let cell = _helper!.cellForRowAtIndexPath(indexPath)
+		if let name = _helper!.cellNameAtIndexPath(indexPath) {
+			switch name {
+			case "StartDate":
+				cell.detailTextLabel?.text = transaction.startDate.mediumDateString()
 			
 			case "StartDatePicker":
 				let picker = cell.viewWithTag(1) as! UIDatePicker
 				picker.date = transaction.startDate
 				picker.minimumDate = NSDate().midnight()
 				picker.addTarget(self, action: "startDateChanged", forControlEvents: .ValueChanged)
-
+			
 			case "EndDate":
 				cell.detailTextLabel?.text = transaction.endDate!.mediumDateString()
-                
+			
 			case "EndDatePicker":
 				let picker = cell.viewWithTag(1) as! UIDatePicker
 				if transaction.endDate == nil {
@@ -89,33 +89,33 @@ class FrenquencyController:UIViewController,UITableViewDataSource, UITableViewDe
 				}
 				picker.minimumDate = NSDate().midnight()
 				picker.addTarget(self, action: "endDateChanged", forControlEvents: .ValueChanged)
-
+			
 			case "UseEndDate":
-                let useEndDate = cell.viewWithTag(1)! as! UISwitch
-                useEndDate.addTarget(self, action: "useEndDateChanged", forControlEvents: UIControlEvents.ValueChanged)
-                useEndDate.on = transaction.endDate != nil
-                
-            case "TransactionCount":
-                let transactionCount = cell.viewWithTag(1) as! UITextField
-                transactionCount.text = "\(transaction.transactionCount)"
+				let useEndDate = cell.viewWithTag(1)! as! UISwitch
+				useEndDate.addTarget(self, action: "useEndDateChanged", forControlEvents: UIControlEvents.ValueChanged)
+				useEndDate.on = transaction.endDate != nil
+			
+			case "TransactionCount":
+				let transactionCount = cell.viewWithTag(1) as! UITextField
+				transactionCount.text = "\(transaction.transactionCount)"
 				transactionCount.delegate = self
-				
+			
 			case "Frequency":
 				cell.detailTextLabel?.text = transaction.frequency.stringValue()
-				
+			
 			case "FrequencyPicker":
 				let picker = cell.viewWithTag(1) as! UIPickerView
 				picker.dataSource = self
 				picker.delegate = self
 				picker.selectRow(transaction.frequency.rawValue, inComponent: 0, animated: true)
-				
-            default:
-                break
-            }
-        }
-        
-        return cell
-    }
+			
+			default:
+				break
+			}
+		}
+		
+		return cell
+	}
 	
 	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 		let showingStartDate = _helper!.visibleCellsWithName("StartDatePicker").count > 0
@@ -124,17 +124,17 @@ class FrenquencyController:UIViewController,UITableViewDataSource, UITableViewDe
 		
 		if let name = _helper!.cellNameAtIndexPath(indexPath) {
 			switch name {
-				case "StartDate":
+			case "StartDate":
 				if !showingStartDate {
 					_helper!.showCell("StartDatePicker")
 				}
-				case "EndDate":
+			case "EndDate":
 				if !showingEndDate {
 					_helper!.showCell("EndDatePicker")
 				}
-				case "Frequency":
-					if !showingFrequency {
-						_helper!.showCell("FrequencyPicker")
+			case "Frequency":
+				if !showingFrequency {
+					_helper!.showCell("FrequencyPicker")
 				}
 			default:
 				break
@@ -158,9 +158,9 @@ class FrenquencyController:UIViewController,UITableViewDataSource, UITableViewDe
 	}
 	
 	
-	//MARK: - User Actions
+	// MARK: - User Actions
 	func startDateChanged() {
-		let cell = _helper!.visibleCellsWithName("StartDatePicker")[0]
+		let cell = _helper!.visibleCellsWithName("StartDatePicker") [0]
 		let picker = cell.viewWithTag(1) as! UIDatePicker
 		
 		transaction.startDate = picker.date.midnight()
@@ -168,49 +168,49 @@ class FrenquencyController:UIViewController,UITableViewDataSource, UITableViewDe
 	}
 	
 	func endDateChanged() {
-		let cell = _helper!.visibleCellsWithName("EndDatePicker")[0]
+		let cell = _helper!.visibleCellsWithName("EndDatePicker") [0]
 		let picker = cell.viewWithTag(1) as! UIDatePicker
 		
 		transaction.endDate = picker.date.midnight()
 		self.tableView.reloadRowsAtIndexPaths([_helper!.indexPathForCellNamed("EndDate")!], withRowAnimation: .None)
 	}
-
-	func useEndDateChanged() {
-        let cell = _helper!.visibleCellsWithName("UseEndDate")[0]
-        let useEndDate = cell.viewWithTag(1)! as! UISwitch
-        if useEndDate.on {
-            transaction.endDate = NSDate().addDate(years: 0, months: 12, weeks: 0, days: 0).midnight()
-            _helper!.showCell("EndDate")
-            _helper!.hideCell("TransactionCount")
-        } else {
-            transaction.endDate = nil
-            _helper!.hideCell("EndDate")
-            _helper!.showCell("TransactionCount")
-        }
-    }
 	
-    func textFieldDidEndEditing(textField: UITextField) {
-        transaction.transactionCount = NSString(string: textField.text!).integerValue
-    }
-
-	//MARK: - Frequency items
-    
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 7
-    }
-    
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return _frequencyItems[row]
-    }
+	func useEndDateChanged() {
+		let cell = _helper!.visibleCellsWithName("UseEndDate") [0]
+		let useEndDate = cell.viewWithTag(1)! as! UISwitch
+		if useEndDate.on {
+			transaction.endDate = NSDate().addDate(years: 0, months: 12, weeks: 0, days: 0).midnight()
+			_helper!.showCell("EndDate")
+			_helper!.hideCell("TransactionCount")
+		} else {
+			transaction.endDate = nil
+			_helper!.hideCell("EndDate")
+			_helper!.showCell("TransactionCount")
+		}
+	}
+	
+	func textFieldDidEndEditing(textField: UITextField) {
+		transaction.transactionCount = NSString(string: textField.text!).integerValue
+	}
+	
+	// MARK: - Frequency items
+	
+	func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+		return 1
+	}
+	
+	func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+		return 7
+	}
+	
+	func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+		return _frequencyItems[row]
+	}
 	
 	func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
 		transaction.frequency = TransactionFrequency(rawValue: row)!
 		self.tableView.reloadRowsAtIndexPaths([_helper!.indexPathForCellNamed("Frequency")!], withRowAnimation: .None)
-
+		
 	}
-    
+	
 }

@@ -9,9 +9,9 @@
 import Foundation
 import UIKit
 
-func purchaseSegue(view:UIViewController, screen:MyMoneyScreen, segue:String, purchaseSegue:String) {
-	let compareCount:Int
-	let maxCount:Int
+func purchaseSegue(view: UIViewController, screen: MyMoneyScreen, segue: String, purchaseSegue: String) {
+	let compareCount: Int
+	let maxCount: Int
 	
 	switch screen {
 	case .Accounts:
@@ -45,5 +45,5 @@ func purchaseSegue(view:UIViewController, screen:MyMoneyScreen, segue:String, pu
 			alert.show()
 		}
 	}
-
+	
 }

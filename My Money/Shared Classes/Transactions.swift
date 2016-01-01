@@ -46,7 +46,7 @@ class Transaction: ALBNoSQLDBObject {
 			transaction.type = TransactionType.deposit
 			transaction.locationKey = CommonDB.locationForName("Paid with \(Account(key: accountKey)!.name)").key
 			transaction.date = date
-			transaction.categoryKey = defaultPrefix + DefaultCategory.Debt.rawValue
+			transaction.categoryKey =  defaultPrefix + DefaultCategory.Debt.rawValue
 			ALBNoSQLDB.setValue(table: kTransactionsTable, key: transaction.key, value: transaction.jsonValue())
 			let ccAccount = Account(key: ccAccountKey!)!
 			ccAccount.balance += abs(amount)

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class SetupViewController:UITableViewController {
+class SetupViewController: UITableViewController {
 	@IBAction func doneTapped(sender: AnyObject) {
 		dismissViewControllerAnimated(true, completion: nil)
 	}

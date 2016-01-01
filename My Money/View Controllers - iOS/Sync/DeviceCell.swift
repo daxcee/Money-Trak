@@ -9,12 +9,12 @@
 import Foundation
 import UIKit
 
-class UnknownDeviceCell:UITableViewCell {
+class UnknownDeviceCell: UITableViewCell {
 	@IBOutlet weak var deviceName: UILabel!
-    @IBOutlet weak var linkButtonView: UIView!
-    @IBOutlet weak var progressWheel: UIActivityIndicatorView!
+	@IBOutlet weak var linkButtonView: UIView!
+	@IBOutlet weak var progressWheel: UIActivityIndicatorView!
 	
-	var device:SyncDevice {
+	var device: SyncDevice {
 		get {
 			return _device
 		}
@@ -22,57 +22,57 @@ class UnknownDeviceCell:UITableViewCell {
 		set(newDevice) {
 			_device = newDevice
 			deviceName.text = _device.name
-            
-            linkButtonView.hidden = device.status != .idle
-            progressWheel.hidden = device.status == .idle
+			
+			linkButtonView.hidden = device.status != .idle
+			progressWheel.hidden = device.status == .idle
 		}
 	}
-	var delegate:SyncDeviceCellDelegate?
+	var delegate: SyncDeviceCellDelegate?
 	
 	private var _device = SyncDevice()
 	
-    @IBAction func linkTapped(sender: AnyObject) {
+	@IBAction func linkTapped(sender: AnyObject) {
 		delegate?.linkTappedForDevice(_device)
-    }
+	}
 }
 
-class KnownDeviceCell:UITableViewCell {
-    
-    @IBOutlet weak var deviceName: UILabel!
-    @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet weak var progressWheel: UIActivityIndicatorView!
-
-    var device:SyncDevice {
-        get {
-            return _device
-        }
-        
-        set(newDevice) {
-            _device = newDevice
-            deviceName.text = _device.name
-            
-            progressWheel.hidden = device.status == .idle
-            
-            switch device.status {
-            case .idle:
-                if let lastDate = device.lastSync {
-                    if lastDate.midnight() == NSDate().midnight() {
-                        statusLabel.text = lastDate.relativeTimeFrom(NSDate())
-                    } else {
-                        statusLabel.text = lastDate.relativeDateString()
-                    }
-                } else {
-                    statusLabel.text = "Never Synced"
-                }
-            case .syncing:
-                statusLabel.text = "Syncing..."
-            default:
-                statusLabel.text = ""
-                break;
-            }
-        }
-    }
-    
-    var delegate:SyncDeviceCellDelegate?
-    private var _device = SyncDevice()    
+class KnownDeviceCell: UITableViewCell {
+	
+	@IBOutlet weak var deviceName: UILabel!
+	@IBOutlet weak var statusLabel: UILabel!
+	@IBOutlet weak var progressWheel: UIActivityIndicatorView!
+	
+	var device: SyncDevice {
+		get {
+			return _device
+		}
+		
+		set(newDevice) {
+			_device = newDevice
+			deviceName.text = _device.name
+			
+			progressWheel.hidden = device.status == .idle
+			
+			switch device.status {
+			case .idle:
+				if let lastDate = device.lastSync {
+					if lastDate.midnight() == NSDate().midnight() {
+						statusLabel.text = lastDate.relativeTimeFrom(NSDate())
+					} else {
+						statusLabel.text = lastDate.relativeDateString()
+					}
+				} else {
+					statusLabel.text = "Never Synced"
+				}
+			case .syncing:
+				statusLabel.text = "Syncing..."
+			default:
+				statusLabel.text = ""
+				break;
+			}
+		}
+	}
+	
+	var delegate: SyncDeviceCellDelegate?
+	private var _device = SyncDevice()
 }

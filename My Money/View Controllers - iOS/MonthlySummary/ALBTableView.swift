@@ -12,44 +12,44 @@ import UIKit
 //MARK: - Protocols
 protocol ALBTableViewDataSource {
 	// Columns
-	func numberOfColumns(tableView:ALBTableView) -> Int
-	func columnWidth(tableView:ALBTableView) -> CGFloat
+	func numberOfColumns(tableView: ALBTableView) -> Int
+	func columnWidth(tableView: ALBTableView) -> CGFloat
 	
 	// Column Headers
-	func heightOfColumnHeaders(tableView:ALBTableView) -> CGFloat
-	func columnHeaderCell(tableView:ALBTableView, column:Int) -> UICollectionViewCell
+	func heightOfColumnHeaders(tableView: ALBTableView) -> CGFloat
+	func columnHeaderCell(tableView: ALBTableView, column: Int) -> UICollectionViewCell
 	
 	// Rows
-	func numberOfRows(tableView:ALBTableView) -> Int
-	func rowHeight(tableView:ALBTableView) -> CGFloat
+	func numberOfRows(tableView: ALBTableView) -> Int
+	func rowHeight(tableView: ALBTableView) -> CGFloat
 	
 	// Row Headers
-	func widthOfRowHeaderCells(tableView:ALBTableView) -> CGFloat
-	func rowHeaderCell(tableView:ALBTableView, row:Int) -> UICollectionViewCell
+	func widthOfRowHeaderCells(tableView: ALBTableView) -> CGFloat
+	func rowHeaderCell(tableView: ALBTableView, row: Int) -> UICollectionViewCell
 	
 	// Data Cells
-	func dataCell(tableView:ALBTableView, column:Int, row:Int) -> UICollectionViewCell
+	func dataCell(tableView: ALBTableView, column: Int, row: Int) -> UICollectionViewCell
 }
 
 protocol ALBTableViewDelegate {
-	func didSelectColumn(tableView:ALBTableView, column:Int)
-	func didDeselectColumn(tableView:ALBTableView, column:Int)
+	func didSelectColumn(tableView: ALBTableView, column: Int)
+	func didDeselectColumn(tableView: ALBTableView, column: Int)
 	
-	func didSelectRow(tableView:ALBTableView, row:Int)
-	func didDeselectRow(tableView:ALBTableView, row:Int)
+	func didSelectRow(tableView: ALBTableView, row: Int)
+	func didDeselectRow(tableView: ALBTableView, row: Int)
 	
-	func didSelectCell(tableView:ALBTableView, column:Int, row:Int)
-	func didDeselectCell(tableView:ALBTableView, column:Int, row:Int)
+	func didSelectCell(tableView: ALBTableView, column: Int, row: Int)
+	func didDeselectCell(tableView: ALBTableView, column: Int, row: Int)
 }
 
-enum ALBTableViewCellType:String {
+enum ALBTableViewCellType: String {
 	case Data = "DataCell"
 	case ColumnHeader = "ColumnHeader"
 	case RowHeader = "RowHeader"
 }
 
 // MARK: - ALBTableView Class
-final class ALBTableView:UIView {
+final class ALBTableView: UIView {
 	var hasRowHeaders = false {
 		didSet {
 			reloadData()
@@ -74,20 +74,20 @@ final class ALBTableView:UIView {
 		}
 	}
 	
-	var dataSource:ALBTableViewDataSource? {
+	var dataSource: ALBTableViewDataSource? {
 		didSet {
 			reloadData()
 		}
 	}
 	
-	var delegate:ALBTableViewDelegate?
+	var delegate: ALBTableViewDelegate?
 	
 	private var collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 100, height: 100), collectionViewLayout: ALBTableViewLayout())
 	private var columns = 0
 	private var rows = 0
 	
 	required init?(coder aDecoder: NSCoder) {
-		super.init(coder:aDecoder)
+		super.init(coder: aDecoder)
 		
 		setup()
 	}
@@ -104,7 +104,7 @@ final class ALBTableView:UIView {
 		
 		addSubview(collectionView)
 		
-		let viewsDictionary = ["collectionView":collectionView]
+		let viewsDictionary = ["collectionView": collectionView]
 		
 		let hConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[collectionView]-0-|", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDictionary)
 		
@@ -127,7 +127,7 @@ final class ALBTableView:UIView {
 		collectionView.collectionViewLayout = layout
 	}
 	
-	func zoom(recognizer:UIPinchGestureRecognizer) {
+	func zoom(recognizer: UIPinchGestureRecognizer) {
 		print("zooming...")
 	}
 	
@@ -146,28 +146,28 @@ final class ALBTableView:UIView {
 		}
 	}
 	
-	//MARK: - Register Cell NIBs
-	func registerDataCellNib(nib:UINib) {
+	// MARK: - Register Cell NIBs
+	func registerDataCellNib(nib: UINib) {
 		collectionView.registerNib(nib, forCellWithReuseIdentifier: ALBTableViewCellType.Data.rawValue)
 	}
 	
-	func registerColumnHeaderNib(nib:UINib) {
+	func registerColumnHeaderNib(nib: UINib) {
 		collectionView.registerNib(nib, forSupplementaryViewOfKind: ALBTableViewCellType.ColumnHeader.rawValue, withReuseIdentifier: ALBTableViewCellType.ColumnHeader.rawValue)
 	}
 	
-	func registerRowHeaderNib(nib:UINib) {
+	func registerRowHeaderNib(nib: UINib) {
 		collectionView.registerNib(nib, forSupplementaryViewOfKind: ALBTableViewCellType.RowHeader.rawValue, withReuseIdentifier: ALBTableViewCellType.RowHeader.rawValue)
 	}
 	
-	//MARK: - Dequeue Cells
-	func dequeDataCellForColumn(column:Int, row:Int) -> UICollectionViewCell {
+	// MARK: - Dequeue Cells
+	func dequeDataCellForColumn(column: Int, row: Int) -> UICollectionViewCell {
 		let indexPath = NSIndexPath(forRow: row, inSection: column)
 		
-		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ALBTableViewCellType.Data.rawValue, forIndexPath: indexPath) 
+		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ALBTableViewCellType.Data.rawValue, forIndexPath: indexPath)
 		return cell
 	}
 	
-	func dequeueColumnHeaderForColumn(column:Int) -> UICollectionViewCell {
+	func dequeueColumnHeaderForColumn(column: Int) -> UICollectionViewCell {
 		let indexPath = NSIndexPath(forRow: 0, inSection: column)
 		
 		let cell = collectionView.dequeueReusableSupplementaryViewOfKind(ALBTableViewCellType.ColumnHeader.rawValue, withReuseIdentifier: ALBTableViewCellType.ColumnHeader.rawValue, forIndexPath: indexPath) as! UICollectionViewCell
@@ -175,7 +175,7 @@ final class ALBTableView:UIView {
 		return cell
 	}
 	
-	func dequeueRowHeaderForRow(row:Int) -> UICollectionViewCell {
+	func dequeueRowHeaderForRow(row: Int) -> UICollectionViewCell {
 		let indexPath = NSIndexPath(forRow: row, inSection: 0)
 		
 		let cell = collectionView.dequeueReusableSupplementaryViewOfKind(ALBTableViewCellType.RowHeader.rawValue, withReuseIdentifier: ALBTableViewCellType.RowHeader.rawValue, forIndexPath: indexPath) as! UICollectionViewCell
@@ -183,33 +183,33 @@ final class ALBTableView:UIView {
 		return cell
 	}
 	
-	//MARK: - Public Select / Deselect Methods
-	func selectCell(column:Int, row:Int) {
+	// MARK: - Public Select / Deselect Methods
+	func selectCell(column: Int, row: Int) {
 		
 	}
 	
-	func selectColumn(column:Int) {
+	func selectColumn(column: Int) {
 		
 	}
 	
-	func selectRow(row:Int) {
+	func selectRow(row: Int) {
 		
 	}
 	
-	func deselectCell(column:Int, row:Int) {
+	func deselectCell(column: Int, row: Int) {
 		
 	}
 	
-	func deselectColumn(column:Int) {
+	func deselectColumn(column: Int) {
 		
 	}
 	
-	func deselectRow(column:Int) {
+	func deselectRow(column: Int) {
 		
 	}
 }
 
-extension ALBTableView:UICollectionViewDataSource {
+extension ALBTableView: UICollectionViewDataSource {
 	func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
 		return columns
 	}
@@ -220,16 +220,16 @@ extension ALBTableView:UICollectionViewDataSource {
 	
 	func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
 		if let dataSource = dataSource {
-			let cell:UICollectionViewCell
+			let cell: UICollectionViewCell
 			
 			let headerType = ALBTableViewCellType(rawValue: kind)!
 			switch headerType {
 			case .ColumnHeader:
 				cell = dataSource.columnHeaderCell(self, column: indexPath.section)
-				
+			
 			case .RowHeader:
 				cell = dataSource.rowHeaderCell(self, row: indexPath.row)
-				
+			
 			case .Data:
 				cell = UICollectionViewCell()
 			}
@@ -251,7 +251,7 @@ extension ALBTableView:UICollectionViewDataSource {
 	}
 }
 
-extension ALBTableView:UICollectionViewDelegate {
+extension ALBTableView: UICollectionViewDelegate {
 	func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
 		delegate?.didSelectCell(self, column: indexPath.section, row: indexPath.row)
 	}
@@ -263,13 +263,13 @@ extension ALBTableView:UICollectionViewDelegate {
 
 
 //MARK: - Layout Class
-final class ALBTableViewLayout:UICollectionViewLayout {
-	var tableView:ALBTableView?
+final class ALBTableViewLayout: UICollectionViewLayout {
+	var tableView: ALBTableView?
 	var contentSize = CGSize(width: 0, height: 0)
-	var columnWidth:CGFloat = 0
-	var rowHeight:CGFloat = 0
-	var rowHeaderWidth:CGFloat = 0
-	var columnHeaderHeight:CGFloat = 0
+	var columnWidth: CGFloat = 0
+	var rowHeight: CGFloat = 0
+	var rowHeaderWidth: CGFloat = 0
+	var columnHeaderHeight: CGFloat = 0
 	var lastRect = CGRect(x: 0, y: 0, width: 100, height: 100)
 	
 	override func collectionViewContentSize() -> CGSize {
@@ -278,8 +278,8 @@ final class ALBTableViewLayout:UICollectionViewLayout {
 	
 	override func prepareLayout() {
 		if let tableView = tableView, dataSource = tableView.dataSource {
-			var totalWidth:CGFloat = 0.0
-			var totalHeight:CGFloat = 0.0
+			var totalWidth: CGFloat = 0.0
+			var totalHeight: CGFloat = 0.0
 			
 			columnWidth = dataSource.columnWidth(tableView)
 			rowHeight = dataSource.rowHeight(tableView)
@@ -322,13 +322,13 @@ final class ALBTableViewLayout:UICollectionViewLayout {
 					attributes.append(columnHeaderAttributes)
 				}
 				
-				//				if self.collectionView!.contentOffset.x > 0 {
-				//					let shadowAttributes = UICollectionViewLayoutAttributes(forDecorationViewOfKind: ALBTableViewCellType.RowHeader.rawValue, withIndexPath: indexPath)
-				//					let frame = CGRect(x: columnHeaderAttributes.frame.origin.x + rowHeaderWidth, y: columnHeaderAttributes.frame.origin.y, width: 2, height: columnHeaderHeight)
-				//					shadowAttributes.frame = frame
-				//					shadowAttributes.zIndex = 2
-				//					attributes.append(shadowAttributes)
-				//				}
+				// if self.collectionView!.contentOffset.x > 0 {
+				// let shadowAttributes = UICollectionViewLayoutAttributes(forDecorationViewOfKind: ALBTableViewCellType.RowHeader.rawValue, withIndexPath: indexPath)
+				// let frame = CGRect(x: columnHeaderAttributes.frame.origin.x + rowHeaderWidth, y: columnHeaderAttributes.frame.origin.y, width: 2, height: columnHeaderHeight)
+				// shadowAttributes.frame = frame
+				// shadowAttributes.zIndex = 2
+				// attributes.append(shadowAttributes)
+				// }
 			}
 			
 			for column in 0..<columnCount {
@@ -373,12 +373,12 @@ final class ALBTableViewLayout:UICollectionViewLayout {
 		return attributes
 	}
 	
-	private func frameAtIndexPath(indexPath: NSIndexPath, tableView:ALBTableView) -> CGRect {
+	private func frameAtIndexPath(indexPath: NSIndexPath, tableView: ALBTableView) -> CGRect {
 		let column = CGFloat(indexPath.section)
 		let row = CGFloat(indexPath.row)
 		
-		let x:CGFloat = (tableView.hasRowHeaders ? rowHeaderWidth : (tableView.showGrid ? 1 : 0)) + (column * columnWidth) + (tableView.showGrid ? 1.0 * column : 0)
-		let y:CGFloat = (tableView.hasColumnHeaders ? columnHeaderHeight : (tableView.showGrid ? 1 : 0)) + (row * rowHeight) + (tableView.showGrid ? 1.0 * row : 0)
+		let x: CGFloat = (tableView.hasRowHeaders ? rowHeaderWidth : (tableView.showGrid ? 1 : 0)) + (column * columnWidth) + (tableView.showGrid ? 1.0 * column : 0)
+		let y: CGFloat = (tableView.hasColumnHeaders ? columnHeaderHeight : (tableView.showGrid ? 1 : 0)) + (row * rowHeight) + (tableView.showGrid ? 1.0 * row : 0)
 		
 		let frame = CGRect(x: x, y: y, width: columnWidth, height: rowHeight)
 		
@@ -392,7 +392,7 @@ final class ALBTableViewLayout:UICollectionViewLayout {
 			let column = CGFloat(indexPath.section)
 			let row = CGFloat(indexPath.row)
 			let showGrid = tableView.showGrid
-			let frame:CGRect
+			let frame: CGRect
 			
 			if indexPath.row == 0 && indexPath.section == -1 {
 				frame = CGRect(x: self.collectionView!.contentOffset.x, y: self.collectionView!.contentOffset.y, width: rowHeaderWidth, height: columnHeaderHeight)
@@ -403,11 +403,11 @@ final class ALBTableViewLayout:UICollectionViewLayout {
 				case .ColumnHeader:
 					let x = (indexPath.section == 0 && !tableView.hasRowHeaders ? 0 : rowHeaderWidth) + (column * columnWidth) + (showGrid ? 1.0 * column : 0)
 					frame = CGRect(x: x, y: self.collectionView!.contentOffset.y, width: (indexPath.section == 0 && tableView.hasRowHeaders ? rowHeaderWidth : columnWidth), height: columnHeaderHeight)
-					
+				
 				case .RowHeader:
 					let y = (indexPath.row == 0 && !tableView.hasColumnHeaders ? 0 : columnHeaderHeight) + (row * rowHeight) + (showGrid ? 1.0 * row : 0)
 					frame = CGRect(x: self.collectionView!.contentOffset.x, y: y, width: rowHeaderWidth, height: rowHeight)
-					
+				
 				case .Data:
 					frame = CGRect(x: 0, y: 0, width: 0, height: 0)
 				}
@@ -431,7 +431,7 @@ final class ALBTableViewGridView {
 	
 }
 
-final class ALBTableViewHeaderShadowView:UIView {
+final class ALBTableViewHeaderShadowView: UIView {
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 		

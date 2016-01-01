@@ -13,9 +13,9 @@ protocol AccountCellDelegate {
 	func accountCellTapped()
 }
 
-class AccountView:UIView {
-	var delegate:AccountCellDelegate?
-	var account:Account {
+class AccountView: UIView {
+	var delegate: AccountCellDelegate?
+	var account: Account {
 		get {
 			return _account
 		}
@@ -33,9 +33,9 @@ class AccountView:UIView {
 	@IBOutlet private weak var arrowConstraint: NSLayoutConstraint!
 	@IBOutlet private weak var accountButton: UIButton!
 	
-	private var _account:Account = Account()
+	private var _account: Account = Account()
 	
-	func allowTap(allow:Bool) {
+	func allowTap(allow: Bool) {
 		if allow {
 			arrowConstraint.constant = 8
 			accountButton.hidden = false

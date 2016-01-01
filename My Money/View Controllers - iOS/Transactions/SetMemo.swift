@@ -10,12 +10,12 @@ import Foundation
 import UIKit
 
 protocol MemoDelegate {
-    func memoSet()
+	func memoSet()
 }
 
-class SetMemoController:UIViewController {
-	var transaction:Transaction?
-	var delegate:MemoDelegate?
+class SetMemoController: UIViewController {
+	var transaction: Transaction?
+	var delegate: MemoDelegate?
 	
 	@IBOutlet weak var memoField: UITextView!
 	
@@ -23,12 +23,12 @@ class SetMemoController:UIViewController {
 		memoField.text = transaction!.note
 		memoField.becomeFirstResponder()
 	}
-
+	
 	@IBAction func saveTapped(sender: AnyObject) {
 		transaction!.note = memoField.text
 		navigationController?.popViewControllerAnimated(true)
-		delay(0.5, closure: { () -> () in
-			self.delegate!.memoSet()
-		})
+		delay(0.5, closure: {() -> () in
+				self.delegate!.memoSet()
+			})
 	}
 }

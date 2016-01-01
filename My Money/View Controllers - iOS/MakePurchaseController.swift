@@ -10,8 +10,8 @@ import Foundation
 import UIKit
 import StoreKit
 
-class MakePurchaseController:UIViewController {
-	var products:[SKProduct]?
+class MakePurchaseController: UIViewController {
+	var products: [SKProduct]?
 	
 	@IBOutlet weak var collectionView: UICollectionView!
 	
@@ -28,16 +28,16 @@ class MakePurchaseController:UIViewController {
 	
 	
 	@IBAction func restorePurchases(sender: AnyObject) {
-		dismissViewControllerAnimated(true, completion: { () -> Void in
-			if self.products != nil {
-				PurchaseKit.sharedInstance.restorePurchases()
-			}
-		})
-
+		dismissViewControllerAnimated(true, completion: {() -> Void in
+				if self.products != nil {
+					PurchaseKit.sharedInstance.restorePurchases()
+				}
+			})
+		
 	}
 }
 
-extension MakePurchaseController:UICollectionViewDataSource {
+extension MakePurchaseController: UICollectionViewDataSource {
 	func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		if let products = products {
 			return products.count
@@ -54,17 +54,17 @@ extension MakePurchaseController:UICollectionViewDataSource {
 	}
 }
 
-extension MakePurchaseController:UICollectionViewDelegate {
+extension MakePurchaseController: UICollectionViewDelegate {
 	func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-		dismissViewControllerAnimated(true, completion: { () -> Void in
-			if let products = self.products {
-				PurchaseKit.sharedInstance.purchaseProduct(products[indexPath.row])
-			}
-		})
+		dismissViewControllerAnimated(true, completion: {() -> Void in
+				if let products = self.products {
+					PurchaseKit.sharedInstance.purchaseProduct(products[indexPath.row])
+				}
+			})
 	}
 }
 
-extension MakePurchaseController:UICollectionViewDelegateFlowLayout {
+extension MakePurchaseController: UICollectionViewDelegateFlowLayout {
 	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
 		
 		let layout = collectionViewLayout as! UICollectionViewFlowLayout
@@ -86,12 +86,12 @@ extension MakePurchaseController:UICollectionViewDelegateFlowLayout {
 }
 
 
-class ProductCell:UICollectionViewCell {
+class ProductCell: UICollectionViewCell {
 	@IBOutlet weak var productName: UILabel!
 	@IBOutlet weak var productDescription: UILabel!
 	@IBOutlet weak var productPrice: UILabel!
 	
-	var product:SKProduct {
+	var product: SKProduct {
 		set(newProduct) {
 			_product = newProduct
 			
@@ -109,5 +109,5 @@ class ProductCell:UICollectionViewCell {
 		}
 	}
 	
-	private var _product:SKProduct!
+	private var _product: SKProduct!
 }

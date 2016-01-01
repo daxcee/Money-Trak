@@ -9,13 +9,13 @@
 import Foundation
 import UIKit
 
-class AmountField:UITextField,UITextFieldDelegate {
-	override init(frame:CGRect) {
-		super.init(frame:frame)
+class AmountField: UITextField, UITextFieldDelegate {
+	override init(frame: CGRect) {
+		super.init(frame: frame)
 		delegate = self
 	}
 	
-	required init?(coder:NSCoder) {
+	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		delegate = self
 	}
@@ -45,5 +45,5 @@ class AmountField:UITextField,UITextFieldDelegate {
 		return CommonFunctions.amountFromText(text)
 	}
 	
-
+	
 }

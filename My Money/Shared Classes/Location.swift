@@ -52,7 +52,7 @@ class Location:ALBNoSQLDBObject {
 class LocationAddress:ALBNoSQLDBObject {
     var locationKey = ""
     
-    func save() {
+    func  save() {
         if !ALBNoSQLDB.setValue(table: kLocationAddressesTable, key: key, value: jsonValue()) {
             // TODO: handle error
         }

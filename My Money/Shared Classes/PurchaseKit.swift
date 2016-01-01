@@ -24,7 +24,7 @@ let kDefaultAccounts = 2
 let kDefaultReconciliations = 5
 
 // store constants
-enum StoreProducts:String {
+enum StoreProducts: String {
 	case AddSyncing = "MM_Sync"
 	case AddReconciliations = "MM_Reconciliations"
 	case AddMultipleAccounts = "MM_Accounts"
@@ -46,10 +46,10 @@ let kProductsUpdatedNotification = "ProductsUpdatedNotification"
 let kPurchaseSuccessfulNotification = "PurchaseSuccessfulNotification"
 let allPermissions = false
 
-class PurchaseKit:NSObject {
-	var screenProducts = [MyMoneyScreen:[SKProduct]]()
-	var pendingRequests = [MyMoneyScreen:SKRequest]()
-	var inFlightPurchases = [MyMoneyScreen:String]()
+class PurchaseKit: NSObject {
+	var screenProducts = [MyMoneyScreen: [SKProduct]]()
+	var pendingRequests = [MyMoneyScreen: SKRequest]()
+	var inFlightPurchases = [MyMoneyScreen: String]()
 	let defaults = NSUserDefaults.standardUserDefaults()
 	
 	class var sharedInstance : PurchaseKit {
@@ -58,7 +58,7 @@ class PurchaseKit:NSObject {
 		}
 		return Static.instance
 	}
-
+	
 	override init() {
 		super.init()
 		setup()
@@ -83,7 +83,7 @@ class PurchaseKit:NSObject {
 		}
 	}
 	
-	//MARK: - Existing abilities
+	// MARK: - Existing abilities
 	func showAds() -> Bool {
 		if allPermissions || canSync() || maxSummaryMonths() > kDefaultSummaryMonths || maxRecurringTransactions() > kDefaultRecurringTransactions || maxAccounts() > kDefaultAccounts || maxReconciliations() > kDefaultReconciliations {
 			return false
@@ -115,9 +115,9 @@ class PurchaseKit:NSObject {
 		let maxCount = (allPermissions ? Int.max : defaults.integerForKey(kMaxReconciliations))
 		return maxCount
 	}
-
-	//MARK: - Screen Products
-	func availableProductsForScreen(screen:MyMoneyScreen) -> [SKProduct] {
+	
+	// MARK: - Screen Products
+	func availableProductsForScreen(screen: MyMoneyScreen) -> [SKProduct] {
 		if let products = screenProducts[screen] {
 			return products
 		}
@@ -125,10 +125,10 @@ class PurchaseKit:NSObject {
 		return []
 	}
 	
-	func loadProductsForScreen(screen:MyMoneyScreen) {
+	func loadProductsForScreen(screen: MyMoneyScreen) {
 		let products = availableProductsForScreen(screen)
 		
-		if !SKPaymentQueue.canMakePayments() ||  products.count > 0 {
+		if !SKPaymentQueue.canMakePayments() || products.count > 0 {
 			return
 		}
 		
@@ -147,15 +147,15 @@ class PurchaseKit:NSObject {
 		default:
 			assert(false, "Unknown Screen")
 		}
-
-		let request = SKProductsRequest(productIdentifiers:productCodes)
+		
+		let request = SKProductsRequest(productIdentifiers: productCodes)
 		pendingRequests[screen] = request
 		request.delegate = self
 		request.start()
 	}
 	
-	//MARK: - Purchase
-	func purchaseInFlightForScreen(screen:MyMoneyScreen) -> Bool {
+	// MARK: - Purchase
+	func purchaseInFlightForScreen(screen: MyMoneyScreen) -> Bool {
 		if let _ = inFlightPurchases[screen] {
 			return true
 		}
@@ -163,7 +163,7 @@ class PurchaseKit:NSObject {
 		return false
 	}
 	
-	func purchaseProduct(product:SKProduct) {
+	func purchaseProduct(product: SKProduct) {
 		let payment = SKPayment(product: product)
 		SKPaymentQueue.defaultQueue().addPayment(payment)
 	}
@@ -173,7 +173,7 @@ class PurchaseKit:NSObject {
 	}
 }
 
-extension PurchaseKit:SKPaymentTransactionObserver {
+extension PurchaseKit: SKPaymentTransactionObserver {
 	func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
 		for transaction in transactions {
 			let screen = screenForProductcode(transaction.payment.productIdentifier)
@@ -181,19 +181,19 @@ extension PurchaseKit:SKPaymentTransactionObserver {
 			switch transaction.transactionState {
 			case .Purchasing:
 				inFlightPurchases[screen] = transaction.payment.productIdentifier
-				
+			
 			case .Deferred:
 				break
-				
+			
 			case .Failed:
 				inFlightPurchases.removeValueForKey(screen)
 				print(transaction.payment.productIdentifier)
 				print(transaction.error)
-				
+			
 			case .Purchased:
-				NSNotificationCenter.defaultCenter().postNotificationName(kPurchaseSuccessfulNotification, object: nil, userInfo: [kProductIdentifierKey:transaction.payment.productIdentifier])
+				NSNotificationCenter.defaultCenter().postNotificationName(kPurchaseSuccessfulNotification, object: nil, userInfo: [kProductIdentifierKey: transaction.payment.productIdentifier])
 				fallthrough
-				
+			
 			case .Restored:
 				processTransaction(transaction)
 				queue.finishTransaction(transaction)
@@ -204,24 +204,24 @@ extension PurchaseKit:SKPaymentTransactionObserver {
 	}
 	
 	
-	private func screenForProductcode(productCode:String) -> MyMoneyScreen {
+	private func screenForProductcode(productCode: String) -> MyMoneyScreen {
 		if let product = StoreProducts(rawValue: productCode) {
 			switch product {
 			case .AddSyncing:
 				return .Sync
-				
+			
 			case .AddMultipleAccounts:
 				return .Accounts
-				
+			
 			case .AddSummary:
 				return .Summary
-				
+			
 			case .AddRecurring:
 				return .Recurring
-				
+			
 			case .AddReconciliations:
 				return .Reconciliations
-				
+			
 			case .Unknown:
 				assert(false, "Unknown Product")
 			}
@@ -230,24 +230,24 @@ extension PurchaseKit:SKPaymentTransactionObserver {
 		return .Undefined
 	}
 	
-	func processTransaction(transaction:SKPaymentTransaction) {
+	func processTransaction(transaction: SKPaymentTransaction) {
 		if let product = StoreProducts(rawValue: transaction.payment.productIdentifier) {
 			switch product {
 			case .AddSyncing:
 				defaults.setBool(true, forKey: kCanSync)
-				
+			
 			case .AddReconciliations:
 				defaults.setInteger(Int.max, forKey: kMaxReconciliations)
-				
+			
 			case .AddMultipleAccounts:
 				defaults.setInteger(Int.max, forKey: kMaxAccounts)
-				
+			
 			case .AddSummary:
 				defaults.setInteger(48, forKey: kMaxSummaryMonths)
-				
+			
 			case .AddRecurring:
 				defaults.setInteger(Int.max, forKey: kMaxRecurringTransactions)
-				
+			
 			case .Unknown:
 				break
 			}
@@ -272,11 +272,11 @@ extension PurchaseKit:SKPaymentTransactionObserver {
 	}
 }
 
-extension PurchaseKit:SKProductsRequestDelegate {
+extension PurchaseKit: SKProductsRequestDelegate {
 	func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
 		var requestScreen = MyMoneyScreen.Undefined
 		
-		for (screen,pendingRequest) in pendingRequests {
+		for (screen, pendingRequest) in pendingRequests {
 			if pendingRequest == request {
 				requestScreen = screen
 			}

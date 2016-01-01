@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol LocationDelegate {
+protocol  LocationDelegate {
     func locationSet(location:Location)
 }
 

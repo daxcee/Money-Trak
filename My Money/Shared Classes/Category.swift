@@ -8,47 +8,47 @@
 
 import Foundation
 
-class Category:ALBNoSQLDBObject {
-    var accountKey = ""
-    var name = ""
-    var inSummary = true
-    
-    func save() {
-        if !ALBNoSQLDB.setValue(table: kCategoryTable, key: key, value: jsonValue()) {
-            // TODO: handle error
-        }
-    }
-        
-    convenience init?(key:String) {
+class Category: ALBNoSQLDBObject {
+	var accountKey = ""
+	var name = ""
+	var inSummary = true
+	
+	func save() {
+		if !ALBNoSQLDB.setValue(table: kCategoryTable, key: key, value: jsonValue()) {
+			// TODO: handle error
+		}
+	}
+	
+	convenience init?(key: String) {
 		if let value = ALBNoSQLDB.dictValueForKey(table: kCategoryTable, key: key) {
-			self.init(keyValue:key, dictValue: value)
+			self.init(keyValue: key, dictValue: value)
 		} else {
 			self.init()
 			return nil
 		}
-    }
-    
-	override init(keyValue: String,  dictValue: [String:AnyObject]? = nil) {
+	}
+	
+	override init(keyValue: String, dictValue: [String: AnyObject]? = nil) {
 		if let dictValue = dictValue {
 			name = dictValue["name"] as! String
 			accountKey = dictValue["accountKey"] as! String
-            if let summaryValue = dictValue["inSummary"] as? String {
-                inSummary = (summaryValue == "1" ? true : false)
-            } else {
-                inSummary = true
-            }
-            
+			if let summaryValue = dictValue["inSummary"] as? String {
+				inSummary = (summaryValue == "1" ? true : false)
+			} else {
+				inSummary = true
+			}
+			
 		}
 		
-        super.init(keyValue: keyValue)
-    }
-    
-    override func dictionaryValue() ->[String:AnyObject] {
-        var dictValue = [String:AnyObject]()
-        dictValue["name"] = name
-        dictValue["accountKey"] = accountKey
-        dictValue["inSummary"] = (inSummary ? "1" : "0")
-        
-        return dictValue
-    }
+		super.init(keyValue: keyValue)
+	}
+	
+	override func dictionaryValue() -> [String: AnyObject] {
+		var dictValue = [String: AnyObject]()
+		dictValue["name"] = name
+		dictValue["accountKey"] = accountKey
+		dictValue["inSummary"] = (inSummary ? "1" : "0")
+		
+		return dictValue
+	}
 }

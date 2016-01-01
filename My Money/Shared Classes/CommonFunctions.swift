@@ -165,7 +165,7 @@ func gregorianMonthForDate(monthDate:NSDate) -> (start:NSDate, end:NSDate) {
 }
 
 extension NSDate {
-    func stringValue() -> String {
+    func  stringValue() -> String {
         let strDate = fullDateFormatter.stringFromDate(self)
         return strDate
     }

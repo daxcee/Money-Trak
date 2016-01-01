@@ -38,6 +38,7 @@ let kUpdateTotalAvailableNotification = "UpdateTotalAvailable"
 let kUpdateUpcomingTransactionsNotification = "UpdateUpcomingTransactions"
 
 let kInitialBalance = "Initial Balance"
+let defaultPrefix = "MMDefault:"
 
 let dbProcessingQueue = dispatch_queue_create("com.AaronLBratcher.processingQueue", DISPATCH_QUEUE_CONCURRENT)
 
@@ -45,6 +46,57 @@ enum TransactionFilter {
 	case all(String)
 	case outstanding(String)
 	case cleared(String)
+}
+
+enum DefaultCategory: String {
+	case AutoMaintenance = "Auto Maintenance"
+	case AutoTransportation = "Auto/Transportation"
+	case Clothing = "Clothing"
+	case Debt = "Debt"
+	case Education = "Education/Day Care"
+	case EatingOut = "Eating Out"
+	case Entertainment = "Entertainment"
+	case Food = "Food"
+	case Gas = "Gas"
+	case HealthBeauty = "Health/Beauty"
+	case HomeFurnishings = "Home Furnishings"
+	case HomeMaintenance = "Home Maintenance"
+	case Insurance = "Insurance"
+	case MedicalDental = "Medical/Dental"
+	case Miscellaneous = "Miscellaneous"
+	case Payroll = "Payroll"
+	case RentMortgage = "Rent/Mortgage"
+	case SavingsInvestment = "Saving/Investment"
+	case Taxes = "Taxes"
+	case TithingCharity = "Tithing/Charity"
+	case Utilities = "Utilities"
+	case Vacation = "Vacation"
+	
+	static func allCategories() -> [DefaultCategory] {
+		return [.AutoMaintenance
+			, .AutoTransportation
+			, .Clothing
+			, .Debt
+			, .Education
+			, .EatingOut
+			, .Entertainment
+			, .Food
+			, .Gas
+			, .HealthBeauty
+			, .HomeFurnishings
+			, .HomeMaintenance
+			, .Insurance
+			, .MedicalDental
+			, .Miscellaneous
+			, .Payroll
+			, .RentMortgage
+			, .SavingsInvestment
+			, .Taxes
+			, .TithingCharity
+			, .Utilities
+			, .Vacation
+		]
+	}
 }
 
 class CommonDB {
@@ -59,37 +111,18 @@ class CommonDB {
 			print("unable to set unsyncedTables")
 		}
 		
-		addCategory("Auto Maintenance")
-		addCategory("Auto/Transportation")
-		addCategory("Clothing")
-		addCategory("Debt")
-		addCategory("Education/Day Care")
-		addCategory("Eating Out")
-		addCategory("Entertainment")
-		addCategory("Food")
-		addCategory("Gas")
-		addCategory("Health/Beauty")
-		addCategory("Home Furnishings")
-		addCategory("Home Maintenance")
-		addCategory("Insurance")
-		addCategory("Medical/Dental")
-		addCategory("Miscellaneous")
-		addCategory("Payroll")
-		addCategory("Rent/Mortgage")
-		addCategory("Saving/Investment")
-		addCategory("Taxes")
-		addCategory("Tithing/Charity")
-		addCategory("Utilities")
-		addCategory("Vacation")
+		for category in DefaultCategory.allCategories() {
+			addCategory(category)
+		}
 		
 		// setup default account
 		if let accountKeys = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: nil) where accountKeys.count == 0 {
 			let checking = Account()
-			checking.key = "MMDefault:Checking"
+			checking.key = defaultPrefix + "Checking"
 			checking.save()
 			
 			let creditCard = Account()
-			creditCard.key = "MMDefault:CreditCard"
+			creditCard.key = defaultPrefix + "CreditCard"
 			creditCard.type = .creditCard
 			creditCard.name = "Credit Card"
 			creditCard.save()
@@ -108,8 +141,8 @@ class CommonDB {
 			})
 	}
 	
-	class func addCategory(category: String) {
-		let categoryKey = "MMDefault:" + category
+	class func addCategory(category: DefaultCategory) {
+		let categoryKey = defaultPrefix + category.rawValue
 		let condition = DBCondition(set: 0, objectKey: "key", conditionOperator: .equal, value: categoryKey)
 		if let keys = ALBNoSQLDB.keysInTableForConditions(kCategoryTable, sortOrder: nil, conditions: [condition]) where keys.count > 0 {
 			// category already exists
@@ -118,8 +151,8 @@ class CommonDB {
 		
 		let newCategory = Category()
 		newCategory.key = categoryKey
-		newCategory.name = category
-		if category == "Payroll" {
+		newCategory.name = category.rawValue
+		if category == .Payroll {
 			newCategory.inSummary = false
 		}
 		

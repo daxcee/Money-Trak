@@ -8,40 +8,40 @@
 
 import Foundation
 
-class Reconciliation:ALBNoSQLDBObject {
-    var accountKey = CommonFunctions.currentAccountKey
-    var beginningBalance = 0
-    var endingBalance = 0
-    var difference:Int {
-        get {
+class Reconciliation: ALBNoSQLDBObject {
+	var accountKey = CommonFunctions.currentAccountKey
+	var beginningBalance = 0
+	var endingBalance = 0
+	var difference: Int {
+		get {
 			let expectedEnding = beginningBalance + _transactionSum
 			return endingBalance - expectedEnding
-        }
-    }
+		}
+	}
 	
-    var date = NSDate()
+	var date = NSDate()
 	var transactionKeys = [String]()
 	var reconciled = false
-    var isNew = true;
-
-    private var _transactionSum = 0
+	var isNew = true;
+	
+	private var _transactionSum = 0
 	
 	func save() {
 		if !ALBNoSQLDB.setValue(table: kReconcilationsTable, key: key, value: jsonValue()) {
-            // TODO: Handle Error
-        }
+			// TODO: Handle Error
+		}
 	}
 	
-	convenience init?(key:String) {
+	convenience init?(key: String) {
 		if let value = ALBNoSQLDB.dictValueForKey(table: kReconcilationsTable, key: key) {
-            self.init(keyValue: key,dictValue: value)
+			self.init(keyValue: key, dictValue: value)
 		} else {
 			self.init()
 			return nil
 		}
 	}
 	
-	override init(keyValue: String,  dictValue: [String:AnyObject]? = nil) {
+	override init(keyValue: String, dictValue: [String: AnyObject]? = nil) {
 		if let dictValue = dictValue {
 			isNew = false
 			accountKey = dictValue["accountKey"] as! String
@@ -53,11 +53,11 @@ class Reconciliation:ALBNoSQLDBObject {
 			
 			if !reconciled {
 				for transactionKey in transactionKeys {
-                    if let transaction = Transaction(key: transactionKey) {
-                        _transactionSum += transaction.amount
-                    } else {
-                         transactionKeys = transactionKeys.filter({$0 != transactionKey})
-                    }
+					if let transaction = Transaction(key: transactionKey) {
+						_transactionSum += transaction.amount
+					} else {
+						transactionKeys = transactionKeys.filter({$0 != transactionKey})
+					}
 				}
 			}
 		}
@@ -65,34 +65,34 @@ class Reconciliation:ALBNoSQLDBObject {
 		super.init(keyValue: keyValue)
 	}
 	
-	override func dictionaryValue() -> [String:AnyObject] {
-		var dictValue = [String:AnyObject]()
-        dictValue["accountKey"] = accountKey
-        dictValue["beginningBalance"] = beginningBalance
+	override func dictionaryValue() -> [String: AnyObject] {
+		var dictValue = [String: AnyObject]()
+		dictValue["accountKey"] = accountKey
+		dictValue["beginningBalance"] = beginningBalance
 		dictValue["endingBalance"] = endingBalance
 		dictValue["date"] = ALBNoSQLDB.stringValueForDate(date)
 		dictValue["transactionKeys"] = transactionKeys
 		dictValue["reconciled"] = reconciled ? "true" : "false"
-
+		
 		return dictValue
 	}
-    
-    func addTransactionKey(transactionKey:String) {
-        if !hasTransactionKey(transactionKey) {
-            transactionKeys.append(transactionKey)
-            let transaction = Transaction(key: transactionKey)!
-            _transactionSum += transaction.amount
-        }
-    }
-    
-    func removeTransactionKey(transactionKey:String) {
-        transactionKeys = transactionKeys.filter({$0 != transactionKey})
-        
-        let transaction = Transaction(key: transactionKey)!
-        _transactionSum -= transaction.amount
-    }
-    
-    func hasTransactionKey(transactionKey:String) -> Bool {
-        return transactionKeys.filter({$0 == transactionKey}).count > 0
-    }
+	
+	func addTransactionKey(transactionKey: String) {
+		if !hasTransactionKey(transactionKey) {
+			transactionKeys.append(transactionKey)
+			let transaction = Transaction(key: transactionKey)!
+			_transactionSum += transaction.amount
+		}
+	}
+	
+	func removeTransactionKey(transactionKey: String) {
+		transactionKeys = transactionKeys.filter({$0 != transactionKey})
+		
+		let transaction = Transaction(key: transactionKey)!
+		_transactionSum -= transaction.amount
+	}
+	
+	func hasTransactionKey(transactionKey: String) -> Bool {
+		return transactionKeys.filter({$0 == transactionKey}).count > 0
+	}
 }

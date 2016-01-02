@@ -1634,16 +1634,12 @@ extension ALBNoSQLDB {
 		func bindValue(statement: COpaquePointer, index: Int32, value: AnyObject) -> Int32 {
 			var status = SQLITE_OK
 			let valueType = SQLiteCore.typeOfValue(value)
-			var int64Value: Int64 = 0
-			
-			if valueType == .int {
-				int64Value = Int64(value as! Int)
-			}
 			
 			switch valueType {
 			case .string:
 				status = sqlite3_bind_text(statement, index, value as! String, -1, SQLITE_TRANSIENT)
 			case .int:
+				let int64Value = Int64(value as! Int)
 				status = sqlite3_bind_int64(statement, index, int64Value)
 			case .double:
 				status = sqlite3_bind_double(statement, index, value as! Double)

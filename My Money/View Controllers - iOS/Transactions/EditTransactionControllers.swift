@@ -798,6 +798,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 			let showingCCAccount = (transactionType.selectedSegmentIndex == 2)
 			if showingCCAccount {
 				_helper!.hideCell(CellNames.Location.rawValue)
+				_helper!.hideCell(CellNames.Category.rawValue)
 				transaction.ccAccountKey = CommonDB.firstCCAccount().key
 				if transaction.amount == 0 {
 					let ccAccount = Account(key: transaction.ccAccountKey!)!
@@ -814,6 +815,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 				
 				_helper!.showCell(CellNames.CCAccount.rawValue)
 			} else {
+				_helper!.showCell(CellNames.Category.rawValue)
 				_helper!.showCell(CellNames.Location.rawValue)
 				_helper!.hideCell(CellNames.CCAccount.rawValue)
 			}

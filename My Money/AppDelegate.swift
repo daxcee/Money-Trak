@@ -25,6 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SyncEngineLinkDelegate, U
 			application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [UIUserNotificationType.Sound, UIUserNotificationType.Alert, UIUserNotificationType.Badge], categories: nil))
 		}
 		
+		ALBNoSQLDB.tableHasKey(table: kAccountsTable, key: kAccountsTable)
+		
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {[unowned self]() -> Void in
 			self.syncEngine = SyncEngine(name: UIDevice().name)
 			self.syncEngine?.linkDelegate = self

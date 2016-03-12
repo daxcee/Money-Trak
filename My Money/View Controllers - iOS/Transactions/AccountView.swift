@@ -13,7 +13,7 @@ protocol AccountCellDelegate {
 	func accountCellTapped()
 }
 
-class AccountView: UIView {
+class AccountView: UIView, Numbers {
 	var delegate: AccountCellDelegate?
 	var account: Account {
 		get {
@@ -23,7 +23,7 @@ class AccountView: UIView {
 		set(newAccount) {
 			_account = newAccount
 			accountName.text = _account.name
-			accountBalance.text = CommonFunctions.formatForAmount(account.balance, useThousandsSeparator: true)
+			accountBalance.text = formatForAmount(account.balance, useThousandsSeparator: true)
 		}
 	}
 	

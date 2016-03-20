@@ -228,9 +228,12 @@ extension NSDate {
 }
 
 class CommonFunctions {
+	var defaults = DefaultManager()
+
+	static let instance = CommonFunctions()
+
 	class func totalAmountAvailable() -> Int {
-		let defaults = NSUserDefaults.standardUserDefaults()
-		let amountAvailable = defaults.integerForKey(kAmountAvailableKey)
+		let amountAvailable = CommonFunctions.instance.defaults.integerForKey(.AmountAvailable)
 		return amountAvailable
 	}
 
@@ -238,15 +241,13 @@ class CommonFunctions {
 		get {
 			let cf = CommonFunctions.sharedInstance
 			if cf._currentAccountKey == nil {
-				let defaults = NSUserDefaults.standardUserDefaults()
-				var defaultAccount = defaults.stringForKey(kDefaultAccount)
+				var defaultAccount = CommonFunctions.instance.defaults.stringForKey(.DefaultAccount)
 
 				if defaultAccount == nil || !ALBNoSQLDB.tableHasKey(table: kAccountsTable, key: defaultAccount!)! {
 					if let keys = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: nil) where keys.filter({ $0 == defaultAccount}).count == 0 {
 						// assign first in list
 						defaultAccount = keys[0]
-						defaults.setObject(defaultAccount, forKey: kDefaultAccount)
-						NSUserDefaults.resetStandardUserDefaults()
+						CommonFunctions.instance.defaults.setObject(defaultAccount, forKey: .DefaultAccount)
 					}
 				}
 
@@ -260,9 +261,7 @@ class CommonFunctions {
 			let cf = CommonFunctions.sharedInstance
 			if accountKey != cf._currentAccountKey {
 				cf._currentAccountKey = accountKey
-				let defaults = NSUserDefaults.standardUserDefaults()
-				defaults.setObject(accountKey, forKey: kDefaultAccount)
-				NSUserDefaults.resetStandardUserDefaults()
+				CommonFunctions.instance.defaults.setObject(accountKey, forKey: .DefaultAccount)
 			}
 		}
 	}

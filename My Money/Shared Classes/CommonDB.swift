@@ -24,12 +24,7 @@ let kMonthlySummaryEntriesTable = "MonthlySummaryEntries"
 let kReconcilationsTable = "Reconciliations"
 let kDevicesTable = "Devices"
 
-// user default constants
-let kAmountAvailableKey = "amountAvailable"
-let kDefaultAccount = "Default Account"
-
 // user notification constants
-let kUpcomingTransactionsWarning = "upcomingTransactionsWarning"
 let kNegativeBalanceWarning = "NegativeBalanceWarning"
 let kNegativeBalanceGone = "NegativeBalanceGone"
 
@@ -103,6 +98,7 @@ enum DefaultCategory: String {
 
 class CommonDB: Numbers {
 	static let instance = CommonDB()
+	var defaults = DefaultManager()
 
 	class func setup() {
 		if !ALBNoSQLDB.syncingEnabled()! {
@@ -165,8 +161,6 @@ class CommonDB: Numbers {
 
 	class func calcAmountAvailable() {
 		dispatch_async(dbProcessingQueue) { () -> Void in
-
-			let defaults = NSUserDefaults.standardUserDefaults()
 			var amountAvailable = 0
 
 			let updateCondition = DBCondition(set: 0, objectKey: "updateTotalAll", conditionOperator: .equal, value: 1)
@@ -205,8 +199,7 @@ class CommonDB: Numbers {
 				}
 			}
 
-			defaults.setInteger(amountAvailable, forKey: kAmountAvailableKey)
-			NSUserDefaults.resetStandardUserDefaults()
+			CommonDB.instance.defaults.setInteger(amountAvailable, forKey: .AmountAvailable)
 			NSNotificationCenter.defaultCenter().postNotificationName(kUpdateTotalAvailableNotification, object: nil)
 		}
 	}
@@ -214,12 +207,10 @@ class CommonDB: Numbers {
 	// MARK: - Transactions
 	class func processUpcomingTransactions(force: Bool) {
 		let now = NSDate()
-		let defaults = NSUserDefaults.standardUserDefaults()
-		let kUpcomingTransactionScan = "UpcomingTransactionScan"
 
 		if !force {
 			// only do this twice a day
-			if let processDate = defaults.objectForKey(kUpcomingTransactionScan) as? NSDate {
+			if let processDate = CommonDB.instance.defaults.objectForKey(.UpcomingTransactionScan) as? NSDate {
 				let checkDate = processDate.addTime(hours: 12, minutes: 0, seconds: 0)
 				if checkDate.earlierDate(now) == now {
 					return
@@ -304,8 +295,7 @@ class CommonDB: Numbers {
 				return
 			}
 
-			defaults.setObject(now.midnight(), forKey: kUpcomingTransactionScan)
-			NSUserDefaults.resetStandardUserDefaults()
+			CommonDB.instance.defaults.setObject(now.midnight(), forKey: .UpcomingTransactionScan)
 
 			NSNotificationCenter.defaultCenter().postNotificationName(kUpdateTotalAvailableNotification, object: nil)
 		}
@@ -314,12 +304,10 @@ class CommonDB: Numbers {
 	}
 
 	class func checkForNegativeUpcoming(accountKey: String?) {
-		let defaults = NSUserDefaults.standardUserDefaults()
 		let now = NSDate()
-		let kUpcomingBalanceScan = "UpcomingBalanceScan"
 
 		if accountKey == nil {
-			let processDate: NSDate? = defaults.objectForKey(kUpcomingBalanceScan) as? NSDate
+			let processDate: NSDate? = CommonDB.instance.defaults.objectForKey(.UpcomingBalanceScan) as? NSDate
 			if processDate != nil {
 				let checkDate = processDate!.addTime(hours: 24, minutes: 0, seconds: 0)
 				if checkDate.earlierDate(now) == now {
@@ -328,7 +316,7 @@ class CommonDB: Numbers {
 			}
 		}
 
-		defaults.setObject(now, forKey: kUpcomingBalanceScan)
+		CommonDB.instance.defaults.setObject(now, forKey: .UpcomingBalanceScan)
 
 		let keys = upcomingTransactionKeys(.all(""))
 		var accountKeys = [String]()
@@ -363,7 +351,7 @@ class CommonDB: Numbers {
 			}
 		}
 
-		let alertDate = defaults.objectForKey(kUpcomingTransactionsWarning) as? NSDate
+		let alertDate = CommonDB.instance.defaults.objectForKey(.UpcomingTransactionsWarning) as? NSDate
 
 		if showAlert {
 			if alertDate != nil {
@@ -374,13 +362,13 @@ class CommonDB: Numbers {
 				}
 			}
 
-			defaults.setObject(now, forKey: kUpcomingTransactionsWarning)
+			CommonDB.instance.defaults.setObject(now, forKey: .UpcomingTransactionsWarning)
 
 			dispatch_async(dispatch_get_main_queue(), { () -> Void in
 				NSNotificationCenter.defaultCenter().postNotificationName(kNegativeBalanceWarning, object: nil)
 			})
 		} else {
-			defaults.removeObjectForKey(kUpcomingTransactionsWarning)
+			CommonDB.instance.defaults.removeObjectForKey(.UpcomingTransactionsWarning)
 
 			if alertDate != nil {
 				// alert was previously shown and now we're okay
@@ -389,8 +377,6 @@ class CommonDB: Numbers {
 				})
 			}
 		}
-
-		NSUserDefaults.resetStandardUserDefaults()
 	}
 
 	class func generateUpcomingFromRecurring(recurringTransaction: RecurringTransaction) {
@@ -633,7 +619,6 @@ class CommonDB: Numbers {
 	}
 
 	class func recalculateAllBalances() {
-		let defaults = NSUserDefaults.standardUserDefaults()
 		var amountAvailable = 0
 		ALBNoSQLDB.dropTable(kProcessedTransactionsTable)
 
@@ -645,9 +630,7 @@ class CommonDB: Numbers {
 		}
 
 		// reset processDate cache
-		let lastCheckDateKey = "lastProcessDate"
-		defaults.setObject(NSDate().addDate(years: 0, months: 0, weeks: 0, days: -2), forKey: lastCheckDateKey)
-		NSUserDefaults.resetStandardUserDefaults()
+		CommonDB.instance.defaults.setObject(NSDate().addDate(years: 0, months: 0, weeks: 0, days: -2), forKey: .LastCheckDate)
 
 		if let accountKeys = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: nil) {
 			for accountKey in accountKeys {
@@ -696,8 +679,7 @@ class CommonDB: Numbers {
 			}
 		}
 
-		defaults.setInteger(amountAvailable, forKey: kAmountAvailableKey)
-		NSUserDefaults.resetStandardUserDefaults()
+		CommonDB.instance.defaults.setInteger(amountAvailable, forKey: .AmountAvailable)
 
 		NSNotificationCenter.defaultCenter().postNotificationName(kUpdateTotalAvailableNotification, object: nil)
 	}

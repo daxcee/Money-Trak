@@ -52,7 +52,9 @@ class EditReconciliationHeaderController: UITableViewController, UITextFieldDele
 		_keyboardToolbar.barStyle = UIBarStyle.BlackTranslucent
 		_keyboardToolbar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 34)
 
-		let negativeButton = UIBarButtonItem(image: UIImage(named: "Negative")!.imageWithRenderingMode(.AlwaysTemplate), style: UIBarButtonItemStyle.Plain, target: self, action: "negativeTapped")
+		let image = UIImage(imageIdentifier: .Negative)
+
+		let negativeButton = UIBarButtonItem(image: image.imageWithRenderingMode(.AlwaysTemplate), style: UIBarButtonItemStyle.Plain, target: self, action: "negativeTapped")
 		negativeButton.tintColor = UIColor.whiteColor()
 		let flexSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
 		let doneButton = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "doneTyping")

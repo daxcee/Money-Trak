@@ -17,8 +17,7 @@ class InitialController: UIViewController, Numbers {
 	@IBOutlet weak var bannerBottomConstraint: NSLayoutConstraint!
 	@IBOutlet weak var syncButton: UIButton!
 
-	let kCheckPasscode = "passcodeChecked"
-	let defaults = NSUserDefaults.standardUserDefaults()
+	var defaults = DefaultManager()
 
 	var amountAvailable = 0
 	private var _userInteractingWithAd = false
@@ -63,10 +62,9 @@ class InitialController: UIViewController, Numbers {
 	}
 
 	override func viewDidAppear(animated: Bool) {
-		let checkedForPasscode = defaults.boolForKey(kCheckPasscode)
+		let checkedForPasscode = defaults.boolForKey(.CheckPasscode)
 		if !checkedForPasscode {
-			defaults.setBool(true, forKey: kCheckPasscode)
-			NSUserDefaults.resetStandardUserDefaults()
+			defaults.setBool(true, forKey: .CheckPasscode)
 			if !deviceHasPasscode() {
 				let alert = UIAlertController(title: "No Passcode", message: "For the safety of the data in this app, this device should have a passcode set.", preferredStyle: .Alert)
 				let openSettings = { (action: UIAlertAction!) -> Void in
@@ -164,8 +162,7 @@ class InitialController: UIViewController, Numbers {
 		let greenColor = UIColor(red: 0.93333333333333, green: 1, blue: 0.94117647058824, alpha: 1)
 		let yellowColor = UIColor(red: 1, green: 0.98823529411765, blue: 0.91764705882353, alpha: 1)
 		let redColor = UIColor(red: 1, green: 0.85490196078431, blue: 0.87058823529412, alpha: 1)
-		let defaults = NSUserDefaults.standardUserDefaults()
-		let alertDate = defaults.objectForKey(kUpcomingTransactionsWarning) as? NSDate
+		let alertDate = defaults.objectForKey(.UpcomingTransactionsWarning) as? NSDate
 
 		let amountAvailable = CommonFunctions.totalAmountAvailable()
 		self.totalAvailable.text = "Total Available: \(intFormatForAmount(amountAvailable))"

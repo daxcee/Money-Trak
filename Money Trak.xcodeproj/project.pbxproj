@@ -21,6 +21,11 @@
 		890CD3CA1C94A91B00E3C870 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 890B75071BD28A730035A37C /* libz.tbd */; };
 		890CD3CC1C94A9C700E3C870 /* Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890CD3CB1C94A9C700E3C870 /* Numbers.swift */; };
 		890CD3CD1C94A9EC00E3C870 /* Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890CD3CB1C94A9C700E3C870 /* Numbers.swift */; };
+		890CD3CF1C94EB7200E3C870 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890CD3CE1C94EB7200E3C870 /* UIImage.swift */; };
+		890CD3D11C94EB8000E3C870 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890CD3D01C94EB8000E3C870 /* NotificationManager.swift */; };
+		890CD3D31C94EB8400E3C870 /* DefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890CD3D21C94EB8400E3C870 /* DefaultManager.swift */; };
+		890CD3D51C94EBFF00E3C870 /* UIImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890CD3D41C94EBFF00E3C870 /* UIImageTests.swift */; };
+		890CD3D61C94EC9000E3C870 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890CD3CE1C94EB7200E3C870 /* UIImage.swift */; };
 		890D08701A38D4740010875D /* Reconciliation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890D086F1A38D4740010875D /* Reconciliation.swift */; };
 		8916B9671B0FB0110026CD5D /* DeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8916B9661B0FB0110026CD5D /* DeviceCell.swift */; };
 		892A932F19E0241A0049CDDB /* EditTransactionControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A932D19E0241A0049CDDB /* EditTransactionControllers.swift */; };
@@ -118,6 +123,10 @@
 		890CD3BC1C94A7AC00E3C870 /* NumbersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumbersTests.swift; sourceTree = "<group>"; };
 		890CD3BE1C94A7AC00E3C870 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		890CD3CB1C94A9C700E3C870 /* Numbers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Numbers.swift; sourceTree = "<group>"; };
+		890CD3CE1C94EB7200E3C870 /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		890CD3D01C94EB8000E3C870 /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		890CD3D21C94EB8400E3C870 /* DefaultManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultManager.swift; sourceTree = "<group>"; };
+		890CD3D41C94EBFF00E3C870 /* UIImageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageTests.swift; sourceTree = "<group>"; };
 		890D086F1A38D4740010875D /* Reconciliation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Reconciliation.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		89166F9C19979728007B1694 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		89166F9D19979728007B1694 /* FramedTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FramedTextView.h; sourceTree = "<group>"; };
@@ -236,6 +245,7 @@
 		890CD3BB1C94A7AC00E3C870 /* Money TrakTests */ = {
 			isa = PBXGroup;
 			children = (
+				890CD3D41C94EBFF00E3C870 /* UIImageTests.swift */,
 				890CD3BC1C94A7AC00E3C870 /* NumbersTests.swift */,
 				890CD3BE1C94A7AC00E3C870 /* Info.plist */,
 			);
@@ -321,6 +331,8 @@
 				895EC1DA1C94745700E3C870 /* PurchaseKit.swift */,
 				896E70F91B3302AE003B97EF /* Summary.swift */,
 				8996CF011BD27D8100FAC390 /* Reachability.swift */,
+				890CD3D01C94EB8000E3C870 /* NotificationManager.swift */,
+				890CD3D21C94EB8400E3C870 /* DefaultManager.swift */,
 			);
 			name = "Shared Classes";
 			path = "My Money/Shared Classes";
@@ -433,10 +445,10 @@
 				89C39257199462E10020B6DC /* My Money */,
 				89166F9A19979728007B1694 /* FramedTextView */,
 				89166FA619979728007B1694 /* FramedTextViewTests */,
-				890CD3BB1C94A7AC00E3C870 /* Money TrakTests */,
 				89C39256199462E10020B6DC /* Products */,
 				894CCD6719A56C6300D79BFA /* Shared Classes */,
 				B392D623F90D1DB206374BC2 /* Frameworks */,
+				890CD3BB1C94A7AC00E3C870 /* Money TrakTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -500,6 +512,7 @@
 				8904E4B51B5A9DB700E54D25 /* MakePurchaseController.swift */,
 				89EDA52B1C947B3600E3C870 /* AmountField.swift */,
 				89EDA52D1C947B8600E3C870 /* PurchaseSegue.swift */,
+				890CD3CE1C94EB7200E3C870 /* UIImage.swift */,
 			);
 			path = "View Controllers - iOS";
 			sourceTree = "<group>";
@@ -631,7 +644,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				890CD3CD1C94A9EC00E3C870 /* Numbers.swift in Sources */,
+				890CD3D61C94EC9000E3C870 /* UIImage.swift in Sources */,
 				890CD3BD1C94A7AC00E3C870 /* NumbersTests.swift in Sources */,
+				890CD3D51C94EBFF00E3C870 /* UIImageTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -649,6 +664,7 @@
 				898007751ADC1BEC000B37BC /* SyncViewController.swift in Sources */,
 				89C3925B199462E10020B6DC /* AppDelegate.swift in Sources */,
 				89A443451AEBC02600946BDE /* zip.c in Sources */,
+				890CD3D31C94EB8400E3C870 /* DefaultManager.swift in Sources */,
 				89A02F5B1B985B310088601D /* ALBPeerServer.swift in Sources */,
 				89A443461AEBC02600946BDE /* SSZipArchive.m in Sources */,
 				89343D851A1D2C70005D1530 /* AccountView.swift in Sources */,
@@ -665,6 +681,7 @@
 				89CBC1751A12396A00E88A29 /* Setup.swift in Sources */,
 				89BC3CC819E08026003B2A75 /* SetAlert.swift in Sources */,
 				89F1C4D91A263F8100DC4BCD /* OSSpecific - iOS.swift in Sources */,
+				890CD3CF1C94EB7200E3C870 /* UIImage.swift in Sources */,
 				894CCD9719A6C73500D79BFA /* Spending.swift in Sources */,
 				89A443421AEBC02600946BDE /* ioapi.c in Sources */,
 				89C511B11B62671C0067CC72 /* UIImage+ImageEffects.m in Sources */,
@@ -680,6 +697,7 @@
 				890B74FD1BD280D80035A37C /* ALBNoSQLDB.swift in Sources */,
 				8904E4B61B5A9DB700E54D25 /* MakePurchaseController.swift in Sources */,
 				89BF2B9E1A4F53BE002A6959 /* MonthlySummary.swift in Sources */,
+				890CD3D11C94EB8000E3C870 /* NotificationManager.swift in Sources */,
 				89A02F5A1B985B310088601D /* ALBPeerPacket.swift in Sources */,
 				894B8FE919B0B03200C4D28C /* CommonDB.swift in Sources */,
 				895EC1DB1C94745700E3C870 /* PurchaseKit.swift in Sources */,
@@ -885,6 +903,7 @@
 				890CD3C21C94A7AC00E3C870 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		89C39250199462E00020B6DC /* Build configuration list for PBXProject "Money Trak" */ = {
 			isa = XCConfigurationList;

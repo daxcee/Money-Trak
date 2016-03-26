@@ -64,7 +64,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 			searchbar.removeFromSuperview()
 			tableConstraint.constant = -80
 		} else {
-			let addButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "addTransaction")
+			let addButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: #selector(addTransaction))
 			let saveButton = navigationItem.rightBarButtonItem!
 			navigationItem.rightBarButtonItems = [saveButton, addButton]
 		}
@@ -75,7 +75,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 		_keyboardToolbar.barStyle = UIBarStyle.BlackTranslucent
 		_keyboardToolbar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 34)
 		let flexSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-		let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "doneTyping")
+		let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: #selector(doneTyping))
 		doneButton.tintColor = UIColor.whiteColor() // (red: 0, green: 0.478431, blue: 1.0, alpha: 1.0)
 		_keyboardToolbar.items = [flexSpace, doneButton]
 	}
@@ -238,7 +238,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 			}
 			cell.transactionKey = _transactionKeys[indexPath.row]
 			if !reconciliation.reconciled {
-				let cleared = reconciliation.transactionKeys.filter({ $0 == transaction.key}).count > 0
+				let cleared = reconciliation.transactionKeys.filter({ $0 == transaction.key }).count > 0
 				cell.reconciled = cleared
 			}
 		} else {
@@ -381,4 +381,3 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 		tableView.reloadRowsAtIndexPaths([path], withRowAnimation: UITableViewRowAnimation.None)
 	}
 }
-

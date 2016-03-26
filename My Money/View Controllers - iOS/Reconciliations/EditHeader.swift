@@ -54,10 +54,10 @@ class EditReconciliationHeaderController: UITableViewController, UITextFieldDele
 
 		let image = UIImage(imageIdentifier: .Negative)
 
-		let negativeButton = UIBarButtonItem(image: image.imageWithRenderingMode(.AlwaysTemplate), style: UIBarButtonItemStyle.Plain, target: self, action: "negativeTapped")
+		let negativeButton = UIBarButtonItem(image: image.imageWithRenderingMode(.AlwaysTemplate), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(negativeTapped))
 		negativeButton.tintColor = UIColor.whiteColor()
 		let flexSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-		let doneButton = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "doneTyping")
+		let doneButton = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(doneTyping))
 		doneButton.tintColor = UIColor.whiteColor() // (red: 0, green: 0.478431, blue: 1.0, alpha: 1.0)
 		_keyboardToolbar.items = [negativeButton, flexSpace, doneButton]
 	}
@@ -103,7 +103,7 @@ class EditReconciliationHeaderController: UITableViewController, UITextFieldDele
 		_currentField = nil
 	}
 
-	func negativeTapped() {
+	func  negativeTapped() {
 		if let currentField = _currentField, text = currentField.text {
 			let amount = amountFromText(text) * -1
 			currentField.text = formatForAmount(amount, useThousandsSeparator: false)

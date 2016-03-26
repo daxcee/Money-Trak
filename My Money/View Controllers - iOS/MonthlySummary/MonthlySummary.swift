@@ -31,7 +31,7 @@ class MonthlySummaryController: UIViewController, Numbers {
 		if PurchaseKit.sharedInstance.maxSummaryMonths() == kDefaultSummaryMonths {
 			NSNotificationCenter.defaultCenter().addObserverForName(kProductsUpdatedNotification, object: nil, queue: nil, usingBlock: { (notification) -> Void in
 				if PurchaseKit.sharedInstance.availableProductsForScreen(.Summary).count > 0 {
-					let addButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "addMonthsTapped")
+					let addButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: #selector(self.addMonthsTapped))
 					self.navigationItem.rightBarButtonItem = addButton
 				}
 			})

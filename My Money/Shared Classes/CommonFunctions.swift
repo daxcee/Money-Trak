@@ -22,28 +22,24 @@ extension String {
 		var current = ascii.startIndex
 
 		let negative = current != ascii.endIndex && ascii[current] == minusAscii
-		if (negative)
-		{
+		if (negative) {
 			current = current.successor()
 		}
 
-		while current != ascii.endIndex && ascii[current] != dotAscii
-		{
+		while current != ascii.endIndex && ascii[current] != dotAscii {
 			whole.append(Double(ascii[current] - zeroAscii))
 			current = current.successor()
 		}
 
 		// whole number
 		var factor = 1.0
-		for var i = whole.count - 1; i >= 0; i--
-		{
+		for i in(1 ..< whole.count).reverse() {
 			res += Double(whole[i]) * factor
 			factor *= 10
 		}
 
 		// mantissa
-		if current != ascii.endIndex
-		{
+		if current != ascii.endIndex {
 			factor = 0.1
 			current = current.successor()
 			while current != ascii.endIndex
@@ -54,8 +50,7 @@ extension String {
 			}
 		}
 
-		if (negative)
-		{
+		if (negative) {
 			res *= -1;
 		}
 
@@ -244,7 +239,7 @@ class CommonFunctions {
 				var defaultAccount = CommonFunctions.instance.defaults.stringForKey(.DefaultAccount)
 
 				if defaultAccount == nil || !ALBNoSQLDB.tableHasKey(table: kAccountsTable, key: defaultAccount!)! {
-					if let keys = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: nil) where keys.filter({ $0 == defaultAccount}).count == 0 {
+					if let keys = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: nil) where keys.filter({ $0 == defaultAccount }).count == 0 {
 						// assign first in list
 						defaultAccount = keys[0]
 						CommonFunctions.instance.defaults.setObject(defaultAccount, forKey: .DefaultAccount)
@@ -266,7 +261,7 @@ class CommonFunctions {
 		}
 	}
 
-	class var sharedInstance : CommonFunctions {
+	class var sharedInstance: CommonFunctions {
 		struct Static {
 			static let instance = CommonFunctions()
 		}

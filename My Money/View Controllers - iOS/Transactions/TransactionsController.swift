@@ -64,7 +64,7 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 			keyboardToolbar.barStyle = UIBarStyle.BlackTranslucent
 			keyboardToolbar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 34)
 			let flexSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-			let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "doneTyping")
+			let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: #selector(doneTyping))
 			doneButton.tintColor = UIColor.whiteColor() // (red: 0, green: 0.478431, blue: 1.0, alpha: 1.0)
 			keyboardToolbar.items = [flexSpace, doneButton]
 

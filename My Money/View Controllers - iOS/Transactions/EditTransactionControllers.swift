@@ -100,7 +100,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		_keyboardToolbar.barStyle = UIBarStyle.BlackTranslucent
 		_keyboardToolbar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 34)
 		let flexSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-		let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "doneTyping")
+		let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: #selector(doneTyping))
 		doneButton.tintColor = UIColor.whiteColor() // (red: 0, green: 0.478431, blue: 1.0, alpha: 1.0)
 		_keyboardToolbar.items = [flexSpace, doneButton]
 
@@ -146,7 +146,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		let datePickerCell = _helper!.visibleCellsWithName("DatePicker")[0]
 		let datePicker = datePickerCell.viewWithTag(1) as! UIDatePicker
 		datePicker.date = transaction.date
-		datePicker.addTarget(self, action: "dateChanged", forControlEvents: UIControlEvents.ValueChanged)
+		datePicker.addTarget(self, action: #selector(dateChanged), forControlEvents: UIControlEvents.ValueChanged)
 
 		if upcomingTransaction {
 			datePicker.minimumDate = minimumDate
@@ -249,8 +249,8 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 			self._lastSelection = nil
 		}
 
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardShown:", name: UIKeyboardDidShowNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardHidden:", name: UIKeyboardDidHideNotification, object: nil)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardShown(_:)), name: UIKeyboardDidShowNotification, object: nil)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardHidden(_:)), name: UIKeyboardDidHideNotification, object: nil)
 	}
 
 	override func viewDidDisappear(animated: Bool) {
@@ -459,7 +459,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 				transactionType.insertSegmentWithTitle("Deposit", atIndex: 1, animated: false)
 				transactionType.insertSegmentWithTitle("CC Payment", atIndex: 2, animated: false)
 
-				transactionType.addTarget(self, action: "typeChanged", forControlEvents: UIControlEvents.ValueChanged)
+				transactionType.addTarget(self, action: #selector(typeChanged), forControlEvents: UIControlEvents.ValueChanged)
 
 				switch transaction.type {
 				case .purchase:
@@ -548,7 +548,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 					let picker = cell.viewWithTag(1) as! UIDatePicker
 					picker.date = recurring.startDate
 					picker.minimumDate = NSDate().midnight()
-					picker.addTarget(self, action: "startDateChanged", forControlEvents: .ValueChanged)
+					picker.addTarget(self, action: #selector(startDateChanged), forControlEvents: .ValueChanged)
 				}
 
 			case .EndDate:
@@ -565,13 +565,13 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 						picker.date = recurring.endDate!
 					}
 					picker.minimumDate = NSDate().midnight()
-					picker.addTarget(self, action: "endDateChanged", forControlEvents: .ValueChanged)
+					picker.addTarget(self, action: #selector(endDateChanged), forControlEvents: .ValueChanged)
 				}
 
 			case .UseEndDate:
 				if let recurring = transaction as? RecurringTransaction {
 					let useEndDate = cell.viewWithTag(1)! as! UISwitch
-					useEndDate.addTarget(self, action: "useEndDateChanged", forControlEvents: UIControlEvents.ValueChanged)
+					useEndDate.addTarget(self, action: #selector(useEndDateChanged), forControlEvents: UIControlEvents.ValueChanged)
 					useEndDate.on = recurring.endDate != nil
 				}
 

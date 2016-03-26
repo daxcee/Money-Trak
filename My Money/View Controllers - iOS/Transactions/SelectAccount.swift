@@ -36,7 +36,7 @@ class SelectAccountController: UITableViewController, Numbers {
 
 		let stack = navigationController?.viewControllers
 		if stack!.count == 1 {
-			navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "dismissController")
+			navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: #selector(dismissController))
 		}
 	}
 

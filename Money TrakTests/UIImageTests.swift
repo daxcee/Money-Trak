@@ -13,7 +13,7 @@ class UIImageTests: XCTestCase {
 	func testImagesLoad() {
 		let identifiers = UIImage.ImageIdentifier.allIdentifiers
 
-		for identifier in UIImage.ImageIdentifier.allIdentifiers {
+		for identifier in identifiers {
 			let image = UIImage(named: identifier.rawValue)
 			XCTAssert(image != nil, "image doesn't exist")
 		}

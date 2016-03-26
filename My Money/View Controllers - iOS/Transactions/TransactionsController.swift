@@ -28,7 +28,6 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 		case SetAccount = "SetAccount"
 		case AddTransaction = "AddTransaction"
 		case EditTransaction = "EditTransaction"
-		case PurchaseRecurring = "PurchaseRecurring"
 	}
 
 	override func viewDidLoad() {
@@ -69,17 +68,6 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 			keyboardToolbar.items = [flexSpace, doneButton]
 
 			searchbar.inputAccessoryView = keyboardToolbar
-		}
-
-		if PurchaseKit.sharedInstance.maxRecurringTransactions() == kDefaultRecurringTransactions {
-			PurchaseKit.sharedInstance.loadProductsForScreen(.Recurring)
-			NSNotificationCenter.defaultCenter().addObserverForName(kPurchaseSuccessfulNotification, object: nil, queue: NSOperationQueue.mainQueue()) { (notification) -> Void in
-				if let userInfo = notification.userInfo as? [String: String], identifier = userInfo[kProductIdentifierKey] where identifier == StoreProducts.AddRecurring.rawValue {
-					delay(1.0, closure: { () -> () in
-						self.addTapped(self)
-					})
-				}
-			}
 		}
 	}
 
@@ -178,10 +166,6 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 						}
 					}
 				}
-
-			case .PurchaseRecurring:
-				let controller = segue.destinationViewController as! MakePurchaseController
-				controller.products = PurchaseKit.sharedInstance.availableProductsForScreen(.Recurring)
 			}
 		}
 	}
@@ -296,11 +280,7 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 	}
 
 	@IBAction func addTapped(sender: AnyObject) {
-		if recurringTransactions {
-			purchaseSegue(self, screen: .Recurring, segue: Segues.AddTransaction.rawValue, purchaseSegue: Segues.PurchaseRecurring.rawValue)
-		} else {
-			performSegueWithIdentifier(Segues.AddTransaction.rawValue, sender: nil)
-		}
+		performSegueWithIdentifier(Segues.AddTransaction.rawValue, sender: nil)
 	}
 
 	func accountSet(account: Account) {

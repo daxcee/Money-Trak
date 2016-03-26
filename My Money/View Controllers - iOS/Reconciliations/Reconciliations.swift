@@ -19,7 +19,6 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 		case ViewReconciliation = "ViewReconciliation"
 		case AddReconciliation = "AddReconciliation"
 		case SetAccount = "SetAccount"
-		case PurchaseReconciliations = "PurchaseReconciliations"
 	}
 
 	override func viewDidLoad() {
@@ -27,15 +26,6 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 			self.accountView = accountView
 			accountView.delegate = self
 			updateAccountInfo()
-		}
-
-		if PurchaseKit.sharedInstance.maxReconciliations() == kDefaultReconciliations {
-			PurchaseKit.sharedInstance.loadProductsForScreen(.Reconciliations)
-			NSNotificationCenter.defaultCenter().addObserverForName(kPurchaseSuccessfulNotification, object: nil, queue: NSOperationQueue.mainQueue()) { (notification) -> Void in
-				if let userInfo = notification.userInfo as? [String: String], identifier = userInfo[kProductIdentifierKey] where identifier == StoreProducts.AddReconciliations.rawValue {
-					self.addTapped(self)
-				}
-			}
 		}
 	}
 
@@ -63,10 +53,6 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 				let controller = navController.viewControllers[0] as! SelectAccountController
 				controller.currentAccountKey = currentAccountKey
 				controller.accountDelegate = self
-
-			case .PurchaseReconciliations:
-				let controller = segue.destinationViewController as! MakePurchaseController
-				controller.products = PurchaseKit.sharedInstance.availableProductsForScreen(.Reconciliations)
 			}
 		}
 	}
@@ -118,8 +104,6 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 				return
 			}
 		}
-
-		purchaseSegue(self, screen: .Reconciliations, segue: Segues.AddReconciliation.rawValue, purchaseSegue: Segues.PurchaseReconciliations.rawValue)
 	}
 
 	// MARK: - Delegate Calls

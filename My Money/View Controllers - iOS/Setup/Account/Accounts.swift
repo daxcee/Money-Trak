@@ -28,24 +28,12 @@ class AccountsController: UITableViewController, EditAccountDelegate {
 	enum Segues: String {
 		case AddAccount = "AddAccount"
 		case EditAccount = "EditAccount"
-		case PurchaseAccount = "PurchaseAccount"
 	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		if let accounts = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: "name") {
 			accountKeys = accounts
-		}
-
-		if PurchaseKit.sharedInstance.maxAccounts() == kDefaultAccounts {
-			PurchaseKit.sharedInstance.loadProductsForScreen(.Accounts)
-			NSNotificationCenter.defaultCenter().addObserverForName(kPurchaseSuccessfulNotification, object: nil, queue: NSOperationQueue.mainQueue()) { (notification) -> Void in
-				if let userInfo = notification.userInfo as? [String: String], identifier = userInfo[kProductIdentifierKey] where identifier == StoreProducts.AddMultipleAccounts.rawValue {
-					delay(1.0, closure: { () -> () in
-						self.addTapped(self)
-					})
-				}
-			}
 		}
 	}
 
@@ -65,10 +53,6 @@ class AccountsController: UITableViewController, EditAccountDelegate {
 				let key = accountKeys[row!]
 				let account = Account(key: key)
 				controller.account = account
-
-			case .PurchaseAccount:
-				let controller = segue.destinationViewController as! MakePurchaseController
-				controller.products = PurchaseKit.sharedInstance.availableProductsForScreen(.Accounts)
 			}
 		}
 	}
@@ -185,10 +169,6 @@ class AccountsController: UITableViewController, EditAccountDelegate {
 				index += 1
 			}
 		}
-	}
-
-	@IBAction func addTapped(sender: AnyObject) {
-		purchaseSegue(self, screen: .Accounts, segue: Segues.AddAccount.rawValue, purchaseSegue: Segues.PurchaseAccount.rawValue)
 	}
 }
 

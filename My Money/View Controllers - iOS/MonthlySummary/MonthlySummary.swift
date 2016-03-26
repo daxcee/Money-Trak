@@ -24,29 +24,9 @@ class MonthlySummaryController: UIViewController, Numbers {
 
 	enum Segues: String {
 		case ShowTransactions = "ShowTransactions"
-		case AddMonths = "AddMonths"
 	}
 
 	override func viewDidLoad() {
-		if PurchaseKit.sharedInstance.maxSummaryMonths() == kDefaultSummaryMonths {
-			NSNotificationCenter.defaultCenter().addObserverForName(kProductsUpdatedNotification, object: nil, queue: nil, usingBlock: { (notification) -> Void in
-				if PurchaseKit.sharedInstance.availableProductsForScreen(.Summary).count > 0 {
-					let addButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: #selector(self.addMonthsTapped))
-					self.navigationItem.rightBarButtonItem = addButton
-				}
-			})
-
-			PurchaseKit.sharedInstance.loadProductsForScreen(.Summary)
-
-			NSNotificationCenter.defaultCenter().addObserverForName(kPurchaseSuccessfulNotification, object: nil, queue: NSOperationQueue.mainQueue()) { (notification) -> Void in
-				if let userInfo = notification.userInfo as? [String: String], identifier = userInfo[kProductIdentifierKey] where identifier == StoreProducts.AddSummary.rawValue {
-					delay(1.0, closure: { () -> () in
-						self.loadSummary()
-					})
-				}
-			}
-		}
-
 		loadSummary()
 	}
 
@@ -112,11 +92,6 @@ class MonthlySummaryController: UIViewController, Numbers {
 			let controller = segue.destinationViewController.childViewControllers[0] as! TransactionsController
 			controller.transactionKeys = transactionKeys
 			controller.inSummary = true
-
-		case .AddMonths:
-			let controller = segue.destinationViewController as! MakePurchaseController
-			controller.products = PurchaseKit.sharedInstance.availableProductsForScreen(.Summary)
-			controller.title = "Add Months"
 		}
 	}
 
@@ -126,10 +101,6 @@ class MonthlySummaryController: UIViewController, Numbers {
 
 	@IBAction func doneTapped(sender: AnyObject) {
 		dismissViewControllerAnimated(true, completion: nil)
-	}
-
-	func addMonthsTapped() {
-		performSegueWithIdentifier(Segues.AddMonths.rawValue, sender: nil)
 	}
 }
 

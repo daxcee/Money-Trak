@@ -163,7 +163,7 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 	}
 
 	func forgetDevice(device: SyncDevice) {
-		if nearbyDevices.filter({ $0.key == device.key}).count > 0 {
+		if nearbyDevices.filter({ $0.key == device.key }).count > 0 {
 			device.status = .unlinking
 			_netClient.connectToServer(device.netNode!)
 			notifyStatusChanged(device)
@@ -175,15 +175,15 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 	func completeDeviceUnlink(device: SyncDevice) {
 		ALBNoSQLDB.deleteForKey(table: kDevicesTable, key: device.key)
 		device.linked = false
-		if offlineDevices.filter({ $0.key == device.key}).count > 0 {
-			offlineDevices = offlineDevices.filter({ $0.key != device.key})
+		if offlineDevices.filter({ $0.key == device.key }).count > 0 {
+			offlineDevices = offlineDevices.filter({ $0.key != device.key })
 		}
 
 		notifyStatusChanged(device)
 	}
 
 	private func deviceForNode(node: ALBPeer) -> SyncDevice {
-		let devices = nearbyDevices.filter({ $0.key == node.peerID})
+		let devices = nearbyDevices.filter({ $0.key == node.peerID })
 		if devices.count > 0 {
 			return devices[0]
 		}
@@ -210,7 +210,7 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 	}
 
 	func syncWithDevice(device: SyncDevice) {
-		if !device.linked || device.status != .idle || !PurchaseKit.sharedInstance.canSync() {
+		if !device.linked || device.status != .idle {
 			return
 		}
 
@@ -226,7 +226,7 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 	}
 
 	// MARK: - Server delegate calls
-	func serverPublishingError(errorDict: [NSObject : AnyObject]) {
+	func serverPublishingError(errorDict: [NSObject: AnyObject]) {
 		print("publishing error: \(errorDict)")
 	}
 
@@ -270,12 +270,12 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 	func serverFound(server: ALBPeer) {
 		dispatch_sync(syncQueue, { () -> Void in
 			let device = self.deviceForNode(server)
-			if self.nearbyDevices.filter({ $0.key == device.key}).count > 0 || device.key == self._identityKey {
+			if self.nearbyDevices.filter({ $0.key == device.key }).count > 0 || device.key == self._identityKey {
 				return
 			}
 
 			self.nearbyDevices.append(device)
-			self.offlineDevices = self.offlineDevices.filter({ $0.key != device.key})
+			self.offlineDevices = self.offlineDevices.filter({ $0.key != device.key })
 			self.syncWithDevice(device)
 
 			dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -291,7 +291,7 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 				return
 			}
 
-			self.nearbyDevices = self.nearbyDevices.filter({ $0.key != device.key})
+			self.nearbyDevices = self.nearbyDevices.filter({ $0.key != device.key })
 			if let offlineDevice = SyncDevice(key: device.key) {
 				self.offlineDevices.append(offlineDevice)
 			}
@@ -377,7 +377,7 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 			notifyStatusChanged(device)
 		}
 
-		_netConnections = _netConnections.filter({ $0 != connection})
+		_netConnections = _netConnections.filter({ $0 != connection })
 	}
 
 	func textReceived(connection: ALBPeerConnection, text: String) {

@@ -18,7 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SyncEngineLinkDelegate, U
 	var syncEngine: SyncEngine?
 	var deviceLinkResponse: DeviceResponse?
 	var syncIdentifier: UIBackgroundTaskIdentifier?
-	var purchaseKit = PurchaseKit.sharedInstance
 
 	func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 		if (UIApplication.instancesRespondToSelector(#selector(UIApplication.registerUserNotificationSettings(_:)))) {

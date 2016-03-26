@@ -23,12 +23,11 @@ class InitialController: UIViewController, Numbers {
 	private var _userInteractingWithAd = false
 
 	enum Segues: String {
-		case Transactions = "Transactions"
-		case Upcoming = "Upcoming"
-		case Recurring = "Recurring"
-		case AddTransaction = "AddTransaction"
-		case Sync = "Sync"
-		case Purchase = "Purchase"
+		case Transactions
+		case Upcoming
+		case Recurring
+		case AddTransaction
+		case Sync
 	}
 
 	override func viewDidLoad() {
@@ -42,16 +41,7 @@ class InitialController: UIViewController, Numbers {
 			CommonDB.recalculateAllBalances()
 		}
 
-		NSNotificationCenter.defaultCenter().addObserverForName(kPurchaseSuccessfulNotification, object: nil, queue: NSOperationQueue.mainQueue()) { (notification) -> Void in
-			self.hideAd()
-		}
-
-		hideAd()
 		CommonDB.setup()
-
-		if !PurchaseKit.sharedInstance.canSync() {
-			PurchaseKit.sharedInstance.loadProductsForScreen(.Sync)
-		}
 
 		super.viewDidLoad()
 	}
@@ -128,33 +118,13 @@ class InitialController: UIViewController, Numbers {
 			case .Sync:
 				let controller = segue.destinationViewController.childViewControllers[0] as! SyncViewController
 				controller.title = "Sync"
-
-			case .Purchase:
-				let controller = segue.destinationViewController as! MakePurchaseController
-				controller.products = PurchaseKit.sharedInstance.availableProductsForScreen(.Sync)
 			}
 		}
 	}
 
 	// MARK: - User actions
 	@IBAction func syncTapped(sender: AnyObject) {
-		if PurchaseKit.sharedInstance.canSync() {
-			performSegueWithIdentifier(Segues.Sync.rawValue, sender: nil)
-		} else {
-			if PurchaseKit.sharedInstance.availableProductsForScreen(.Sync).count > 0 {
-				if PurchaseKit.sharedInstance.purchaseInFlightForScreen(.Sync) {
-					let alert = UIAlertView(title: "Purchasing", message: "Your in-app purchase is still processing.", delegate: nil, cancelButtonTitle: "OK")
-					alert.show()
-				} else {
-					performSegueWithIdentifier(Segues.Purchase.rawValue, sender: nil)
-				}
-			} else {
-				PurchaseKit.sharedInstance.loadProductsForScreen(.Sync)
-
-				let alert = UIAlertView(title: "Sync Unavailable", message: "Syncing is an in-app purchase. Make sure you're connected to the internet and try again.", delegate: nil, cancelButtonTitle: "Thanks")
-				alert.show()
-			}
-		}
+		performSegueWithIdentifier(Segues.Sync.rawValue, sender: nil)
 	}
 
 	// MARK: - other methods
@@ -189,46 +159,5 @@ class InitialController: UIViewController, Numbers {
 		}
 
 		return false
-	}
-}
-
-// MARK: - Ad Banner Delegate
-extension InitialController: ADBannerViewDelegate {
-	func bannerViewDidLoadAd(banner: ADBannerView!) {
-		if !PurchaseKit.sharedInstance.showAds() {
-			return
-		}
-
-		showAd()
-	}
-
-	func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
-		if _userInteractingWithAd {
-			return
-		}
-
-		hideAd()
-	}
-
-	func bannerViewActionShouldBegin(banner: ADBannerView!, willLeaveApplication willLeave: Bool) -> Bool {
-		_userInteractingWithAd = true
-		return true
-	}
-
-	func bannerViewActionDidFinish(banner: ADBannerView!) {
-		_userInteractingWithAd = false
-	}
-
-	func showAd() {
-		UIView.animateWithDuration(0.5, animations: { () -> Void in
-			self.bannerView.hidden = false
-			self.bannerBottomConstraint.constant = 0
-			self.view.layoutIfNeeded()
-		})
-	}
-
-	func hideAd() {
-		bannerBottomConstraint.constant = -self.bannerView.frame.size.height
-		bannerView.hidden = true
 	}
 }

@@ -15,7 +15,7 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 
 	private var accountView: AccountView?
 
-	enum Segues: String {
+	enum Segue: String {
 		case ViewReconciliation = "ViewReconciliation"
 		case AddReconciliation = "AddReconciliation"
 		case SetAccount = "SetAccount"
@@ -36,7 +36,7 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 	}
 
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-		if segue.identifier != nil, let segueName = Segues(rawValue: segue.identifier!) {
+		if segue.identifier != nil, let segueName = Segue(rawValue: segue.identifier!) {
 			switch segueName {
 			case .ViewReconciliation:
 				let controller = segue.destinationViewController as! EditReconciliationController
@@ -86,7 +86,7 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 	}
 
 	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		performSegueWithIdentifier(Segues.ViewReconciliation.rawValue, sender: reconciliationKeys[indexPath.row])
+		performSegueWithIdentifier(Segue.ViewReconciliation.rawValue, sender: reconciliationKeys[indexPath.row])
 	}
 
 	// MARK: - User Actions
@@ -104,9 +104,11 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 				return
 			}
 		}
+
+		performSegueWithIdentifier(Segue.AddReconciliation.rawValue, sender: self)
 	}
 
-	// MARK: - Delegate Calls
+// MARK: - Delegate Calls
 
 	func reconciliationAdded(reconciliation: Reconciliation) {
 		reconciliationKeys.insert(reconciliation.key, atIndex: 0)
@@ -129,7 +131,7 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 	}
 
 	func accountCellTapped() {
-		performSegueWithIdentifier(Segues.SetAccount.rawValue, sender: nil)
+		performSegueWithIdentifier(Segue.SetAccount.rawValue, sender: nil)
 	}
 
 	func accountSet(account: Account) {

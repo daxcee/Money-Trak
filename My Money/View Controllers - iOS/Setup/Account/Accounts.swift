@@ -152,7 +152,7 @@ class AccountsController: UITableViewController, EditAccountDelegate {
 			SweetAlert().showAlert("Deletion Error", subTitle: "There has been an error deleting the account.", style: AlertStyle.Error)
 		} else {
 			SweetAlert().showAlert("Complete", subTitle: "Account has been deleted.", style: AlertStyle.Success)
-			self.accountKeys = self.accountKeys.filter({ $0 != accountKey})
+			self.accountKeys = self.accountKeys.filter({ $0 != accountKey })
 			tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
 			CommonDB.recalculateAllBalances()
 		}

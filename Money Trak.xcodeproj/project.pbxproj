@@ -61,6 +61,9 @@
 		89A443471AEBC02600946BDE /* SyncEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A4433B1AEBC02600946BDE /* SyncEngine.swift */; };
 		89ADDD231AB759CC00CBE08D /* SweetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89ADDD221AB759CC00CBE08D /* SweetAlert.swift */; };
 		89B6E6901A1E91380003562D /* SetMemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B6E68F1A1E91380003562D /* SetMemo.swift */; };
+		89B90EFF1CA6BBA300E3C870 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B90EFE1CA6BBA300E3C870 /* StringExtensions.swift */; };
+		89B90F001CA6BBC600E3C870 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B90EFE1CA6BBA300E3C870 /* StringExtensions.swift */; };
+		89B90F021CA6BC2E00E3C870 /* NSDateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B90F011CA6BC2E00E3C870 /* NSDateExtensions.swift */; };
 		89BC3CC819E08026003B2A75 /* SetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BC3CC719E08026003B2A75 /* SetAlert.swift */; };
 		89BC3CCA19E08067003B2A75 /* SelectCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BC3CC919E08067003B2A75 /* SelectCategory.swift */; };
 		89BC3CCC19E080AB003B2A75 /* SelectLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BC3CCB19E080AB003B2A75 /* SelectLocation.swift */; };
@@ -171,6 +174,8 @@
 		89A4433B1AEBC02600946BDE /* SyncEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncEngine.swift; sourceTree = "<group>"; };
 		89ADDD221AB759CC00CBE08D /* SweetAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SweetAlert.swift; sourceTree = "<group>"; };
 		89B6E68F1A1E91380003562D /* SetMemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMemo.swift; sourceTree = "<group>"; };
+		89B90EFE1CA6BBA300E3C870 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		89B90F011CA6BC2E00E3C870 /* NSDateExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtensions.swift; sourceTree = "<group>"; };
 		89BC3CC719E08026003B2A75 /* SetAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetAlert.swift; sourceTree = "<group>"; };
 		89BC3CC919E08067003B2A75 /* SelectCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCategory.swift; sourceTree = "<group>"; };
 		89BC3CCB19E080AB003B2A75 /* SelectLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectLocation.swift; sourceTree = "<group>"; };
@@ -311,6 +316,7 @@
 		894CCD6719A56C6300D79BFA /* Shared Classes */ = {
 			isa = PBXGroup;
 			children = (
+				89B90EFD1CA6BB9300E3C870 /* Foundation Extensions */,
 				8982852F1C26DACA00E3C870 /* Traits */,
 				89A443251AEBC02600946BDE /* Sync */,
 				894CCD8D19A6C68200D79BFA /* Account.swift */,
@@ -397,6 +403,15 @@
 				89A443381AEBC02600946BDE /* zip.h */,
 			);
 			path = minizip;
+			sourceTree = "<group>";
+		};
+		89B90EFD1CA6BB9300E3C870 /* Foundation Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				89B90EFE1CA6BBA300E3C870 /* StringExtensions.swift */,
+				89B90F011CA6BC2E00E3C870 /* NSDateExtensions.swift */,
+			);
+			path = "Foundation Extensions";
 			sourceTree = "<group>";
 		};
 		89BC3CCD19E1F26F003B2A75 /* Setup */ = {
@@ -636,6 +651,7 @@
 			files = (
 				890CD3CD1C94A9EC00E3C870 /* Numbers.swift in Sources */,
 				890CD3D61C94EC9000E3C870 /* UIImage.swift in Sources */,
+				89B90F001CA6BBC600E3C870 /* StringExtensions.swift in Sources */,
 				890CD3BD1C94A7AC00E3C870 /* NumbersTests.swift in Sources */,
 				890CD3D51C94EBFF00E3C870 /* UIImageTests.swift in Sources */,
 			);
@@ -653,6 +669,7 @@
 				89BC3CCC19E080AB003B2A75 /* SelectLocation.swift in Sources */,
 				89E218001A42FDC500F79443 /* Reconciliations.swift in Sources */,
 				898007751ADC1BEC000B37BC /* SyncViewController.swift in Sources */,
+				89B90F021CA6BC2E00E3C870 /* NSDateExtensions.swift in Sources */,
 				89C3925B199462E10020B6DC /* AppDelegate.swift in Sources */,
 				89A443451AEBC02600946BDE /* zip.c in Sources */,
 				890CD3D31C94EB8400E3C870 /* DefaultManager.swift in Sources */,
@@ -695,6 +712,7 @@
 				892A932F19E0241A0049CDDB /* EditTransactionControllers.swift in Sources */,
 				894CCD9419A6C6E300D79BFA /* Location.swift in Sources */,
 				89A02F571B985B310088601D /* ALBPeer.swift in Sources */,
+				89B90EFF1CA6BBA300E3C870 /* StringExtensions.swift in Sources */,
 				89A443471AEBC02600946BDE /* SyncEngine.swift in Sources */,
 				89BC3CCA19E08067003B2A75 /* SelectCategory.swift in Sources */,
 				89BC3CD019E1F26F003B2A75 /* Accounts.swift in Sources */,

@@ -38,20 +38,22 @@ class Transaction: ALBNoSQLDBObject {
 		let account = Account(key: accountKey)!
 
 		if type == .ccPayment {
-			ccAccount = Account(key: ccAccountKey!)!
-			locationKey = CommonDB.locationForName(ccAccount!.name).key
-			// create new transaction against the CC account for the same amount
-			let transaction = Transaction()
-			transaction.accountKey = ccAccount!.key
-			transaction.amount = abs(amount)
-			transaction.type = TransactionType.deposit
-			transaction.locationKey = CommonDB.locationForName("Paid with \(Account(key: accountKey)!.name)").key
-			transaction.date = date
-			transaction.categoryKey = defaultPrefix + DefaultCategory.Debt.rawValue
-			ALBNoSQLDB.setValue(table: kTransactionsTable, key: transaction.key, value: transaction.jsonValue())
-			let ccAccount = Account(key: ccAccountKey!)!
-			ccAccount.balance += abs(amount)
-			ccAccount.save()
+			ccAccount = Account(key: ccAccountKey!)
+			if let ccAccount = ccAccount {
+				locationKey = CommonDB.locationForName(ccAccount.name).key
+				// create new transaction against the CC account for the same amount
+				let transaction = Transaction()
+				transaction.accountKey = ccAccount.key
+				transaction.amount = abs(amount)
+				transaction.type = TransactionType.deposit
+				transaction.locationKey = CommonDB.locationForName("Paid with \(Account(key: accountKey)!.name)").key
+				transaction.date = date
+				transaction.categoryKey = defaultPrefix + DefaultCategory.Debt.rawValue
+				ALBNoSQLDB.setValue(table: kTransactionsTable, key: transaction.key, value: transaction.jsonValue())
+				let ccAccount = Account(key: ccAccountKey!)!
+				ccAccount.balance += abs(amount)
+				ccAccount.save()
+			}
 		}
 
 		if !isNew {

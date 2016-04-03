@@ -170,6 +170,10 @@ class AccountsController: UITableViewController, EditAccountDelegate {
 			}
 		}
 	}
+
+	@IBAction func addTapped(sender: AnyObject) {
+		performSegueWithIdentifier(Segues.AddAccount.rawValue, sender: nil)
+	}
 }
 
 class AccountCell: UITableViewCell, Numbers {

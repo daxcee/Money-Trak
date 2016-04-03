@@ -20,9 +20,9 @@ class SyncViewController: UITableViewController, UIAlertViewDelegate {
 	var offlineDevices = [SyncDevice]()
 
 	enum CellType: String {
-		case UnknownCell = "UnknownCell"
-		case KnownCell = "KnownCell"
-		case EnableSyncCell = "EnableSyncCell"
+		case UnknownCell
+		case KnownCell
+		case EnableSyncCell
 	}
 
 	override func viewWillAppear(animated: Bool) {

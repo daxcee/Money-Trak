@@ -43,9 +43,9 @@ protocol ALBTableViewDelegate {
 }
 
 enum ALBTableViewCellType: String {
-	case Data = "DataCell"
-	case ColumnHeader = "ColumnHeader"
-	case RowHeader = "RowHeader"
+	case DataCell
+	case ColumnHeader
+	case RowHeader
 }
 
 // MARK: - ALBTableView Class
@@ -148,7 +148,7 @@ final class ALBTableView: UIView {
 
 	// MARK: - Register Cell NIBs
 	func registerDataCellNib(nib: UINib) {
-		collectionView.registerNib(nib, forCellWithReuseIdentifier: ALBTableViewCellType.Data.rawValue)
+		collectionView.registerNib(nib, forCellWithReuseIdentifier: ALBTableViewCellType.DataCell.rawValue)
 	}
 
 	func registerColumnHeaderNib(nib: UINib) {
@@ -163,7 +163,7 @@ final class ALBTableView: UIView {
 	func dequeDataCellForColumn(column: Int, row: Int) -> UICollectionViewCell {
 		let indexPath = NSIndexPath(forRow: row, inSection: column)
 
-		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ALBTableViewCellType.Data.rawValue, forIndexPath: indexPath)
+		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ALBTableViewCellType.DataCell.rawValue, forIndexPath: indexPath)
 		return cell
 	}
 
@@ -224,7 +224,7 @@ extension ALBTableView: UICollectionViewDataSource {
 			case .RowHeader:
 				cell = dataSource.rowHeaderCell(self, row: indexPath.row)
 
-			case .Data:
+			case .DataCell:
 				cell = UICollectionViewCell()
 			}
 
@@ -400,7 +400,7 @@ final class ALBTableViewLayout: UICollectionViewLayout {
 					let y = (indexPath.row == 0 && !tableView.hasColumnHeaders ? 0 : columnHeaderHeight) + (row * rowHeight) + (showGrid ? 1.0 * row: 0)
 					frame = CGRect(x: self.collectionView!.contentOffset.x, y: y, width: rowHeaderWidth, height: rowHeight)
 
-				case .Data:
+				case .DataCell:
 					frame = CGRect(x: 0, y: 0, width: 0, height: 0)
 				}
 

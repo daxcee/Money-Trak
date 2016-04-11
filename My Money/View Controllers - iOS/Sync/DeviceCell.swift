@@ -13,46 +13,52 @@ class UnknownDeviceCell: UITableViewCell {
 	@IBOutlet weak var deviceName: UILabel!
 	@IBOutlet weak var linkButtonView: UIView!
 	@IBOutlet weak var progressWheel: UIActivityIndicatorView!
-	
+
 	var device: SyncDevice {
 		get {
 			return _device
 		}
-		
+
 		set(newDevice) {
 			_device = newDevice
 			deviceName.text = _device.name
-			
+
 			linkButtonView.hidden = device.status != .idle
 			progressWheel.hidden = device.status == .idle
 		}
 	}
 	var delegate: SyncDeviceCellDelegate?
-	
+
 	private var _device = SyncDevice()
-	
+
 	@IBAction func linkTapped(sender: AnyObject) {
 		delegate?.linkTappedForDevice(_device)
 	}
 }
 
 class KnownDeviceCell: UITableViewCell {
-	
+
 	@IBOutlet weak var deviceName: UILabel!
 	@IBOutlet weak var statusLabel: UILabel!
 	@IBOutlet weak var progressWheel: UIActivityIndicatorView!
-	
+
 	var device: SyncDevice {
 		get {
 			return _device
 		}
-		
+
 		set(newDevice) {
 			_device = newDevice
 			deviceName.text = _device.name
-			
-			progressWheel.hidden = device.status == .idle
-			
+
+			if device.status == .idle {
+				progressWheel.stopAnimating()
+				progressWheel.hidden = true
+			} else {
+				progressWheel.hidden = false
+				progressWheel.startAnimating()
+			}
+
 			switch device.status {
 			case .idle:
 				if let lastDate = device.lastSync {
@@ -72,7 +78,7 @@ class KnownDeviceCell: UITableViewCell {
 			}
 		}
 	}
-	
+
 	var delegate: SyncDeviceCellDelegate?
 	private var _device = SyncDevice()
 }

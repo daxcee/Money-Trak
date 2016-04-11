@@ -179,7 +179,7 @@ class CommonDB: Numbers {
 
 					if let upcomingKeys = ALBNoSQLDB.keysInTableForConditions(kUpcomingTransactionsTable, sortOrder: "date,amount", conditions: [accountCondition, depositCondition, dateCondition]) {
 						for transactionKey in upcomingKeys {
-							let transaction = UpcomingTransaction(key: transactionKey)!
+							guard let transaction = UpcomingTransaction(key: transactionKey) else { continue }
 
 							// if this isn't a CC account and it's a payment to a CCAccount that already updates total available
 							// then we don't need to adjust amount available
@@ -227,8 +227,8 @@ class CommonDB: Numbers {
 			if let keys = ALBNoSQLDB.keysInTableForConditions(kUpcomingTransactionsTable, sortOrder: "date", conditions: [deviceCondition, dateCondition]) {
 				var finalRecurringKeys = [String]()
 				for key in keys {
-					let upcomingTransaction = UpcomingTransaction(key: key)!
-					let account = Account(key: upcomingTransaction.accountKey)!
+					guard let upcomingTransaction = UpcomingTransaction(key: key)
+					, account = Account(key: upcomingTransaction.accountKey) else { continue }
 
 					// move from upcoming into standard transaction if necessary
 					if today.laterDate(upcomingTransaction.date) == today {
@@ -324,7 +324,7 @@ class CommonDB: Numbers {
 			// get accounts
 			for key in keys {
 				let transaction = UpcomingTransaction(key: key)!
-				if accountKeys.filter({ $0 == transaction.accountKey}).count == 0 {
+				if accountKeys.filter({ $0 == transaction.accountKey }).count == 0 {
 					accountKeys.append(transaction.accountKey)
 				}
 			}
@@ -339,7 +339,8 @@ class CommonDB: Numbers {
 			var balance = account.balance
 
 			for key in keys {
-				let transaction = UpcomingTransaction(key: key)!
+				guard let transaction = UpcomingTransaction(key: key) else { continue }
+
 				if transaction.accountKey != accountKey {
 					continue
 				}
@@ -710,10 +711,10 @@ class CommonDB: Numbers {
 		// if this isn't new, then just use the transactions saved with the reconciliation
 		if reconciliation.reconciled {
 			let db = ALBNoSQLDB.sharedInstance
-			let keys = reconciliation.transactionKeys.map({ "'" + $0 + "'"}).joinWithSeparator(",")
+			let keys = reconciliation.transactionKeys.map({ "'" + $0 + "'" }).joinWithSeparator(",")
 			let sql = "select key from transactions where key in (\(keys)) order by date desc, amount desc"
 			if let results = db.sqlSelect(sql) {
-				onComplete(transactionKeys: results.map({ $0.values[0] as! String}))
+				onComplete(transactionKeys: results.map({ $0.values[0] as! String }))
 				return
 			}
 

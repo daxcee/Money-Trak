@@ -24,7 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SyncEngineLinkDelegate, U
 			application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [UIUserNotificationType.Sound, UIUserNotificationType.Alert, UIUserNotificationType.Badge], categories: nil))
 		}
 
-		ALBNoSQLDB.tableHasKey(table: kAccountsTable, key: kAccountsTable)
+		ALBNoSQLDB.setAutoCloseTimeout(2)
+		guard ALBNoSQLDB.open() else { fatalError("Unable to open DB") }
 
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [unowned self]() -> Void in
 			self.syncEngine = SyncEngine(name: UIDevice().name)
@@ -87,27 +88,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SyncEngineLinkDelegate, U
 	}
 
 	func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
-	}
-}
-
-extension UIButton {
-	func glow() {
-		let color = self.currentTitleColor
-		self.titleLabel!.layer.shadowColor = color.CGColor
-		self.titleLabel!.layer.shadowRadius = 4.0
-		self.titleLabel!.layer.shadowOpacity = 0.9
-		self.titleLabel!.layer.shadowOffset = CGSizeZero
-		self.titleLabel!.layer.masksToBounds = false
-	}
-}
-
-extension UILabel {
-	func glow() {
-		let color = self.textColor
-		self.layer.shadowColor = color.CGColor
-		self.layer.shadowRadius = 4.0
-		self.layer.shadowOpacity = 0.9
-		self.layer.shadowOffset = CGSizeZero
-		self.layer.masksToBounds = false
 	}
 }

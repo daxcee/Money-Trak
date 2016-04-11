@@ -1,8 +1,8 @@
 //
-//  ALBNoSQLDB.swift
+// ALBNoSQLDB.swift
 //
-//  Created by Aaron Bratcher on 01/08/2015.
-//  Copyright (c) 2015 Aaron L. Bratcher. All rights reserved.
+// Created by Aaron Bratcher on 01/08/2015.
+// Copyright (c) 2015 Aaron L. Bratcher. All rights reserved.
 //
 
 import Foundation
@@ -10,7 +10,7 @@ import Foundation
 // MARK: - String Extensions
 extension String {
 	func dataValue() -> NSData {
-		return self.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
+		return dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
 	}
 }
 
@@ -33,6 +33,10 @@ struct DBCondition {
 	var value: AnyObject
 }
 
+struct DBRow {
+	var values = [AnyObject?]()
+}
+
 class ALBNoSQLDBObject {
 	var key: String
 
@@ -41,7 +45,7 @@ class ALBNoSQLDBObject {
 	}
 
 	init(keyValue: String, dictValue: [String: AnyObject]? = nil) {
-		self.key = keyValue
+		key = keyValue
 	}
 
 	func dictionaryValue() -> [String: AnyObject] {
@@ -66,21 +70,38 @@ final class ALBNoSQLDB {
 		, int = "int"
 		, double = "double"
 		, unknown = "unknown"
+
+		static func fromRaw(rawValue: String) -> ValueType {
+			if let valueType = ValueType(rawValue: rawValue) {
+				return valueType
+			}
+
+			switch rawValue {
+			case "text", "Text":
+				return .string
+			case "int", "Int":
+				return .int
+			case "double", "Double":
+				return .double
+			default:
+				return .unknown
+			}
+		}
 	}
 
+	private var _SQLiteCore = SQLiteCore()
+	private var _lock = NSCondition()
 	private var _dbFileLocation: NSURL?
 	private var _dbInstanceKey = ""
 	private var _tables = [String]()
-	private var _sqliteDB: COpaquePointer = nil
 	private var _indexes = [String: [String]]()
 	private let _dbQueue = dispatch_queue_create("com.AaronLBratcher.ALBNoSQLDBQueue", nil)
 	private var _syncingEnabled = false
 	private var _unsyncedTables = [String]()
 	private let _dateFormatter: NSDateFormatter
 	private let _deletionQueue = dispatch_queue_create("com.AaronLBratcher.ALBNoSQLDBDeletionQueue", nil)
-	private let _autoDeleteTimer: dispatch_source_t
-
-	private let SQLITE_TRANSIENT = unsafeBitCast(-1, sqlite3_destructor_type.self)
+	private var _autoDeleteTimer: dispatch_source_t
+	private var _autoCloseTimeout = 0
 
 	// MARK: - File Location
 	/**
@@ -91,6 +112,18 @@ final class ALBNoSQLDB {
 	class func setFileLocation(location: NSURL) {
 		let db = ALBNoSQLDB.sharedInstance
 		db._dbFileLocation = location
+	}
+
+	// MARK: - Auto Close
+	/**
+	 Sets the number of seconds to wait after in activity before automatically closing the file
+
+	 - parameter seconds: The number of seconds after activity before closing
+	 */
+
+	class func setAutoCloseTimeout(seconds: Int) {
+		let db = ALBNoSQLDB.sharedInstance
+		db._autoCloseTimeout = seconds
 	}
 
 	// MARK: - Keys
@@ -111,7 +144,7 @@ final class ALBNoSQLDB {
 			return nil
 		}
 
-		if db._tables.filter({ $0 == table}).count == 0 {
+		if db._tables.filter({ $0 == table }).count == 0 {
 			return false
 		}
 
@@ -149,7 +182,7 @@ final class ALBNoSQLDB {
 			return nil
 		}
 
-		if db._tables.filter({ $0 == table}).count == 0 {
+		if db._tables.filter({ $0 == table }).count == 0 {
 			return []
 		}
 
@@ -161,7 +194,7 @@ final class ALBNoSQLDB {
 
 		let results = db.sqlSelect(sql)
 		if let results = results {
-			return results.map({ $0.values[0] as! String})
+			return results.map({ $0.values[0] as! String })
 		}
 
 		return nil
@@ -208,12 +241,12 @@ final class ALBNoSQLDB {
 			return nil
 		}
 
-		let tableColumns = db.columnsInTable(table).map({ $0.name}) + ["key"]
+		let tableColumns = db.columnsInTable(table).map({ $0.name }) + ["key"]
 
 		var selectClause = "select distinct a.key from \(table) a"
 		// if we have the include operator on an array object, do a left outer join
 		for condition in conditions {
-			if condition.conditionOperator == .contains && arrayColumns.filter({ $0 == condition.objectKey}).count == 1 {
+			if condition.conditionOperator == .contains && arrayColumns.filter({ $0 == condition.objectKey }).count == 1 {
 				selectClause += " left outer join \(table)_arrayValues b on a.key = b.key"
 				break
 			}
@@ -232,15 +265,15 @@ final class ALBNoSQLDB {
 			var inPage = true
 			var inMultiPage = false
 			var firstConditionInSet = true
-			let hasMultipleSets = conditions.filter({ $0.set != conditions[0].set}).count > 0
+			let hasMultipleSets = conditions.filter({ $0.set != conditions[0].set }).count > 0
 
 			for condition in conditionSet {
-				if tableColumns.filter({ $0 == condition.objectKey}).count == 0 && arrayColumns.filter({ $0 == condition.objectKey}).count == 0 {
+				if tableColumns.filter({ $0 == condition.objectKey }).count == 0 && arrayColumns.filter({ $0 == condition.objectKey }).count == 0 {
 					print("\(condition.objectKey) doesn't exist")
 					return []
 				}
 
-				let valueType = db.typeOfValue(condition.value)
+				let valueType = SQLiteCore.typeOfValue(condition.value)
 
 				if currentSet != condition.set {
 					currentSet = condition.set
@@ -271,7 +304,7 @@ final class ALBNoSQLDB {
 
 				switch condition.conditionOperator {
 				case .contains:
-					if arrayColumns.filter({ $0 == condition.objectKey}).count > 0 {
+					if arrayColumns.filter({ $0 == condition.objectKey }).count > 0 {
 						switch valueType {
 						case .string:
 							whereClause += "b.objectKey = '\(condition.objectKey)' and b.stringValue = '\(db.esc(condition.value as! String))'"
@@ -332,9 +365,9 @@ final class ALBNoSQLDB {
 		}
 
 		let sql = selectClause + whereClause
-		// println(sql)
+		// print(sql)
 		if let results = db.sqlSelect(sql) {
-			return results.map({ $0.values[0] as! String})
+			return results.map({ $0.values[0] as! String })
 		}
 
 		return nil
@@ -485,14 +518,16 @@ final class ALBNoSQLDB {
 			return false
 		}
 
-		db._tables = db._tables.filter({ $0 != table})
+		db._tables = db._tables.filter({ $0 != table })
 
-		if db._syncingEnabled && db._unsyncedTables.filter({ $0 == table}).count == 0 {
+		if db._syncingEnabled && db._unsyncedTables.filter({ $0 == table }).count == 0 {
 			let now = stringValueForDate(NSDate())
 			if !db.sqlExecute("insert into __synclog(timestamp, sourceDB, originalDB, tableName, activity, key) values('\(now)','\(db._dbInstanceKey)','\(db._dbInstanceKey)','\(table)','X',NULL)") {
 				return false
 			}
-			let lastID = sqlite3_last_insert_rowid(db._sqliteDB)
+
+			let lastID = db.lastInsertID()
+
 			if !db.sqlExecute("delete from __synclog where tableName = '\(table)' and rowid < \(lastID)") {
 				return false
 			}
@@ -677,11 +712,6 @@ final class ALBNoSQLDB {
 					let tableName = row.values[3] as! String
 					let activity = row.values[4] as! String
 					let key = row.values[5] as! String?
-					let dictValue = db.dictValueForKey(table: tableName, key: key!, includeDates: true)
-
-					if activity == "U" && dictValue == nil {
-						continue
-					}
 
 					var entryDict = [String: AnyObject]()
 					entryDict["timeStamp"] = timeStamp
@@ -693,6 +723,7 @@ final class ALBNoSQLDB {
 					if key != nil {
 						entryDict["key"] = key
 						if activity == "U" {
+							guard let dictValue = db.dictValueForKey(table: tableName, key: key!, includeDates: true) else { continue }
 							entryDict["value"] = dictValue
 						}
 					}
@@ -730,7 +761,7 @@ final class ALBNoSQLDB {
 
 	 - returns: (Bool,String,Int)  If the sync file was successfully processed,the instanceKey of the submiting DB, and the lastSequence that should be used in subsequent calls to the createSyncFile method of the instance that was used to create this file. If the database couldn't be opened or syncing hasn't been enabled, then the instanceKey will be empty and the lastSequence will be equal to zero.
 	 */
-	typealias syncProgressUpdate = (percentComplete: Double) -> ()
+	typealias syncProgressUpdate = (percentComplete: Double) -> Void
 	class func processSyncFileAtURL(localURL: NSURL!, syncProgress: syncProgressUpdate?) -> (Bool, String, Int) {
 		let db = ALBNoSQLDB.sharedInstance
 		if !db.openDB() {
@@ -758,7 +789,7 @@ final class ALBNoSQLDB {
 					let lastSequence = objectValues["lastSequence"] as! Int
 					var index = 0
 					for entry in logEntries {
-						index++
+						index += 1
 						if index % 20 == 0 {
 							if let syncProgress = syncProgress {
 								let percent = (Double(index) / Double(logEntries.count))
@@ -822,6 +853,12 @@ final class ALBNoSQLDB {
 	 */
 	class func open(location: NSURL? = nil) -> Bool {
 		let db = ALBNoSQLDB.sharedInstance
+
+		// if we already have a db file open at a different location, close it first
+		if db._SQLiteCore._sqliteDB != nil && db._dbFileLocation != location {
+			close()
+		}
+
 		if let location = location {
 			db._dbFileLocation = location
 		}
@@ -834,9 +871,10 @@ final class ALBNoSQLDB {
 	 */
 	class func close() {
 		let db = ALBNoSQLDB.sharedInstance
-		dispatch_suspend(db._autoDeleteTimer)
-		sqlite3_close_v2(db._sqliteDB)
-		db._sqliteDB = nil
+		dispatch_source_cancel(db._autoDeleteTimer)
+		dispatch_sync(db._dbQueue) { () -> Void in
+			db._SQLiteCore.close()
+		}
 	}
 
 	/**
@@ -851,6 +889,15 @@ final class ALBNoSQLDB {
 		}
 
 		return nil
+	}
+
+	/**
+	 Replace single quotes with two single quotes for use in SQL commands.
+
+	 - returns: An escaped string.
+	 */
+	func esc(source: String) -> String {
+		return source.stringByReplacingOccurrencesOfString("'", withString: "''", options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
 	}
 
 	/**
@@ -889,36 +936,6 @@ final class ALBNoSQLDB {
 		return db._dateFormatter.dateFromString(stringValue)
 	}
 
-	private func typeOfValue(value: AnyObject) -> ValueType {
-		var valueType = ValueType.unknown
-
-		if value is [String] {
-			valueType = .stringArray
-		} else {
-			if value is [Int] {
-				valueType = .intArray
-			} else {
-				if value is [Double] {
-					valueType = .doubleArray
-				} else {
-					if value is String {
-						valueType = .string
-					} else {
-						if value is Int {
-							valueType = .int
-						} else {
-							if value is Double {
-								valueType = .double
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return valueType
-	}
-
 	// MARK: - Initialization Methods
 	static let sharedInstance = ALBNoSQLDB()
 
@@ -927,10 +944,11 @@ final class ALBNoSQLDB {
 		_dateFormatter.calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
 		_dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'.'SSSZZZZZ"
 		_autoDeleteTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, _deletionQueue)
+		_SQLiteCore.start()
 	}
 
 	private func openDB() -> Bool {
-		if _sqliteDB != nil {
+		if _SQLiteCore._sqliteDB != nil {
 			return true
 		}
 
@@ -944,40 +962,45 @@ final class ALBNoSQLDB {
 			dbFilePath = documentFolderPath + "/ABNoSQLDB.db"
 		}
 
-		// println(dbFilePath)
+		// print(dbFilePath)
 		let fileExists = NSFileManager.defaultManager().fileExistsAtPath(dbFilePath)
 
-		var openDBSuccessful = true
-		dispatch_sync(_dbQueue) {
-			openDBSuccessful = self.openDBFile(dbFilePath)
+		var openDBSuccessful = false
+
+		dispatch_sync(_dbQueue) { [unowned self]() -> Void in
+			self._lock.lock()
+			self._SQLiteCore.openDBFile(dbFilePath, autoCloseTimeout: self._autoCloseTimeout, completion: { (successful) -> Void in
+				openDBSuccessful = successful
+				self._lock.signal()
+			})
+			self._lock.wait()
+			self._lock.unlock()
 		}
 
 		if openDBSuccessful {
-			if !fileExists {
-				self.makeDB()
+			// if this fails, then the DB file has issues and should not be used
+			if !sqlExecute("ANALYZE") {
+				return false
 			}
-			self.checkSchema()
-			self.sqlExecute("ANALYZE")
 
-			dispatch_source_set_timer(_autoDeleteTimer, DISPATCH_TIME_NOW, 60 * NSEC_PER_SEC, 1 * NSEC_PER_SEC); // every 60 seconds, with leeway of 1 second
-			dispatch_source_set_event_handler(_autoDeleteTimer) {
-				self.autoDelete()
+			if !fileExists {
+				makeDB()
 			}
-			dispatch_resume(_autoDeleteTimer)
+			checkSchema()
+			startAutoDelete()
 		}
 
 		return openDBSuccessful
 	}
 
-	private func openDBFile(dbFilePath: String) -> Bool {
-		let status = sqlite3_open_v2(dbFilePath.cStringUsingEncoding(NSUTF8StringEncoding)!, &_sqliteDB, SQLITE_OPEN_FILEPROTECTION_COMPLETE | SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, nil)
-
-		if status != SQLITE_OK {
-			print("Error opening SQLite Database: \(status)")
-			return false
+	private func startAutoDelete() {
+		// every 60 seconds, with leeway of 1 second
+		dispatch_source_set_timer(_autoDeleteTimer, DISPATCH_TIME_NOW, 60 * NSEC_PER_SEC, 1 * NSEC_PER_SEC)
+		dispatch_source_set_event_handler(_autoDeleteTimer) {
+			self.autoDelete()
 		}
 
-		return true
+		dispatch_resume(_autoDeleteTimer)
 	}
 
 	private func makeDB() {
@@ -1006,7 +1029,7 @@ final class ALBNoSQLDB {
 			_unsyncedTables = [String]()
 			let unsyncedTables = sqlSelect("select tableName from __unsyncedTables")
 			if let unsyncedTables = unsyncedTables {
-				_unsyncedTables = unsyncedTables.map({ $0.values[0] as! String})
+				_unsyncedTables = unsyncedTables.map({ $0.values[0] as! String })
 			}
 		}
 
@@ -1031,8 +1054,10 @@ final class ALBNoSQLDB {
 			// use this space to update the schema value in __settings and to update any other tables that need updating with the new schema
 		}
 	}
+}
 
-	// MARK: - Internal data handling methods
+// MARK: - Internal data handling methods
+extension ALBNoSQLDB {
 	private func setValue(table table: String, key: String, objectValues: [String: AnyObject], addedDateTime: String, updatedDateTime: String, deleteDateTime: String, sourceDB: String, originalDB: String) -> Bool {
 		if !openDB() {
 			return false
@@ -1049,7 +1074,7 @@ final class ALBNoSQLDB {
 		var arrayValues = [AnyObject]()
 
 		for (objectKey, objectValue) in objectValues {
-			let valueType = typeOfValue(objectValue)
+			let valueType = SQLiteCore.typeOfValue(objectValue)
 			if valueType == .stringArray || valueType == .intArray || valueType == .doubleArray {
 				arrayKeys.append(objectKey)
 				arrayTypes.append(valueType)
@@ -1070,7 +1095,7 @@ final class ALBNoSQLDB {
 				var placeHolders = "'\(key)','\(addedDateTime)','\(updatedDateTime)',\(deleteDateTime),'\(joinedArrayKeys)'"
 
 				for (objectKey, objectValue) in objectValues {
-					let valueType = typeOfValue(objectValue)
+					let valueType = SQLiteCore.typeOfValue(objectValue)
 					if valueType == .int || valueType == .double || valueType == .string {
 						sql += ",\(objectKey)"
 						placeHolders += ",?"
@@ -1082,7 +1107,7 @@ final class ALBNoSQLDB {
 				tableHasKey = true
 				sql = "update \(table) set updatedDateTime='\(updatedDateTime)',autoDeleteDateTime=\(deleteDateTime),hasArrayValues='\(joinedArrayKeys)'"
 				for (objectKey, objectValue) in objectValues {
-					let valueType = typeOfValue(objectValue)
+					let valueType = SQLiteCore.typeOfValue(objectValue)
 					if valueType == .int || valueType == .double || valueType == .string {
 						sql += ",\(objectKey)=?"
 					}
@@ -1091,7 +1116,7 @@ final class ALBNoSQLDB {
 				let objectKeys = objectValues.keys
 				let columns = columnsInTable(table)
 				for column in columns {
-					let filteredKeys = objectKeys.filter({ $0 == column.name})
+					let filteredKeys = objectKeys.filter({ $0 == column.name })
 					if filteredKeys.count == 0 {
 						sql += ",\(column.name)=NULL"
 					}
@@ -1099,11 +1124,11 @@ final class ALBNoSQLDB {
 				sql += " where key = '\(key)'"
 			}
 
-			if !processValues(table: table, objectValues: objectValues, sql: sql) {
+			if !setTableValues(table: table, objectValues: objectValues, sql: sql) {
 				// adjust table columns
 				validateTableColumns(table: table, objectValues: objectValues)
 				// try again
-				if !processValues(table: table, objectValues: objectValues, sql: sql) {
+				if !setTableValues(table: table, objectValues: objectValues, sql: sql) {
 					return false
 				}
 			}
@@ -1115,80 +1140,41 @@ final class ALBNoSQLDB {
 				}
 			}
 
-			if _syncingEnabled && _unsyncedTables.filter({ $0 == table}).count == 0 {
+			if _syncingEnabled && _unsyncedTables.filter({ $0 == table }).count == 0 {
 				let now = ALBNoSQLDB.stringValueForDate(NSDate())
 				sql = "insert into __synclog(timestamp, sourceDB, originalDB, tableName, activity, key) values('\(now)','\(sourceDB)','\(originalDB)','\(table)','U','\(esc(key))')"
-				sqlExecute(sql)
-				let lastID = sqlite3_last_insert_rowid(_sqliteDB)
 
-				if tableHasKey {
-					sql = "delete from __synclog where tableName = '\(table)' and key = '\(esc(key))' and rowid < \(lastID)"
-					sqlExecute(sql)
-				}
-			}
-		} else {
-			return false
-		}
+				// TODO: Rework this so if the synclog stuff fails we do a rollback and return false
+				if sqlExecute(sql) {
+					let lastID = self.lastInsertID()
 
-		return true
-	}
-
-	private func processValues(table table: String, objectValues: [String: AnyObject], sql: String) -> Bool {
-		var statement: COpaquePointer = nil
-		var status = sqlite3_prepare_v2(self._sqliteDB, sql, -1, &statement, nil)
-		if status != SQLITE_OK {
-			// displaySQLError(sql)
-			return false
-		} else {
-			// try to bind the object properties to table fields.
-			var index: Int32 = 1
-
-			for (_, objectValue) in objectValues {
-				let valueType = typeOfValue(objectValue)
-				if valueType == .int || valueType == .double || valueType == .string {
-					status = bindValue(statement, index: index, value: objectValue)
-					if status != SQLITE_OK {
-						displaySQLError(sql)
-						sqlite3_finalize(statement)
-						return false
+					if tableHasKey {
+						sql = "delete from __synclog where tableName = '\(table)' and key = '\(self.esc(key))' and rowid < \(lastID)"
+						self.sqlExecute(sql)
 					}
-					index++
 				}
 			}
-
-			status = sqlite3_step(statement)
-			if status != SQLITE_DONE && status != SQLITE_OK {
-				displaySQLError(sql)
-				return false
-			}
+		} else {
+			return false
 		}
-
-		sqlite3_finalize(statement)
 
 		return true
 	}
 
-	private func bindValue(statement: COpaquePointer, index: Int32, value: AnyObject) -> Int32 {
-		var status = SQLITE_OK
-		let valueType = typeOfValue(value)
-		var int64Value: Int64 = 0
+	private func setTableValues(table table: String, objectValues: [String: AnyObject], sql: String) -> Bool {
+		var successful = false
 
-		if valueType == .int {
-			int64Value = Int64(value as! Int)
+		dispatch_sync(_dbQueue) { [unowned self]() -> Void in
+			self._lock.lock()
+			self._SQLiteCore.setTableValues(table: table, objectValues: objectValues, sql: sql, completion: { (success) -> Void in
+				successful = success
+				self._lock.signal()
+			})
+			self._lock.wait()
+			self._lock.unlock()
 		}
 
-		switch valueType {
-		case .string:
-			status = sqlite3_bind_text(statement, index, value as! String, -1, SQLITE_TRANSIENT)
-		case .int:
-			status = sqlite3_bind_int64(statement, index, int64Value)
-		case .double:
-			status = sqlite3_bind_double(statement, index, value as! Double)
-		default:
-			status = SQLITE_OK
-		}
-
-		return status
+		return successful
 	}
 
 	private func setArrayValues(table table: String, arrayValues: [AnyObject], valueType: ValueType, key: String, objectKey: String) -> Bool {
@@ -1231,14 +1217,14 @@ final class ALBNoSQLDB {
 		}
 
 		let now = ALBNoSQLDB.stringValueForDate(NSDate())
-		if _syncingEnabled && _unsyncedTables.filter({ $0 == table}).count == 0 {
+		if _syncingEnabled && _unsyncedTables.filter({ $0 == table }).count == 0 {
 			var sql = ""
 			// auto-deleted entries will be automatically removed from any other databases too. Don't need to log this deletion.
 			if !autoDelete {
 				sql = "insert into __synclog(timestamp, sourceDB, originalDB, tableName, activity, key) values('\(now)','\(sourceDB)','\(originalDB)','\(table)','D','\(esc(key))')"
 				sqlExecute(sql)
 
-				let lastID = sqlite3_last_insert_rowid(_sqliteDB)
+				let lastID = lastInsertID()
 				sql = "delete from __synclog where tableName = '\(table)' and key = '\(esc(key))' and rowid < \(lastID)"
 				sqlExecute(sql)
 			} else {
@@ -1251,6 +1237,10 @@ final class ALBNoSQLDB {
 	}
 
 	private func autoDelete() {
+		if !openDB() {
+			return
+		}
+
 		let now = ALBNoSQLDB.stringValueForDate(NSDate())
 		for table in _tables {
 			if !reservedTable(table) {
@@ -1366,7 +1356,7 @@ final class ALBNoSQLDB {
 	}
 
 	private func hasTable(table: String) -> Bool {
-		return _tables.filter({ $0 == table}).count > 0
+		return _tables.filter({ $0 == table }).count > 0
 	}
 
 	private func reservedTable(table: String) -> Bool {
@@ -1431,7 +1421,9 @@ final class ALBNoSQLDB {
 		for info in tableInfo! {
 			let columnName = info.values[1] as! String
 			if !reservedColumn(columnName) {
-				columns.append(TableColumn(name: columnName, type: ValueType(rawValue: info.values[2] as! String)!))
+				let rawValue = info.values[2] as! String
+				let valueType = ValueType.fromRaw(rawValue)
+				columns.append(TableColumn(name: columnName, type: valueType))
 			}
 		}
 
@@ -1453,7 +1445,7 @@ final class ALBNoSQLDB {
 			}
 
 			if !found {
-				let valueType = typeOfValue(value)
+				let valueType = SQLiteCore.typeOfValue(value)
 				assert(valueType != .unknown, "column types are .int, double, string or arrays of these types")
 
 				if valueType == .int || valueType == .double || valueType == .string {
@@ -1482,126 +1474,382 @@ final class ALBNoSQLDB {
 	}
 
 	// MARK: - SQLite execute/query
-	func esc(source: String) -> String {
-		return source.stringByReplacingOccurrencesOfString("'", withString: "''", options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
-	}
-
 	private func sqlExecute(sql: String) -> Bool {
 		var successful = false
 
-		// create task closure
-		dispatch_sync(_dbQueue) {
-			successful = self.runCommand(sql)
+		dispatch_sync(_dbQueue) { [unowned self]() -> Void in
+			self._lock.lock()
+			self._SQLiteCore.sqlExecute(sql, completion: { (success) in
+				successful = success
+				self._lock.signal()
+			})
+			self._lock.wait()
+			self._lock.unlock()
 		}
 
 		return successful
 	}
 
-	private func runCommand(sql: String) -> Bool {
-		var dbps: COpaquePointer = nil
-		var status = sqlite3_prepare_v2(self._sqliteDB, sql, -1, &dbps, nil)
-		if status != SQLITE_OK {
-			displaySQLError(sql)
-			sqlite3_finalize(dbps)
-			return false
-		}
+	private func lastInsertID() -> sqlite3_int64 {
+		var lastID: sqlite3_int64 = 0
 
-		status = sqlite3_step(dbps)
-		if status != SQLITE_DONE && status != SQLITE_OK {
-			displaySQLError(sql)
-			sqlite3_finalize(dbps)
-			return false
-		}
+		dispatch_sync(_dbQueue, { [unowned self]() -> Void in
+			self._lock.lock()
+			self._SQLiteCore.lastID({ (lastInsertionID) -> Void in
+				lastID = lastInsertionID
+				self._lock.signal()
+			})
+			self._lock.wait()
+			self._lock.unlock()
+		})
 
-		sqlite3_finalize(dbps)
-		return true
+		return lastID
 	}
 
 	func sqlSelect(sql: String) -> [DBRow]? {
-		var recordset: [DBRow]?
+		var rows: [DBRow]?
 
-		dispatch_sync(_dbQueue) {
-			recordset = self.runSelect(sql)
+		dispatch_sync(_dbQueue) { [unowned self]() -> Void in
+			self._lock.lock()
+			self._SQLiteCore.sqlSelect(sql, completion: { (results) -> Void in
+				rows = results
+				self._lock.signal()
+			})
+			self._lock.wait()
+			self._lock.unlock()
 		}
 
-		return recordset
-	}
-
-	private func runSelect(sql: String) -> [DBRow]? {
-		// explain(sql)
-
-		var dbps: COpaquePointer = nil
-		var rows = [DBRow]()
-
-		var status = sqlite3_prepare_v2(self._sqliteDB, sql, -1, &dbps, nil)
-		if status != SQLITE_OK {
-			displaySQLError(sql)
-			sqlite3_finalize(dbps)
-			return nil
-		}
-
-		repeat {
-			status = sqlite3_step(dbps)
-			if status == SQLITE_ROW {
-				var row = DBRow()
-				let count = sqlite3_column_count(dbps)
-				for var index = Int32(0); index < count; index++ {
-					let columnType = sqlite3_column_type(dbps, index)
-					switch columnType {
-					case SQLITE_TEXT:
-						let text = UnsafePointer<Int8>(sqlite3_column_text(dbps, index))
-						let value = String.fromCString(text)
-						row.values.append(value)
-					case SQLITE_INTEGER:
-						row.values.append(Int(sqlite3_column_int64(dbps, index)))
-					case SQLITE_FLOAT:
-						row.values.append(sqlite3_column_double(dbps, index) as Double)
-					default:
-						row.values.append(nil)
-					}
-				}
-
-				rows.append(row)
-			}
-		} while status == SQLITE_ROW
-
-		if status != SQLITE_DONE {
-			displaySQLError(sql)
-			sqlite3_finalize(dbps)
-			return nil
-		}
-
-		sqlite3_finalize(dbps)
 		return rows
-	}
-
-	private func displaySQLError(sql: String) {
-		let text = UnsafePointer<Int8>(sqlite3_errmsg(self._sqliteDB))
-		let error = String.fromCString(text)
-		print("Error: \(error!)")
-		print("     on command - \(sql)")
-		print("")
-	}
-
-	private func explain(sql: String) {
-		var dbps: COpaquePointer = nil
-		let explainCommand = "EXPLAIN QUERY PLAN \(sql)"
-		sqlite3_prepare_v2(self._sqliteDB, explainCommand, -1, &dbps, nil)
-		print("\n\n.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \nQuery:\(sql)\n\nAnalysis:\n")
-		while (sqlite3_step(dbps) == SQLITE_ROW) {
-			let iSelectid = sqlite3_column_int(dbps, 0)
-			let iOrder = sqlite3_column_int(dbps, 1)
-			let iFrom = sqlite3_column_int(dbps, 2)
-			let text = UnsafePointer<Int8>(sqlite3_column_text(dbps, 3))
-			let value = String.fromCString(text)
-
-			print("\(iSelectid) \(iOrder) \(iFrom) \(value)\n=================================================\n\n")
-		}
-
-		sqlite3_finalize(dbps)
 	}
 }
 
-struct DBRow {
-	var values = [AnyObject?]()
+//MARK: - SQLiteCore
+extension ALBNoSQLDB {
+	final class SQLiteCore: NSThread {
+		private var _sqliteDB: COpaquePointer = nil
+		private let _closeQueue = dispatch_queue_create("com.AaronLBratcher.ALBNoSQLDBCloseQueue", nil)
+		private var _autoCloseTimer: dispatch_source_t
+		private var _dbFilePath = ""
+		private var _lastActivity: Double = 0
+		private var automaticallyClosed = false
+
+		var threadLock = NSCondition()
+		var queuedBlocks = [Any]()
+		var autoCloseTimeout = 0
+
+		private let SQLITE_TRANSIENT = unsafeBitCast(-1, sqlite3_destructor_type.self)
+
+		override init() {
+			_autoCloseTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, _closeQueue)
+			super.init()
+		}
+
+		func openDBFile(dbFilePath: String, autoCloseTimeout: Int, completion: (successful: Bool) -> Void) {
+			self.autoCloseTimeout = autoCloseTimeout
+			self._dbFilePath = dbFilePath
+
+			let block = { [unowned self] in
+				if autoCloseTimeout > 0 {
+					dispatch_source_set_timer(self._autoCloseTimer, DISPATCH_TIME_NOW, UInt64(autoCloseTimeout) * NSEC_PER_SEC, 1 * NSEC_PER_SEC)
+					dispatch_source_set_event_handler(self._autoCloseTimer) {
+						self.closeFile(true)
+					}
+				}
+
+				let successful = self.openFile()
+
+				completion(successful: successful)
+				return
+			}
+
+			addBlock(block)
+		}
+
+		func close() {
+			let block = { [unowned self] in
+				sqlite3_close_v2(self._sqliteDB)
+				self._sqliteDB = nil
+			}
+
+			addBlock(block)
+		}
+
+		func lastID(completion: (lastInsertionID: sqlite3_int64) -> Void) {
+			let block = { [unowned self] in
+				completion(lastInsertionID: sqlite3_last_insert_rowid(self._sqliteDB))
+			}
+
+			addBlock(block)
+		}
+
+		func sqlExecute(sql: String, completion: (success: Bool) -> Void) {
+			let block = { [unowned self] in
+				var dbps: COpaquePointer = nil
+				defer {
+					if dbps != nil {
+						sqlite3_finalize(dbps)
+					}
+				}
+
+				var status = sqlite3_prepare_v2(self._sqliteDB, sql, -1, &dbps, nil)
+				if status != SQLITE_OK {
+					self.displaySQLError(sql)
+					completion(success: false)
+					return
+				}
+
+				status = sqlite3_step(dbps)
+				if status != SQLITE_DONE && status != SQLITE_OK {
+					self.displaySQLError(sql)
+					completion(success: false)
+					return
+				}
+
+				completion(success: true)
+				return
+			}
+
+			addBlock(block)
+		}
+
+		func sqlSelect(sql: String, completion: (results: [DBRow]?) -> Void) {
+			let block = { [unowned self] in
+				var rows = [DBRow]()
+				var dbps: COpaquePointer = nil
+				defer {
+					if dbps != nil {
+						sqlite3_finalize(dbps)
+					}
+				}
+
+				var status = sqlite3_prepare_v2(self._sqliteDB, sql, -1, &dbps, nil)
+				if status != SQLITE_OK {
+					self.displaySQLError(sql)
+					completion(results: nil)
+					return
+				}
+
+				repeat {
+					status = sqlite3_step(dbps)
+					if status == SQLITE_ROW {
+						var row = DBRow()
+						let count = sqlite3_column_count(dbps)
+						for var index = Int32(0); index < count; index++ {
+							let columnType = sqlite3_column_type(dbps, index)
+							switch columnType {
+							case SQLITE_TEXT:
+								let text = UnsafePointer<Int8>(sqlite3_column_text(dbps, index))
+								let value = String.fromCString(text)
+								row.values.append(value)
+							case SQLITE_INTEGER:
+								row.values.append(Int(sqlite3_column_int64(dbps, index)))
+							case SQLITE_FLOAT:
+								row.values.append(sqlite3_column_double(dbps, index) as Double)
+							default:
+								row.values.append(nil)
+							}
+						}
+
+						rows.append(row)
+					}
+				} while status == SQLITE_ROW
+
+				if status != SQLITE_DONE {
+					self.displaySQLError(sql)
+					completion(results: nil)
+					return
+				}
+
+				completion(results: rows)
+				return
+			}
+
+			addBlock(block)
+		}
+
+		func setTableValues(table table: String, objectValues: [String: AnyObject], sql: String, completion: (success: Bool) -> Void) {
+			let block = { [unowned self] in
+				var dbps: COpaquePointer = nil
+				defer {
+					if dbps != nil {
+						sqlite3_finalize(dbps)
+					}
+				}
+
+				var status = sqlite3_prepare_v2(self._sqliteDB, sql, -1, &dbps, nil)
+				if status != SQLITE_OK {
+					self.displaySQLError(sql)
+					completion(success: false)
+					return
+				} else {
+					// try to bind the object properties to table fields.
+					var index: Int32 = 1
+
+					for (_, objectValue) in objectValues {
+						let valueType = SQLiteCore.typeOfValue(objectValue)
+						if valueType == .int || valueType == .double || valueType == .string {
+							status = self.bindValue(dbps, index: index, value: objectValue)
+							if status != SQLITE_OK {
+								self.displaySQLError(sql)
+								completion(success: false)
+								return
+							}
+							index += 1
+						}
+					}
+
+					status = sqlite3_step(dbps)
+					if status != SQLITE_DONE && status != SQLITE_OK {
+						self.displaySQLError(sql)
+						completion(success: false)
+						return
+					}
+				}
+
+				completion(success: true)
+				return
+			}
+
+			addBlock(block)
+		}
+
+		func bindValue(statement: COpaquePointer, index: Int32, value: AnyObject) -> Int32 {
+			var status = SQLITE_OK
+			let valueType = SQLiteCore.typeOfValue(value)
+
+			switch valueType {
+			case .string:
+				status = sqlite3_bind_text(statement, index, value as! String, -1, SQLITE_TRANSIENT)
+			case .int:
+				let int64Value = Int64(value as! Int)
+				status = sqlite3_bind_int64(statement, index, int64Value)
+			case .double:
+				status = sqlite3_bind_double(statement, index, value as! Double)
+			default:
+				status = SQLITE_OK
+			}
+
+			return status
+		}
+
+		class func typeOfValue(value: AnyObject) -> ValueType {
+			var valueType = ValueType.unknown
+
+			switch value {
+			case is [String]:
+				valueType = .stringArray
+			case is [Int]:
+				valueType = .intArray
+			case is [Double]:
+				valueType = .doubleArray
+			case is String:
+				valueType = .string
+			case is Int:
+				valueType = .int
+			case is Double:
+				valueType = .double
+			default:
+				valueType = .unknown
+			}
+
+			return valueType
+		}
+
+		func displaySQLError(sql: String) {
+			let text = UnsafePointer<Int8>(sqlite3_errmsg(_sqliteDB))
+			let error = String.fromCString(text)
+			print("Error: \(error!)")
+			print("     on command - \(sql)")
+			print("")
+		}
+
+		func explain(sql: String) {
+			var dbps: COpaquePointer = nil
+			let explainCommand = "EXPLAIN QUERY PLAN \(sql)"
+			sqlite3_prepare_v2(_sqliteDB, explainCommand, -1, &dbps, nil)
+			print("\n\n.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \nQuery:\(sql)\n\nAnalysis:\n")
+			while (sqlite3_step(dbps) == SQLITE_ROW) {
+				let iSelectid = sqlite3_column_int(dbps, 0)
+				let iOrder = sqlite3_column_int(dbps, 1)
+				let iFrom = sqlite3_column_int(dbps, 2)
+				let text = UnsafePointer<Int8>(sqlite3_column_text(dbps, 3))
+				let value = String.fromCString(text)
+
+				print("\(iSelectid) \(iOrder) \(iFrom) \(value)\n=================================================\n\n")
+			}
+
+			sqlite3_finalize(dbps)
+		}
+
+		func addBlock(block: Any) {
+			threadLock.lock()
+			queuedBlocks.append(block)
+			threadLock.signal()
+			threadLock.unlock()
+		}
+
+		override func main() {
+			while true {
+				threadLock.lock()
+
+				while queuedBlocks.count == 0 {
+					threadLock.wait()
+				}
+
+				if autoCloseTimeout > 0 {
+					dispatch_suspend(_autoCloseTimer)
+				}
+
+				if automaticallyClosed {
+					if !openFile() {
+						fatalError("Unable to open DB")
+					}
+				}
+
+				while queuedBlocks.count > 0 {
+					if let block = queuedBlocks.first as? () -> Void {
+						queuedBlocks.removeFirst()
+						block();
+					}
+				}
+
+				_lastActivity = NSDate().timeIntervalSince1970
+				if autoCloseTimeout > 0 {
+					dispatch_resume(_autoCloseTimer)
+				}
+
+				threadLock.unlock()
+			}
+		}
+
+		private func openFile() -> Bool {
+			_sqliteDB = nil
+			let status = sqlite3_open_v2(_dbFilePath.cStringUsingEncoding(NSUTF8StringEncoding)!, &self._sqliteDB, SQLITE_OPEN_FILEPROTECTION_COMPLETE | SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, nil)
+
+			if status != SQLITE_OK {
+				print("Error opening SQLite Database: \(status)")
+				return false
+			}
+
+			if autoCloseTimeout > 0 {
+				dispatch_resume(_autoCloseTimer)
+			}
+
+			automaticallyClosed = false
+			return true
+		}
+
+		private func closeFile(autoClose: Bool = false) {
+			if autoClose {
+				if automaticallyClosed || NSDate().timeIntervalSince1970 < (_lastActivity + Double(autoCloseTimeout)) {
+					return
+				}
+
+				dispatch_suspend(_autoCloseTimer)
+				automaticallyClosed = true
+			}
+
+			sqlite3_close_v2(self._sqliteDB)
+		}
+	}
 }

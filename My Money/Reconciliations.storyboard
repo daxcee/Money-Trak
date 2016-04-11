@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -610,8 +610,8 @@
                                     <mask key="constraints">
                                         <exclude reference="T7l-vL-qUU"/>
                                         <exclude reference="BBF-Ut-jo9"/>
-                                        <exclude reference="QIV-NT-LGb"/>
                                         <exclude reference="Ce1-RP-RrA"/>
+                                        <exclude reference="QIV-NT-LGb"/>
                                         <exclude reference="OA8-Sm-t3S"/>
                                         <exclude reference="HxZ-7Q-NJj"/>
                                     </mask>
@@ -638,8 +638,8 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="URn-qR-Xza"/>
-                                <exclude reference="jYg-gD-tSf"/>
                                 <exclude reference="XZa-rx-aHt"/>
+                                <exclude reference="jYg-gD-tSf"/>
                                 <exclude reference="roI-ck-EkO"/>
                             </mask>
                         </variation>

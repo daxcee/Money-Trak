@@ -62,6 +62,7 @@ class ALBNoSQLDBObject {
 
 // MARK: - Class Definition
 final class ALBNoSQLDB {
+	// These enum case entries are lowercase to avoid conflict with data types
 	enum ValueType: String {
 		case stringArray = "stringArray"
 		, intArray = "intArray"
@@ -1634,7 +1635,7 @@ extension ALBNoSQLDB {
 					if status == SQLITE_ROW {
 						var row = DBRow()
 						let count = sqlite3_column_count(dbps)
-						for var index = Int32(0); index < count; index++ {
+						for index in 0 ..< count {
 							let columnType = sqlite3_column_type(dbps, index)
 							switch columnType {
 							case SQLITE_TEXT:

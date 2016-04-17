@@ -14,7 +14,7 @@ protocol EditReconciliationProtocol {
 	func reconciliationUpdated(reconciliation: Reconciliation)
 }
 
-class EditReconciliationController: UIViewController, ReconciliationHeaderDelegate, EditTransactionProtocol, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, Numbers {
+class EditReconciliationController: UIViewController, ReconciliationHeaderDelegate, EditTransactionProtocol, UISearchBarDelegate, Numbers {
 
 	@IBOutlet weak var searchbar: UISearchBar!
 	@IBOutlet weak var headerView: UIView!
@@ -218,62 +218,6 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 		loadTransactions(text)
 	}
 
-	// MARK: - TableView
-
-	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-		return 1
-	}
-
-	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return _transactionKeys.count
-	}
-
-	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		var cell: TransactionCell
-		if let transaction = Transaction(key: _transactionKeys[indexPath.row]) {
-			if transaction.checkNumber != nil && transaction.checkNumber! > 0 {
-				cell = tableView.dequeueReusableCellWithIdentifier("CheckCell") as! TransactionCell
-			} else {
-				cell = tableView.dequeueReusableCellWithIdentifier("TransactionCell") as! TransactionCell
-			}
-			cell.transactionKey = _transactionKeys[indexPath.row]
-			if !reconciliation.reconciled {
-				let cleared = reconciliation.transactionKeys.filter({ $0 == transaction.key }).count > 0
-				cell.reconciled = cleared
-			}
-		} else {
-			cell = tableView.dequeueReusableCellWithIdentifier("TransactionCell") as! TransactionCell
-		}
-
-		return cell
-	}
-
-	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		if reconciliation.reconciled {
-			tableView.deselectRowAtIndexPath(indexPath, animated: true)
-			return
-		}
-
-		delay(1.0, closure: { () -> () in
-			tableView.deselectRowAtIndexPath(indexPath, animated: true)
-		})
-
-		let key = _transactionKeys[indexPath.row]
-		if reconciliation.hasTransactionKey(key) {
-			reconciliation.removeTransactionKey(key)
-		} else {
-			reconciliation.addTransactionKey(key)
-		}
-
-		updateHeader()
-		tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
-	}
-
-	func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
-		_lastSelection = indexPath
-		performSegueWithIdentifier(Segues.EditTransaction.rawValue, sender: indexPath)
-	}
-
 	// MARK: - User Actions
 
 	@IBAction func headerTapped(sender: AnyObject) {
@@ -379,5 +323,81 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 		}
 
 		tableView.reloadRowsAtIndexPaths([path], withRowAnimation: UITableViewRowAnimation.None)
+	}
+}
+
+// MARK: - TableView
+extension EditReconciliationController: UITableViewDataSource, UITableViewDelegate {
+	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+		return 2
+	}
+
+	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		if section == 0 {
+			return _transactionKeys.count
+		} else {
+			return 1
+		}
+	}
+
+	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+		var tableCell: UITableViewCell
+		if indexPath.section == 0 {
+			var cell: TransactionCell
+			if let transaction = Transaction(key: _transactionKeys[indexPath.row]) {
+				if transaction.checkNumber != nil && transaction.checkNumber! > 0 {
+					cell = tableView.dequeueReusableCellWithIdentifier("CheckCell") as! TransactionCell
+				} else {
+					cell = tableView.dequeueReusableCell(indexPath: indexPath) as TransactionCell
+				}
+				cell.transactionKey = _transactionKeys[indexPath.row]
+				if !reconciliation.reconciled {
+					let cleared = reconciliation.transactionKeys.filter({ $0 == transaction.key }).count > 0
+					cell.reconciled = cleared
+				}
+			} else {
+				cell = tableView.dequeueReusableCell(indexPath: indexPath) as TransactionCell
+			}
+
+			tableCell = cell
+		} else {
+			let cell = tableView.dequeueReusableCell(indexPath: indexPath) as ClearAllCell
+			cell.delegate = self
+
+			tableCell = cell
+		}
+
+		return tableCell
+	}
+
+	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+		if reconciliation.reconciled {
+			tableView.deselectRowAtIndexPath(indexPath, animated: true)
+			return
+		}
+
+		delay(1.0, closure: { () -> () in
+			tableView.deselectRowAtIndexPath(indexPath, animated: true)
+		})
+
+		let key = _transactionKeys[indexPath.row]
+		if reconciliation.hasTransactionKey(key) {
+			reconciliation.removeTransactionKey(key)
+		} else {
+			reconciliation.addTransactionKey(key)
+		}
+
+		updateHeader()
+		tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+	}
+
+	func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
+		_lastSelection = indexPath
+		performSegueWithIdentifier(Segues.EditTransaction.rawValue, sender: indexPath)
+	}
+}
+
+extension EditReconciliationController: ClearAllProtocol {
+	func clearAllTapped() {
 	}
 }

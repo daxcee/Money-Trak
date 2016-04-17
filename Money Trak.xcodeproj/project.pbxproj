@@ -47,6 +47,12 @@
 		897848CB1A0BF7B600949395 /* SelectAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897848CA1A0BF7B600949395 /* SelectAccount.swift */; };
 		898007751ADC1BEC000B37BC /* SyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898007741ADC1BEC000B37BC /* SyncViewController.swift */; };
 		8996CF021BD27D8100FAC390 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8996CF011BD27D8100FAC390 /* Reachability.swift */; };
+		8998916B1CC2882A00E3C870 /* ClearAllCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8998916A1CC2882A00E3C870 /* ClearAllCell.swift */; };
+		899891701CC30A8200E3C870 /* NibLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8998916D1CC30A8200E3C870 /* NibLoadable.swift */; };
+		899891711CC30A8200E3C870 /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8998916E1CC30A8200E3C870 /* Reusable.swift */; };
+		899891721CC30A8200E3C870 /* Segues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8998916F1CC30A8200E3C870 /* Segues.swift */; };
+		899891741CC3B18100E3C870 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899891731CC3B18100E3C870 /* TransactionCell.swift */; };
+		899891781CC44E5F00E3C870 /* Transactions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 899891771CC44E5F00E3C870 /* Transactions.storyboard */; };
 		89A02F571B985B310088601D /* ALBPeer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A02F4F1B985B310088601D /* ALBPeer.swift */; };
 		89A02F581B985B310088601D /* ALBPeerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A02F501B985B310088601D /* ALBPeerClient.swift */; };
 		89A02F591B985B310088601D /* ALBPeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A02F511B985B310088601D /* ALBPeerConnection.swift */; };
@@ -153,6 +159,12 @@
 		897848CA1A0BF7B600949395 /* SelectAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SelectAccount.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		898007741ADC1BEC000B37BC /* SyncViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SyncViewController.swift; path = "My Money/View Controllers - iOS/Sync/SyncViewController.swift"; sourceTree = SOURCE_ROOT; };
 		8996CF011BD27D8100FAC390 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		8998916A1CC2882A00E3C870 /* ClearAllCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClearAllCell.swift; sourceTree = "<group>"; };
+		8998916D1CC30A8200E3C870 /* NibLoadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NibLoadable.swift; sourceTree = "<group>"; };
+		8998916E1CC30A8200E3C870 /* Reusable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
+		8998916F1CC30A8200E3C870 /* Segues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Segues.swift; sourceTree = "<group>"; };
+		899891731CC3B18100E3C870 /* TransactionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
+		899891771CC44E5F00E3C870 /* Transactions.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Transactions.storyboard; sourceTree = "<group>"; };
 		89A02F4F1B985B310088601D /* ALBPeer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ALBPeer.swift; sourceTree = "<group>"; };
 		89A02F501B985B310088601D /* ALBPeerClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ALBPeerClient.swift; sourceTree = "<group>"; };
 		89A02F511B985B310088601D /* ALBPeerConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ALBPeerConnection.swift; sourceTree = "<group>"; };
@@ -237,6 +249,8 @@
 				89E217FF1A42FDC500F79443 /* Reconciliations.swift */,
 				895F3B5E1A386CD00008A44F /* EditReconciliation.swift */,
 				895B98AD1A38B95B0048A61E /* EditHeader.swift */,
+				8998916A1CC2882A00E3C870 /* ClearAllCell.swift */,
+				899891731CC3B18100E3C870 /* TransactionCell.swift */,
 			);
 			path = Reconciliations;
 			sourceTree = "<group>";
@@ -353,6 +367,16 @@
 				890CD3CB1C94A9C700E3C870 /* Numbers.swift */,
 			);
 			path = Traits;
+			sourceTree = "<group>";
+		};
+		8998916C1CC30A7300E3C870 /* iOS Traits */ = {
+			isa = PBXGroup;
+			children = (
+				8998916D1CC30A8200E3C870 /* NibLoadable.swift */,
+				8998916E1CC30A8200E3C870 /* Reusable.swift */,
+				8998916F1CC30A8200E3C870 /* Segues.swift */,
+			);
+			path = "iOS Traits";
 			sourceTree = "<group>";
 		};
 		89A02F4E1B985B310088601D /* Connection Classes */ = {
@@ -472,11 +496,13 @@
 		89C39257199462E10020B6DC /* My Money */ = {
 			isa = PBXGroup;
 			children = (
+				8998916C1CC30A7300E3C870 /* iOS Traits */,
 				89166F8F1996D33F007B1694 /* Misc Classes */,
 				89C3925A199462E10020B6DC /* AppDelegate.swift */,
 				89C3925E199462E10020B6DC /* Main.storyboard */,
 				89EDA5271C94776500E3C870 /* Reconciliations.storyboard */,
 				89DDEF161BE6A4E000E3C870 /* LaunchScreen.storyboard */,
+				899891771CC44E5F00E3C870 /* Transactions.storyboard */,
 				89EC297919A559710033F944 /* View Controllers - iOS */,
 				89C511AB1B62671C0067CC72 /* AFBlurSegue */,
 				89C39261199462E10020B6DC /* Images.xcassets */,
@@ -631,6 +657,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				899891781CC44E5F00E3C870 /* Transactions.storyboard in Resources */,
 				89C39260199462E10020B6DC /* Main.storyboard in Resources */,
 				8909E1931B514133002F511E /* DataCell.xib in Resources */,
 				89343D831A1D2AD6005D1530 /* AccountView.xib in Resources */,
@@ -680,6 +707,7 @@
 				896E70FA1B3302AE003B97EF /* Summary.swift in Sources */,
 				89BC3CD219E1F29C003B2A75 /* EditAccount.swift in Sources */,
 				89A443431AEBC02600946BDE /* mztools.c in Sources */,
+				899891721CC30A8200E3C870 /* Segues.swift in Sources */,
 				8996CF021BD27D8100FAC390 /* Reachability.swift in Sources */,
 				892A933019E0241A0049CDDB /* TransactionsController.swift in Sources */,
 				894CCD8C19A6C38000D79BFA /* Transactions.swift in Sources */,
@@ -698,6 +726,7 @@
 				89A02F5C1B985B310088601D /* GCDAsyncSocket.m in Sources */,
 				89A02F581B985B310088601D /* ALBPeerClient.swift in Sources */,
 				89E5D3021BE6915800E3C870 /* CozyLoadingActivity.swift in Sources */,
+				8998916B1CC2882A00E3C870 /* ClearAllCell.swift in Sources */,
 				895B98AE1A38B95B0048A61E /* EditHeader.swift in Sources */,
 				8974B47F1A1642BD00D92411 /* Frequency.swift in Sources */,
 				89D5213B1A1A730B004AFB42 /* CurrentLocation.m in Sources */,
@@ -705,8 +734,11 @@
 				89BF2B9E1A4F53BE002A6959 /* MonthlySummary.swift in Sources */,
 				890CD3D11C94EB8000E3C870 /* NotificationManager.swift in Sources */,
 				89A02F5A1B985B310088601D /* ALBPeerPacket.swift in Sources */,
+				899891701CC30A8200E3C870 /* NibLoadable.swift in Sources */,
 				894B8FE919B0B03200C4D28C /* CommonDB.swift in Sources */,
+				899891741CC3B18100E3C870 /* TransactionCell.swift in Sources */,
 				897848CB1A0BF7B600949395 /* SelectAccount.swift in Sources */,
+				899891711CC30A8200E3C870 /* Reusable.swift in Sources */,
 				89B6E6901A1E91380003562D /* SetMemo.swift in Sources */,
 				8950D99219AA7CE4000F3F57 /* CommonFunctions.swift in Sources */,
 				892A932F19E0241A0049CDDB /* EditTransactionControllers.swift in Sources */,

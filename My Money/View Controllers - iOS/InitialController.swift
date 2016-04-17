@@ -13,8 +13,6 @@ import iAd
 class InitialController: UIViewController, Numbers {
 	@IBOutlet weak var totalAvailableView: UIView!
 	@IBOutlet weak var totalAvailable: UILabel!
-	@IBOutlet weak var bannerView: ADBannerView!
-	@IBOutlet weak var bannerBottomConstraint: NSLayoutConstraint!
 	@IBOutlet weak var syncButton: UIButton!
 
 	var defaults = DefaultManager()
@@ -22,7 +20,7 @@ class InitialController: UIViewController, Numbers {
 	var amountAvailable = 0
 	private var _userInteractingWithAd = false
 
-	enum Segues: String {
+	enum Segue: String {
 		case Transactions
 		case Upcoming
 		case Recurring
@@ -42,13 +40,11 @@ class InitialController: UIViewController, Numbers {
 		}
 
 		CommonDB.setup()
-
 		super.viewDidLoad()
 	}
 
 	override func viewWillAppear(animated: Bool) {
 		showTotalAvailable()
-		self.bannerBottomConstraint.constant = -self.bannerView.frame.size.height
 	}
 
 	override func viewDidAppear(animated: Bool) {
@@ -90,7 +86,7 @@ class InitialController: UIViewController, Numbers {
 	}
 
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-		if segue.identifier != nil, let segueName = Segues(rawValue: segue.identifier!) {
+		if segue.identifier != nil, let segueName = Segue(rawValue: segue.identifier!) {
 			switch segueName {
 			case .Transactions:
 				let navController = segue.destinationViewController as! UINavigationController
@@ -124,7 +120,7 @@ class InitialController: UIViewController, Numbers {
 
 	// MARK: - User actions
 	@IBAction func syncTapped(sender: AnyObject) {
-		performSegueWithIdentifier(Segues.Sync.rawValue, sender: nil)
+		performSegueWithIdentifier(Segue.Sync.rawValue, sender: nil)
 	}
 
 	// MARK: - other methods

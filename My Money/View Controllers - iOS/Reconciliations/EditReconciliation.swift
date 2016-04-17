@@ -329,7 +329,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 // MARK: - TableView
 extension EditReconciliationController: UITableViewDataSource, UITableViewDelegate {
 	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-		return 2
+		return 1
 	}
 
 	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

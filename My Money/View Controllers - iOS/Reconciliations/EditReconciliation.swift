@@ -340,6 +340,14 @@ extension EditReconciliationController: UITableViewDataSource, UITableViewDelega
 		}
 	}
 
+	func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+		if indexPath.section == 0 {
+			return tableView.rowHeight
+		}
+
+		return 44
+	}
+
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		var tableCell: UITableViewCell
 		if indexPath.section == 0 {

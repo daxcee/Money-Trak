@@ -531,6 +531,9 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="592" height="43"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <state key="normal" title="Clear All Selections"/>
+                                                    <connections>
+                                                        <action selector="clearTapped:" destination="tUt-Ey-iTS" eventType="touchUpInside" id="0hq-bL-jvM"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>

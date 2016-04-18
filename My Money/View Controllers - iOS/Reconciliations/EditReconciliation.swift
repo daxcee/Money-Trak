@@ -329,7 +329,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 // MARK: - TableView
 extension EditReconciliationController: UITableViewDataSource, UITableViewDelegate {
 	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-		return 1
+		return 2
 	}
 
 	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -399,5 +399,13 @@ extension EditReconciliationController: UITableViewDataSource, UITableViewDelega
 
 extension EditReconciliationController: ClearAllProtocol {
 	func clearAllTapped() {
+		SweetAlert().showAlert("Clear Selections?", subTitle: "All selections will be cleared.", style: AlertStyle.Warning, buttonTitle: "Cancel", buttonColor: UIColorFromRGB(0x909090), otherButtonTitle: "Clear", otherButtonColor: UIColorFromRGB(0xDD6B55)) { (isOtherButton) -> Void in
+
+			if !isOtherButton {
+				self.reconciliation.transactionKeys.removeAll()
+				self.tableView.reloadData()
+				self.updateHeader()
+			}
+		}
 	}
 }

@@ -478,10 +478,10 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="Lto-Nv-wwD"/>
-                                                    <exclude reference="Ldq-fL-yPr"/>
-                                                    <exclude reference="nqh-HI-Ezy"/>
                                                     <exclude reference="KQ8-Ae-MEU"/>
+                                                    <exclude reference="Ldq-fL-yPr"/>
+                                                    <exclude reference="Lto-Nv-wwD"/>
+                                                    <exclude reference="nqh-HI-Ezy"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -761,9 +761,9 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="deg-WD-J7K"/>
                                                     <exclude reference="2ne-EL-lVx"/>
                                                     <exclude reference="NDU-kK-DA3"/>
+                                                    <exclude reference="deg-WD-J7K"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -791,9 +791,9 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="ubS-Zq-Sgz"/>
-                                                    <exclude reference="t6e-sZ-dyZ"/>
                                                     <exclude reference="Hay-bI-gh6"/>
+                                                    <exclude reference="t6e-sZ-dyZ"/>
+                                                    <exclude reference="ubS-Zq-Sgz"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -1116,6 +1116,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="yyf-kK-3mK"/>
-        <segue reference="Qbg-AH-dad"/>
+        <segue reference="sS3-p4-5yT"/>
     </inferredMetricsTieBreakers>
 </document>

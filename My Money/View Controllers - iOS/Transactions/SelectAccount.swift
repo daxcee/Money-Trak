@@ -19,6 +19,7 @@ class SelectAccountController: UITableViewController, Numbers {
 	var currentAccountKey = ""
 	var includeCreditCards = true
 	var includeNonCreditCards = true
+	var popOnSelection = true
 
 	private var _accountKeys = [String]()
 
@@ -36,12 +37,17 @@ class SelectAccountController: UITableViewController, Numbers {
 
 		let stack = navigationController?.viewControllers
 		if stack!.count == 1 {
+			popOnSelection = false
 			navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: #selector(dismissController))
 		}
 	}
 
 	func dismissController() {
-		self.dismissViewControllerAnimated(true, completion: nil)
+		if popOnSelection {
+			navigationController?.popViewControllerAnimated(true)
+		} else {
+			self.dismissViewControllerAnimated(true, completion: nil)
+		}
 	}
 
 	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -76,6 +82,6 @@ class SelectAccountController: UITableViewController, Numbers {
 			accountDelegate?.ccAccountSet(Account(key: currentAccountKey)!)
 		}
 
-		tableView.reloadData()
+		dismissController()
 	}
 }

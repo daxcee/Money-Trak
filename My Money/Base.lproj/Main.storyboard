@@ -420,6 +420,9 @@
                                 <state key="normal" image="AddTransaction">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <segue destination="h5i-MB-7MT" kind="presentation" identifier="AddTransaction" modalTransitionStyle="crossDissolve" id="scq-2R-wwn"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Rt-bK-CBv" userLabel="Upcoming Transactions">
                                 <rect key="frame" x="271" y="151" width="56" height="60"/>
@@ -595,7 +598,7 @@
                 <viewControllerPlaceholder storyboardName="Reconciliations" referencedIdentifier="ReconciliationsNavController" id="Os0-Ez-ein" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ODb-fU-5DA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1750" y="-261"/>
+            <point key="canvasLocation" x="1750" y="-171"/>
         </scene>
         <!--Transactions-->
         <scene sceneID="ubT-gh-bzF">
@@ -1711,7 +1714,7 @@
                 <viewControllerPlaceholder storyboardName="Transactions" referencedIdentifier="TransactionsNavigation" id="uZI-Tw-V1P" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zn7-TD-tcR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1734" y="-156"/>
+            <point key="canvasLocation" x="1734" y="-120"/>
         </scene>
         <!--TransactionsNavigation-->
         <scene sceneID="Opa-dK-bHL">
@@ -1719,7 +1722,7 @@
                 <viewControllerPlaceholder storyboardName="Transactions" referencedIdentifier="TransactionsNavigation" id="DAc-0X-KOr" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KoX-uV-ToV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1734" y="-33"/>
+            <point key="canvasLocation" x="1734" y="-23"/>
         </scene>
         <!--TransactionsNavigation-->
         <scene sceneID="079-DB-l7o">
@@ -1727,7 +1730,15 @@
                 <viewControllerPlaceholder storyboardName="Transactions" referencedIdentifier="TransactionsNavigation" id="UvW-nk-Cql" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qls-Mc-tkq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1734" y="-100"/>
+            <point key="canvasLocation" x="1734" y="-70"/>
+        </scene>
+        <!--EditTransactionNavController-->
+        <scene sceneID="QdE-dU-1m3">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Transactions" referencedIdentifier="EditTransactionNavController" id="h5i-MB-7MT" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NBM-hu-un9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1751.5" y="30"/>
         </scene>
     </scenes>
     <resources>

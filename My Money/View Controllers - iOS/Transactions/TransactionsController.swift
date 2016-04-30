@@ -19,7 +19,11 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 	var recurringTransactions = false
 	var transactionKeys = [String]() {
 		didSet {
-			_sum = CommonDB.sumTransactions(transactionKeys, table: kTransactionsTable)
+			if let text = self.searchbar.text where text.characters.count > 0 {
+				_sum = CommonDB.sumTransactions(transactionKeys, table: kTransactionsTable)
+			} else {
+				_sum = nil
+			}
 		}
 	}
 
@@ -27,7 +31,7 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 	private var _accountView: AccountView?
 	private var _lastSelection: NSIndexPath?
 	private var _searching = false
-	private var _sum = 0
+	private var _sum: Int?
 
 	enum Segue: String {
 		case SetAccount
@@ -101,7 +105,8 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 
 	override func viewDidAppear(animated: Bool) {
 		if let lastSelection = _lastSelection {
-			tableView.selectRowAtIndexPath(lastSelection, animated: true, scrollPosition: UITableViewScrollPosition.None)
+			self.tableView.selectRowAtIndexPath(lastSelection, animated: true, scrollPosition: UITableViewScrollPosition.None)
+
 			delay(1.0, closure: { () -> () in
 				self.tableView.deselectRowAtIndexPath(lastSelection, animated: true)
 				self._lastSelection = nil
@@ -349,9 +354,12 @@ extension TransactionsController {
 	}
 
 	override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-		let entryName = transactionKeys.count == 1 ? "entry" : "entries"
-
-		return "\(transactionKeys.count) \(entryName) \n \(formatForAmount(_sum, useThousandsSeparator: true))"
+		if let sum = _sum {
+			let entryName = transactionKeys.count == 1 ? "entry" : "entries"
+			return "\(transactionKeys.count) \(entryName) \n \(formatForAmount(sum, useThousandsSeparator: true))"
+		} else {
+			return nil
+		}
 	}
 }
 

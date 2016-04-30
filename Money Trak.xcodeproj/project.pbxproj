@@ -46,6 +46,7 @@
 		8974B47F1A1642BD00D92411 /* Frequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8974B47E1A1642BD00D92411 /* Frequency.swift */; };
 		897848CB1A0BF7B600949395 /* SelectAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897848CA1A0BF7B600949395 /* SelectAccount.swift */; };
 		898007751ADC1BEC000B37BC /* SyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898007741ADC1BEC000B37BC /* SyncViewController.swift */; };
+		8987FBE41CD4C46F00E3C870 /* TransactionAccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8987FBE31CD4C46F00E3C870 /* TransactionAccountCell.swift */; };
 		8996CF021BD27D8100FAC390 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8996CF011BD27D8100FAC390 /* Reachability.swift */; };
 		8998916B1CC2882A00E3C870 /* ClearAllCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8998916A1CC2882A00E3C870 /* ClearAllCell.swift */; };
 		899891701CC30A8200E3C870 /* NibLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8998916D1CC30A8200E3C870 /* NibLoadable.swift */; };
@@ -158,6 +159,7 @@
 		8974B47E1A1642BD00D92411 /* Frequency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Frequency.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		897848CA1A0BF7B600949395 /* SelectAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SelectAccount.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		898007741ADC1BEC000B37BC /* SyncViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SyncViewController.swift; path = "My Money/View Controllers - iOS/Sync/SyncViewController.swift"; sourceTree = SOURCE_ROOT; };
+		8987FBE31CD4C46F00E3C870 /* TransactionAccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionAccountCell.swift; sourceTree = "<group>"; };
 		8996CF011BD27D8100FAC390 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		8998916A1CC2882A00E3C870 /* ClearAllCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClearAllCell.swift; sourceTree = "<group>"; };
 		8998916D1CC30A8200E3C870 /* NibLoadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NibLoadable.swift; sourceTree = "<group>"; };
@@ -314,6 +316,7 @@
 			isa = PBXGroup;
 			children = (
 				892A932E19E0241A0049CDDB /* TransactionsController.swift */,
+				8987FBE31CD4C46F00E3C870 /* TransactionAccountCell.swift */,
 				892A932D19E0241A0049CDDB /* EditTransactionControllers.swift */,
 				89BC3CC719E08026003B2A75 /* SetAlert.swift */,
 				89BC3CC919E08067003B2A75 /* SelectCategory.swift */,
@@ -710,6 +713,7 @@
 				899891721CC30A8200E3C870 /* Segues.swift in Sources */,
 				8996CF021BD27D8100FAC390 /* Reachability.swift in Sources */,
 				892A933019E0241A0049CDDB /* TransactionsController.swift in Sources */,
+				8987FBE41CD4C46F00E3C870 /* TransactionAccountCell.swift in Sources */,
 				894CCD8C19A6C38000D79BFA /* Transactions.swift in Sources */,
 				890D08701A38D4740010875D /* Reconciliation.swift in Sources */,
 				895F3B5F1A386CD00008A44F /* EditReconciliation.swift in Sources */,

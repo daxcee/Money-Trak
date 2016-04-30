@@ -685,6 +685,27 @@ class CommonDB: Numbers {
 		NSNotificationCenter.defaultCenter().postNotificationName(kUpdateTotalAvailableNotification, object: nil)
 	}
 
+	class func sumTransactions(transactionKeys: [String], table: String) -> Int {
+		var sql = "select sum(amount) from \(table) where key in ("
+
+		for key in transactionKeys {
+			sql += "'\(key)',"
+		}
+
+		sql = String(sql.characters.dropLast())
+		sql += ")"
+
+		let db = ALBNoSQLDB.sharedInstance
+		var amount = 0
+		if let results = db.sqlSelect(sql) {
+			if results.count > 0, let sum = results[0].values[0] as? Int {
+				amount = sum
+			}
+		}
+
+		return amount
+	}
+
 	// MARK: - Reconciliations
 	class func reconciliationCount() -> Int {
 		let db = ALBNoSQLDB.sharedInstance

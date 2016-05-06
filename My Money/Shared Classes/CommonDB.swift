@@ -134,10 +134,10 @@ class CommonDB: Numbers {
 		ALBNoSQLDB.setTableIndexes(table: kUpcomingTransactionsTable, indexes: ["date"])
 
 		dispatch_async(dbProcessingQueue, { () -> Void in
-			self.processUpcomingTransactions(false)
-			self.checkForNegativeUpcoming(nil)
-			self.removeUnusedLocations()
-			self.fixDuplicateNames()
+			CommonDB.processUpcomingTransactions(false)
+			CommonDB.checkForNegativeUpcoming(nil)
+			CommonDB.removeUnusedLocations()
+			CommonDB.fixDuplicateNames()
 		})
 	}
 

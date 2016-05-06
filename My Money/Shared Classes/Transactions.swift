@@ -36,6 +36,7 @@ class Transaction: ALBNoSQLDBObject {
 		var ccAccount: Account?
 		var sameAmount = false
 		let account = Account(key: accountKey)!
+		var sameAccount = false
 
 		if type == .ccPayment {
 			ccAccount = Account(key: ccAccountKey!)
@@ -59,8 +60,12 @@ class Transaction: ALBNoSQLDBObject {
 		if !isNew {
 			let oldTransaction = Transaction(key: key)!
 			sameAmount = (amount == oldTransaction.amount)
+			sameAccount = (accountKey == oldTransaction.accountKey)
 
-			if !sameAmount {
+			if !sameAccount {
+				delete()
+				isNew = true
+			} else if !sameAmount {
 				if ccAccount == nil || !ccAccount!.updateTotalAll {
 					deleteAmountFromAvailable(oldTransaction)
 				}
@@ -74,7 +79,7 @@ class Transaction: ALBNoSQLDBObject {
 			location.save()
 		}
 
-		if !sameAmount && account.updateTotalAll {
+		if (!sameAmount || !sameAccount) && account.updateTotalAll {
 			if ccAccount == nil || !ccAccount!.updateTotalAll {
 				addAmountToAvailable()
 			}

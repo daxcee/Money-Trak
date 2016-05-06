@@ -107,7 +107,7 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 		if let lastSelection = _lastSelection {
 			self.tableView.selectRowAtIndexPath(lastSelection, animated: true, scrollPosition: UITableViewScrollPosition.None)
 
-			delay(1.0, closure: { () -> () in
+			delay(0.5, closure: { () -> () in
 				self.tableView.deselectRowAtIndexPath(lastSelection, animated: true)
 				self._lastSelection = nil
 			})
@@ -148,7 +148,7 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 				controller.upcomingTransaction = upcomingTransactions
 				controller.recurringTransaction = recurringTransactions
 
-				if segue.identifier == "EditTransaction" {
+				if segueName == .EditTransaction {
 					let indexPath = sender as! NSIndexPath
 					let key = transactionKeys[indexPath.row]
 					if upcomingTransactions {
@@ -159,7 +159,6 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 							controller.transaction = RecurringTransaction(key: key)!
 							controller.title = "Edit Recurring"
 						} else {
-							controller.showAccountSelector = false
 							controller.transaction = Transaction(key: key)!
 							controller.title = "Edit Transaction"
 						}

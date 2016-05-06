@@ -131,13 +131,14 @@ class EditAccountController: UITableViewController, AccountTypeDelegate, UpdateD
 		}
 
 		if _newAccount {
-			dismissViewControllerAnimated(true, completion: { () -> Void in
-				let account = self._account
-				self.delegate?.accountCreated(account!)
+			dismissViewControllerAnimated(true, completion: { [weak self]() -> Void in
+				guard let controller = self, delegate = controller.delegate else { return }
+				let account = controller._account
+				delegate.accountCreated(account!)
 			})
 		} else {
-			self.navigationController?.popViewControllerAnimated(true)
-			self.delegate?.accountUpdated(self._account!)
+			navigationController?.popViewControllerAnimated(true)
+			delegate?.accountUpdated(self._account!)
 		}
 	}
 

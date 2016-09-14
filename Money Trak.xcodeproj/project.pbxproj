@@ -12,8 +12,6 @@
 		8909E1941B514133002F511E /* RowHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8909E1911B514133002F511E /* RowHeader.xib */; };
 		890B74FD1BD280D80035A37C /* ALBNoSQLDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890B74FC1BD280D80035A37C /* ALBNoSQLDB.swift */; };
 		890B75001BD287300035A37C /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 890B74FE1BD286C50035A37C /* libsqlite3.tbd */; };
-		890B75051BD28A4C0035A37C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89F53E3319FFD55600C902D5 /* StoreKit.framework */; };
-		890B75061BD28A500035A37C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89F53E2F19FFC95300C902D5 /* iAd.framework */; };
 		890B75081BD28A730035A37C /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 890B75071BD28A730035A37C /* libz.tbd */; };
 		890CD3BD1C94A7AC00E3C870 /* NumbersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890CD3BC1C94A7AC00E3C870 /* NumbersTests.swift */; };
 		890CD3C81C94A84700E3C870 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 890B74FE1BD286C50035A37C /* libsqlite3.tbd */; };
@@ -219,8 +217,6 @@
 		89EDA5271C94776500E3C870 /* Reconciliations.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Reconciliations.storyboard; sourceTree = "<group>"; };
 		89EDA52B1C947B3600E3C870 /* AmountField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmountField.swift; sourceTree = "<group>"; };
 		89F1C4D81A263F8100DC4BCD /* OSSpecific - iOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OSSpecific - iOS.swift"; sourceTree = "<group>"; };
-		89F53E2F19FFC95300C902D5 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
-		89F53E3319FFD55600C902D5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,8 +234,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				890B75081BD28A730035A37C /* libz.tbd in Frameworks */,
-				890B75061BD28A500035A37C /* iAd.framework in Frameworks */,
-				890B75051BD28A4C0035A37C /* StoreKit.framework in Frameworks */,
 				890B75001BD287300035A37C /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -520,8 +514,6 @@
 		89C39258199462E10020B6DC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				89F53E3319FFD55600C902D5 /* StoreKit.framework */,
-				89F53E2F19FFC95300C902D5 /* iAd.framework */,
 				89C39259199462E10020B6DC /* Info.plist */,
 			);
 			name = "Supporting Files";

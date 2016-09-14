@@ -1,5 +1,3 @@
-- Add Syncing
-- Add reconciliation
 - Adjust recurring to create only 2 months worth at a time and add additional items as each is consumed or deleted
 - Adjust view only if field is below keyboard
 

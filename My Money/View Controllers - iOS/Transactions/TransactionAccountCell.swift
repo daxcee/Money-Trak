@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class TransactionsAccountCell: UITableViewCell, Numbers {
+class TransactionsAccountCell: UITableViewCell, UsesCurrency {
 
 	@IBOutlet weak var accountName: UILabel!
 	@IBOutlet weak var currentBalance: UILabel!

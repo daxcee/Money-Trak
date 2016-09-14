@@ -9,7 +9,7 @@
 import UIKit
 import XCTest
 
-class My_MoneyTests: XCTestCase, Numbers {
+class My_MoneyTests: XCTestCase, UsesCurrency {
 
 	override func setUp() {
 		super.setUp()

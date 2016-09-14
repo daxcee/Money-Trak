@@ -10,17 +10,17 @@ import Foundation
 
 let kSyncComplete = "SyncComplete"
 
-typealias DeviceResponse = (allow: Bool) -> ()
+typealias DeviceResponse = (_ allow: Bool) -> ()
 protocol SyncEngineLinkDelegate {
-	func linkRequested(device: SyncDevice, deviceResponse: DeviceResponse)
-	func linkDenied(device: SyncDevice)
+	func linkRequested(_ device: SyncDevice, deviceResponse: @escaping DeviceResponse)
+	func linkDenied(_ device: SyncDevice)
 }
 
 protocol SyncEngineDelegate {
-	func statusChanged(device: SyncDevice)
+	func statusChanged(_ device: SyncDevice)
 
-	func syncDeviceFound(device: SyncDevice)
-	func syncDeviceLost(device: SyncDevice)
+	func syncDeviceFound(_ device: SyncDevice)
+	func syncDeviceLost(_ device: SyncDevice)
 }
 
 enum SyncDeviceStatus {
@@ -36,7 +36,7 @@ enum DataType: Int {
 class SyncDevice: ALBNoSQLDBObject {
 	var name = ""
 	var linked = false
-	var lastSync: NSDate?
+	var lastSync: Date?
 	var lastSequence = 0
 	var status = SyncDeviceStatus.idle
 	var errorState = false
@@ -65,17 +65,17 @@ class SyncDevice: ALBNoSQLDBObject {
 	}
 
 	func save() {
-		ALBNoSQLDB.setValue(table: kDevicesTable, key: key, value: jsonValue(), autoDeleteAfter: nil)
+		let _ = ALBNoSQLDB.setValue(table: kDevicesTable, key: key, value: jsonValue(), autoDeleteAfter: nil)
 	}
 
 	override func dictionaryValue() -> [String: AnyObject] {
 		var dictValue = [String: AnyObject]()
 
-		dictValue["name"] = name
-		dictValue["linked"] = linked
-		dictValue["lastSequence"] = lastSequence
+		dictValue["name"] = name as AnyObject
+		dictValue["linked"] = linked as AnyObject
+		dictValue["lastSequence"] = lastSequence as AnyObject
 		if let lastSync = self.lastSync {
-			dictValue["lastSync"] = ALBNoSQLDB.stringValueForDate(lastSync)
+			dictValue["lastSync"] = ALBNoSQLDB.stringValueForDate(lastSync) as AnyObject
 		}
 
 		return dictValue
@@ -83,6 +83,12 @@ class SyncDevice: ALBNoSQLDBObject {
 }
 
 class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectionDelegate {
+	/**
+	Called when a connection is requested.
+	
+	- parameter remoteNode: An ALBPeer object initialized with a name and a unique identifier.
+	- parameter requestResponse: A closure that is to be called with a Bool indicating whether to allow the connection or not. This can be done asynchronously so a dialog can be invoked, etc.
+	*/
 	var delegate: SyncEngineDelegate? {
 		didSet {
 			for device in nearbyDevices {
@@ -99,8 +105,8 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 	private var _netServer: ALBPeerServer
 	private var _netClient: ALBPeerClient
 	private var _netConnections = [ALBPeerConnection]()
-	private let syncQueue = dispatch_queue_create("com.AaronLBratcher.SyncQueue", nil)
-	private var _timer: dispatch_source_t
+	private let syncQueue = DispatchQueue(label: "com.AaronLBratcher.SyncQueue")
+	private var _timer: DispatchSourceTimer
 	private var _identityKey = ""
 
 	init?(name: String) {
@@ -112,9 +118,9 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 			}
 		}
 
-		_timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, syncQueue)
+		_timer = DispatchSource.makeTimerSource(flags: DispatchSource.TimerFlags(rawValue: UInt(0)), queue: syncQueue) /*Migrator FIXME: Use DispatchSourceTimer to avoid the cast*/ as! DispatchSource
 
-		ALBNoSQLDB.enableSyncing()
+		let _ = ALBNoSQLDB.enableSyncing()
 		if let dbKey = ALBNoSQLDB.dbInstanceKey() {
 			_identityKey = dbKey
 		}
@@ -137,11 +143,11 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 		_netClient.startBrowsing()
 
 		// auto-sync with linked nearby devices every minute
-		dispatch_source_set_timer(_timer, DISPATCH_TIME_NOW, 60 * NSEC_PER_SEC, 1 * NSEC_PER_SEC); // about every 60 seconds
-		dispatch_source_set_event_handler(_timer) {
+		_timer.scheduleRepeating(deadline: .now(), interval: .milliseconds(60000), leeway: .milliseconds(1000))
+		_timer.setEventHandler {
 			self.syncAllDevices()
 		}
-		dispatch_resume(_timer)
+		_timer.resume()
 
 		return
 	}
@@ -152,17 +158,17 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 	}
 
 	func startBonjour() {
-		_netServer.startPublishing()
+		let _ = _netServer.startPublishing()
 		_netClient.startBrowsing()
 	}
 
-	func linkDevice(device: SyncDevice) {
+	func linkDevice(_ device: SyncDevice) {
 		device.status = .linking
 		_netClient.connectToServer(device.netNode!)
 		notifyStatusChanged(device)
 	}
 
-	func forgetDevice(device: SyncDevice) {
+	func forgetDevice(_ device: SyncDevice) {
 		if nearbyDevices.filter({ $0.key == device.key }).count > 0 {
 			device.status = .unlinking
 			_netClient.connectToServer(device.netNode!)
@@ -172,8 +178,8 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 		completeDeviceUnlink(device)
 	}
 
-	func completeDeviceUnlink(device: SyncDevice) {
-		ALBNoSQLDB.deleteForKey(table: kDevicesTable, key: device.key)
+	func completeDeviceUnlink(_ device: SyncDevice) {
+		let _ = ALBNoSQLDB.deleteForKey(table: kDevicesTable, key: device.key)
 		device.linked = false
 		if offlineDevices.filter({ $0.key == device.key }).count > 0 {
 			offlineDevices = offlineDevices.filter({ $0.key != device.key })
@@ -182,7 +188,7 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 		notifyStatusChanged(device)
 	}
 
-	private func deviceForNode(node: ALBPeer) -> SyncDevice {
+	private func deviceForNode(_ node: ALBPeer) -> SyncDevice {
 		let devices = nearbyDevices.filter({ $0.key == node.peerID })
 		if devices.count > 0 {
 			return devices[0]
@@ -209,7 +215,7 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 		}
 	}
 
-	func syncWithDevice(device: SyncDevice) {
+	func syncWithDevice(_ device: SyncDevice) {
 		if !device.linked || device.status != .idle {
 			return
 		}
@@ -219,33 +225,33 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 		_netClient.connectToServer(device.netNode!)
 	}
 
-	private func notifyStatusChanged(device: SyncDevice) {
-		dispatch_async(dispatch_get_main_queue(), { () -> Void in
+	private func notifyStatusChanged(_ device: SyncDevice) {
+		DispatchQueue.main.async(execute: { () -> Void in
 			self.delegate?.statusChanged(device)
 		})
 	}
 
 	// MARK: - Server delegate calls
-	func serverPublishingError(errorDict: [NSObject: AnyObject]) {
+	func serverPublishingError(_ errorDict: [NSObject: AnyObject]) {
 		print("publishing error: \(errorDict)")
 	}
 
-	func allowConnectionRequest(remoteNode: ALBPeer, requestResponse: (allow: Bool) -> ()) {
+	func allowConnectionRequest(_ remoteNode: ALBPeer, requestResponse: @escaping (_ allow: Bool) -> ()) {
 		let device = deviceForNode(remoteNode)
 		if device.linked {
-			requestResponse(allow: true)
+			requestResponse(true)
 		} else {
 			if let linkDelegate = linkDelegate {
 				linkDelegate.linkRequested(device, deviceResponse: { (allow) -> () in
-					requestResponse(allow: allow)
+					requestResponse(allow)
 				})
 			} else {
-				requestResponse(allow: false)
+				requestResponse(false)
 			}
 		}
 	}
 
-	func clientDidConnect(connection: ALBPeerConnection) {
+	func clientDidConnect(_ connection: ALBPeerConnection) {
 		// connection delegate must be made to get read and write calls
 		connection.delegate = self
 
@@ -263,12 +269,12 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 	}
 
 	// MARK: - Client delegate calls
-	func clientBrowsingError(errorDict: [NSObject: AnyObject]) {
+	func clientBrowsingError(_ errorDict: [NSObject: AnyObject]) {
 		print("browsing error: \(errorDict)")
 	}
 
-	func serverFound(server: ALBPeer) {
-		dispatch_sync(syncQueue, { () -> Void in
+	func serverFound(_ server: ALBPeer) {
+		syncQueue.sync(execute: { () -> Void in
 			let device = self.deviceForNode(server)
 			if self.nearbyDevices.filter({ $0.key == device.key }).count > 0 || device.key == self._identityKey {
 				return
@@ -278,14 +284,14 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 			self.offlineDevices = self.offlineDevices.filter({ $0.key != device.key })
 			self.syncWithDevice(device)
 
-			dispatch_async(dispatch_get_main_queue(), { () -> Void in
+			DispatchQueue.main.async(execute: { () -> Void in
 				self.delegate?.syncDeviceFound(device)
 			})
 		})
 	}
 
-	func serverLost(server: ALBPeer) {
-		dispatch_sync(syncQueue, { () -> Void in
+	func serverLost(_ server: ALBPeer) {
+		syncQueue.sync(execute: { () -> Void in
 			let device = self.deviceForNode(server)
 			if device.status != .idle {
 				return
@@ -296,13 +302,13 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 				self.offlineDevices.append(offlineDevice)
 			}
 
-			dispatch_async(dispatch_get_main_queue(), { () -> Void in
+			DispatchQueue.main.async(execute: { () -> Void in
 				self.delegate?.syncDeviceLost(device)
 			})
 		})
 	}
 
-	func unableToConnect(server: ALBPeer) {
+	func unableToConnect(_ server: ALBPeer) {
 		let device = deviceForNode(server)
 
 		switch device.status {
@@ -318,7 +324,7 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 		notifyStatusChanged(device)
 	}
 
-	func connectionDenied(server: ALBPeer) {
+	func connectionDenied(_ server: ALBPeer) {
 		let device = deviceForNode(server)
 		device.errorState = false
 		device.status = .idle
@@ -326,7 +332,7 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 		linkDelegate?.linkDenied(device)
 	}
 
-	func connected(connection: ALBPeerConnection) {
+	func connected(_ connection: ALBPeerConnection) {
 		// connection delegate must be made to get read and write calls
 		connection.delegate = self
 
@@ -344,23 +350,23 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 
 		if device.status == .unlinking {
 			let dict = ["dataType": DataType.unlink.rawValue]
-			let data = NSKeyedArchiver.archivedDataWithRootObject(dict)
+			let data = NSKeyedArchiver.archivedData(withRootObject: dict)
 			connection.sendData(data)
 			connection.disconnect()
 
-			ALBNoSQLDB.deleteForKey(table: kDevicesTable, key: device.key)
+			let _ = ALBNoSQLDB.deleteForKey(table: kDevicesTable, key: device.key)
 			device.linked = false
 			device.status = .idle
 			notifyStatusChanged(device)
 		} else {
 			let dict = ["dataType": DataType.syncLogRequest.rawValue, "lastSequence": device.lastSequence]
-			let data = NSKeyedArchiver.archivedDataWithRootObject(dict)
+			let data = NSKeyedArchiver.archivedData(withRootObject: dict)
 			connection.sendData(data)
 		}
 	}
 
 	// MARK: - Connection delegate calls
-	func disconnected(connection: ALBPeerConnection, byRequest: Bool) {
+	func disconnected(_ connection: ALBPeerConnection, byRequest: Bool) {
 		let device = deviceForNode(connection.remotNode)
 
 		if !byRequest {
@@ -380,33 +386,33 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 		_netConnections = _netConnections.filter({ $0 != connection })
 	}
 
-	func textReceived(connection: ALBPeerConnection, text: String) {
+	func textReceived(_ connection: ALBPeerConnection, text: String) {
 		// not used
 	}
 
-	func dataReceived(connection: ALBPeerConnection, data: NSData) {
+	func dataReceived(_ connection: ALBPeerConnection, data: Data) {
 		let device = deviceForNode(connection.remotNode)
 		// data packet is only sent to ask for sync file giving lastSequence or failure status of sync request
 
-		if let dataDict = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [String: Int], dataType = DataType(rawValue: dataDict["dataType"]!) {
+		if let dataDict = NSKeyedUnarchiver.unarchiveObject(with: data) as? [String: Int], let dataType = DataType(rawValue: dataDict["dataType"]!) {
 			switch dataType {
 			case .syncLogRequest: // server gets this
 				let lastSequence = dataDict["lastSequence"]!
 
-				dispatch_async(syncQueue, { () -> Void in
-					let searchPaths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+				syncQueue.async(execute: { () -> Void in
+					let searchPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
 					let documentFolderPath = searchPaths[0]
 					let fileName = ALBNoSQLDB.guid()
 					let logFilePath = "\(documentFolderPath)/\(fileName).txt"
-					let url = NSURL(fileURLWithPath: logFilePath)
+					let url = URL(fileURLWithPath: logFilePath)
 
 					let (success, _): (Bool, Int) = ALBNoSQLDB.createSyncFileAtURL(url, lastSequence: lastSequence, targetDBInstanceKey: connection.remotNode.peerID)
 
 					if success, let zipURL = self.zipFile(logFilePath) {
-						connection.sendResourceAtURL(zipURL, name: "\(fileName).zip", resourceID: fileName, onCompletion: { (sent) -> () in
+						let progress = connection.sendResourceAtURL(zipURL, name: "\(fileName).zip", resourceID: fileName, onCompletion: { (sent) -> () in
 							connection.disconnect()
 							do {
-								try NSFileManager.defaultManager().removeItemAtURL(zipURL)
+								try FileManager.default.removeItem(at: zipURL)
 							} catch _ {
 							}
 
@@ -417,7 +423,7 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 					} else {
 						// send sync error message
 						let dict = ["dataType": DataType.syncError.rawValue]
-						let data = NSKeyedArchiver.archivedDataWithRootObject(dict)
+						let data = NSKeyedArchiver.archivedData(withRootObject: dict)
 						connection.sendData(data)
 						connection.disconnect()
 					}
@@ -436,18 +442,18 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 		}
 	}
 
-	func startedReceivingResource(connection: ALBPeerConnection, atURL: NSURL, name: String, resourceID: String, progress: NSProgress) {
+	func startedReceivingResource(_ connection: ALBPeerConnection, atURL: URL, name: String, resourceID: String, progress: Progress) {
 		print("started to receive \(atURL)")
 	}
 
-	func resourceReceived(connection: ALBPeerConnection, atURL: NSURL, name: String, resourceID: String) {
+	func resourceReceived(_ connection: ALBPeerConnection, atURL: URL, name: String, resourceID: String) {
 		let device = deviceForNode(connection.remotNode)
 		connection.disconnect()
 
-		dispatch_async(syncQueue, { () -> Void in
+		syncQueue.async(execute: { () -> Void in
 			if let summaryKeys = ALBNoSQLDB.keysInTable(kMonthlySummaryEntriesTable, sortOrder: nil) {
 				for key in summaryKeys {
-					ALBNoSQLDB.deleteForKey(table: kMonthlySummaryEntriesTable, key: key)
+					let _ = ALBNoSQLDB.deleteForKey(table: kMonthlySummaryEntriesTable, key: key)
 				}
 			}
 
@@ -456,7 +462,7 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 			let (successful, _, lastSequence): (Bool, String, Int) = ALBNoSQLDB.processSyncFileAtURL(logURL, syncProgress: nil)
 			if successful {
 				device.lastSequence = lastSequence
-				device.lastSync = NSDate()
+				device.lastSync = Date()
 				device.save()
 				device.errorState = false
 			} else {
@@ -464,60 +470,58 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 			}
 
 			do {
-				try NSFileManager.defaultManager().removeItemAtURL(logURL)
+				try FileManager.default.removeItem(at: logURL)
 			} catch _ {
 			}
 
 			device.status = .idle
 			self.notifyStatusChanged(device)
 
-			NSNotificationCenter.defaultCenter().postNotificationName(kSyncComplete, object: nil)
+			NotificationCenter.default.post(name: Notification.Name(rawValue: kSyncComplete), object: nil)
 		})
 	}
 
-	func zipFile(filePath: String) -> NSURL? {
+	func zipFile(_ filePath: String) -> URL? {
 		// get path components
-		let url = NSURL(fileURLWithPath: filePath)
-		guard let fullPath = url.URLByDeletingLastPathComponent, path = fullPath.path else {
-			return nil
-		}
-
-		var parts = filePath.componentsSeparatedByString("/")
+		let url = URL(fileURLWithPath: filePath)
+		let fullPath = url.deletingLastPathComponent()
+		let path = fullPath.path
+		var parts = filePath.components(separatedBy: "/")
 		var fileName = parts[parts.count - 1]
-		parts = fileName.componentsSeparatedByString(".")
+		parts = fileName.components(separatedBy: ".")
 		fileName = parts[0]
 		let zipPath = "\(path)/\(fileName).zip"
-		SSZipArchive.createZipFileAtPath(zipPath, withFilesAtPaths: [filePath])
+		SSZipArchive.createZipFile(atPath: zipPath, withFilesAtPaths: [filePath])
 
 		do {
-			try NSFileManager.defaultManager().removeItemAtURL(NSURL(fileURLWithPath: filePath))
+			try FileManager.default.removeItem(at: URL(fileURLWithPath: filePath))
 		} catch _ {
 		}
 
-		if NSFileManager.defaultManager().fileExistsAtPath(zipPath) {
-			return NSURL(fileURLWithPath: zipPath)
+		if FileManager.default.fileExists(atPath: zipPath) {
+			return URL(fileURLWithPath: zipPath)
 		} else {
 			return nil
 		}
 	}
 
-	func unzipFile(zipURL: NSURL) -> NSURL {
-		let path = zipURL.URLByDeletingLastPathComponent!.path!
-		let zipPath = zipURL.path!
+	func unzipFile(_ zipURL: URL) -> URL {
+		let path = zipURL.deletingLastPathComponent().path
+		let zipPath = zipURL.path
 
-		var parts = zipPath.componentsSeparatedByString("/")
+		var parts = zipPath.components(separatedBy: "/")
 		var fileName = parts[parts.count - 1]
-		parts = fileName.componentsSeparatedByString(".")
+		parts = fileName.components(separatedBy: ".")
 		fileName = parts[0]
 		let filePath = "\(path)/\(fileName).txt"
 
-		SSZipArchive.unzipFileAtPath(zipPath, toDestination: path)
+		SSZipArchive.unzipFile(atPath: zipPath, toDestination: path)
 
 		do {
-			try NSFileManager.defaultManager().removeItemAtURL(zipURL)
+			try FileManager.default.removeItem(at: zipURL)
 		} catch _ {
 		}
 
-		return NSURL(fileURLWithPath: filePath)
+		return URL(fileURLWithPath: filePath)
 	}
 }

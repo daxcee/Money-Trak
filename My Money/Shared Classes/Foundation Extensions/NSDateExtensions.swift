@@ -8,99 +8,94 @@
 
 import Foundation
 
-let dateFormatter = getDateFormatter()
-let dayFormatter = getDayFormatter()
-let monthFormatter = getMonthFormatter()
-let yearFormatter = getYearFormatter()
-let mediumDateFormatter = getMediumDateFormatter()
-let fullDateFormatter = getFullDateFormatter()
-
-func getDateFormatter() -> NSDateFormatter {
-	let format = NSDateFormatter.dateFormatFromTemplate("MMM d yyyy", options: 0, locale: NSLocale.currentLocale())
-	let formatter = NSDateFormatter()
+var dateFormatter: DateFormatter = {
+	let format = DateFormatter.dateFormat(fromTemplate: "MMM d yyyy", options: 0, locale: NSLocale.current)
+	let formatter = DateFormatter()
 	formatter.dateFormat = format
-
+	
 	return formatter
-}
+}()
 
-func getDayFormatter() -> NSDateFormatter {
-	let format = NSDateFormatter.dateFormatFromTemplate("MMM d", options: 0, locale: NSLocale.currentLocale())
-	let formatter = NSDateFormatter()
+let dayFormatter: DateFormatter = {
+	let format = DateFormatter.dateFormat(fromTemplate: "MMM d", options: 0, locale: NSLocale.current)
+	let formatter = DateFormatter()
 	formatter.dateFormat = format
-
+	
 	return formatter
-}
+}()
 
-func getMonthFormatter() -> NSDateFormatter {
-	let format = NSDateFormatter.dateFormatFromTemplate("MMM yyyy", options: 0, locale: NSLocale.currentLocale())
-	let formatter = NSDateFormatter()
+
+let monthFormatter: DateFormatter = {
+	let format = DateFormatter.dateFormat(fromTemplate: "MMM yyyy", options: 0, locale: NSLocale.current)
+	let formatter = DateFormatter()
 	formatter.dateFormat = format
-
+	
 	return formatter
-}
+}()
 
-func getYearFormatter() -> NSDateFormatter {
-	let format = NSDateFormatter.dateFormatFromTemplate("yyyy", options: 0, locale: NSLocale.currentLocale())
-	let formatter = NSDateFormatter()
+let yearFormatter: DateFormatter = {
+	let format = DateFormatter.dateFormat(fromTemplate: "yyyy", options: 0, locale: NSLocale.current)
+	let formatter = DateFormatter()
 	formatter.dateFormat = format
-
+	
 	return formatter
-}
+}()
 
-func getMediumDateFormatter() -> NSDateFormatter {
-	let formatter = NSDateFormatter()
-	formatter.dateStyle = NSDateFormatterStyle.MediumStyle
 
+let mediumDateFormatter: DateFormatter = {
+	let formatter = DateFormatter()
+	formatter.dateStyle = DateFormatter.Style.medium
+	
 	return formatter
-}
+ 
+}()
 
-func getFullDateFormatter() -> NSDateFormatter {
-	let _dateFormatter = NSDateFormatter()
-	_dateFormatter.calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+let fullDateFormatter: DateFormatter = {
+	let _dateFormatter = DateFormatter()
+	_dateFormatter.calendar = Calendar(identifier: .gregorian)
 	_dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'.'SSSZZZZZ"
 	return _dateFormatter
-}
+}()
 
-func gregorianMonthForDate(monthDate: NSDate) -> (start: NSDate, end: NSDate) {
-	let calendar = NSCalendar.currentCalendar()
-	let year = calendar.components(NSCalendarUnit.Year, fromDate: monthDate).year
-	let month = calendar.components(NSCalendarUnit.Month, fromDate: monthDate).month
+func gregorianMonthForDate(_ monthDate: Date) -> (start: Date, end: Date) {
+	let calendar = Calendar.current
+	let year = calendar.component(.year, from: monthDate)
+	let month = calendar.component(.month, from: monthDate)
 
-	let components = NSDateComponents()
+	var components = DateComponents()
 	components.year = year
 	components.month = month
 	components.day = 1
 
-	let start = calendar.dateFromComponents(components)?.midnight()
-
-	let days = calendar.rangeOfUnit(NSCalendarUnit.Day, inUnit: NSCalendarUnit.Month, forDate: start!)
-
-	components.day = days.length
-	let end = calendar.dateFromComponents(components)?.addDate(years: 0, months: 0, weeks: 0, days: 1).midnight()
-
-	return (start!, end!)
+	let start = calendar.date(from: components)!
+	let days = calendar.range(of: Calendar.Component.day, in: Calendar.Component.month, for: start)!
+	
+	var end = calendar.date(byAdding: DateComponents(day: days.count), to: start)!
+	end = calendar.date(byAdding: DateComponents(second: -1), to: end)!
+	
+	return (start, end)
 }
 
-extension NSDate {
+extension Date {
 	func stringValue() -> String {
-		let strDate = fullDateFormatter.stringFromDate(self)
+		let strDate = fullDateFormatter.string(from: self)
 		return strDate
 	}
 
 	func mediumDateString() -> String {
 		mediumDateFormatter.doesRelativeDateFormatting = false
-		let strDate = mediumDateFormatter.stringFromDate(self)
+		let strDate = mediumDateFormatter.string(from: self)
 		return strDate
 	}
 
 	func relativeDateString() -> String {
 		mediumDateFormatter.doesRelativeDateFormatting = true
-		let strDate = mediumDateFormatter.stringFromDate(self)
+		let strDate = mediumDateFormatter.string(from: self)
 		return strDate
 	}
 
-	func relativeTimeFrom(date: NSDate) -> String {
-		let interval = abs(self.timeIntervalSinceDate(date))
+	func relativeTimeFrom(_ date: Date) -> String {
+		let interval = abs(self.timeIntervalSince(date))
 		if interval < 60 {
 			return "less than a minute ago"
 		}
@@ -112,43 +107,48 @@ extension NSDate {
 		return "\(floor(interval / 60 / 60)) hours ago"
 	}
 
-	func addDate(years years: Int, months: Int, weeks: Int, days: Int) -> NSDate {
-		let calendar = NSCalendar.currentCalendar()
-		let components = NSDateComponents()
+	func addDate(years: Int, months: Int, weeks: Int, days: Int) -> Date {
+		let calendar = Calendar.current
+		var components = DateComponents()
 		components.year = years
 		components.month = months
 		components.weekOfYear = weeks
 		components.day = days
 
-		let nextDate = calendar.dateByAddingComponents(components, toDate: self, options: [])
+		let nextDate = calendar.date(byAdding: components, to: self)
 		return nextDate!
 	}
 
-	func addTime(hours hours: Int, minutes: Int, seconds: Int) -> NSDate {
-		let calendar = NSCalendar.currentCalendar()
-		let components = NSDateComponents()
+	func addTime(hours: Int, minutes: Int, seconds: Int) -> Date {
+		let calendar = Calendar.current
+		var components = DateComponents()
 		components.hour = hours
 		components.minute = minutes
 		components.second = seconds
 
-		let nextDate = calendar.dateByAddingComponents(components, toDate: self, options: [])
+		let nextDate = calendar.date(byAdding: components, to: self)
 		return nextDate!
 	}
 
-	func midnight() -> NSDate {
-		let calendar = NSCalendar.currentCalendar()
-		let dateComponents = calendar.components([NSCalendarUnit.Year, NSCalendarUnit.Month, NSCalendarUnit.Day], fromDate: self)
-		dateComponents.hour = 0
-		dateComponents.minute = 0
-		dateComponents.second = 0
+	func midnight() -> Date {
+		let calendar = Calendar.current
+		let year = calendar.component(.year, from: self)
+		let month = calendar.component(.month, from: self)
+		let day = calendar.component(.day, from: self)
+		
+		var components = DateComponents()
+		components.year = year
+		components.month = month
+		components.day = day
 
-		let midnight = calendar.dateFromComponents(dateComponents)!
+		let midnight = calendar.date(from: components)!
+
 		return midnight;
 	}
 
 	func calendarYear() -> Int {
-		let calendar = NSCalendar.currentCalendar()
-		let year = calendar.components(NSCalendarUnit.Year, fromDate: self).year
+		let calendar = Calendar.current
+		let year = calendar.component(.year, from: self)
 
 		return year
 	}

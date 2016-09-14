@@ -18,31 +18,31 @@ enum ALBPeerPacketType: String {
 	case resourceError
 }
 
-typealias completionHandler = (sent: Bool) -> ()
+typealias completionHandler = (_ sent: Bool) -> ()
 
 struct ALBPeerResource {
 	var identity: String = ""
 	var name: String = ""
 
-	var url: NSURL?
+	var url: URL?
 	var onCompletion: completionHandler?
-	var progress: NSProgress?
+	var progress: Progress?
 	var offset = 0
 	var length = 0
-	var mappedData: NSData?
+	var mappedData: Data?
 
 	init(identity: String, name: String) {
 		self.identity = identity
 		self.name = name
 	}
 
-	init(identity: String, name: String, url: NSURL, data: NSData) {
+	init(identity: String, name: String, url: URL, data: Data) {
 		self.identity = identity
 		self.name = name
 		self.url = url
 		self.mappedData = data
 
-		length = data.length
+		length = data.count
 	}
 
 	func dictValue() -> [String: String] {
@@ -53,37 +53,37 @@ struct ALBPeerResource {
 struct ALBPeerPacket {
 	var type: ALBPeerPacketType
 	var isFinal = false
-	var data: NSData?
+	var data: Data?
 	var resource: ALBPeerResource?
 
-	func packetDataUsingData(data: NSData?) -> NSData {
-		var dict: [String: AnyObject] = ["type": type.rawValue]
-		dict["isFinal"] = isFinal
+	func packetDataUsingData(_ data: Data?) -> Data {
+		var dict: [String: AnyObject] = ["type": type.rawValue as AnyObject]
+		dict["isFinal"] = isFinal as AnyObject
 
 		if let data = data {
-			dict["data"] = data
+			dict["data"] = data as AnyObject
 		}
 		if let resource = resource {
-			dict["resource"] = resource.dictValue()
+			dict["resource"] = resource.dictValue() as AnyObject
 		}
 
-		let dictData = NSKeyedArchiver.archivedDataWithRootObject(dict)
-		let packetData = NSMutableData(data: dictData)
-		packetData.appendBytes(ALBPeerPacketDelimiter.bytes, length: 3)
+		let dictData = NSKeyedArchiver.archivedData(withRootObject: dict)
+		var packetData = NSData(data: dictData) as Data
+		packetData.append(ALBPeerPacketDelimiter)
 
 		return packetData
 	}
 
-	init?(packetData: NSData) {
-		let dataValue = NSData(bytes: packetData.bytes, length: packetData.length - 3)
-		if let dataDict = NSKeyedUnarchiver.unarchiveObjectWithData(dataValue) as? [String: AnyObject] {
+	init?(packetData: Data) {
+		let dataValue = Data(bytes: (packetData as NSData).bytes, count: packetData.count - 3)		
+		if let dataDict = NSKeyedUnarchiver.unarchiveObject(with: dataValue) as? [String: AnyObject] {
 			if let type = ALBPeerPacketType(rawValue: dataDict["type"] as! String) {
 				self.type = type
 			} else {
 				return nil
 			}
 
-			if let data = dataDict["data"] as? NSData {
+			if let data = dataDict["data"] as? Data {
 				self.data = data
 			}
 

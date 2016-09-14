@@ -22,29 +22,29 @@ class AlertController: UIViewController, UITableViewDelegate, UITableViewDataSou
 	
 	override func viewDidLoad() {
 		helper = TableViewHelper(tableView: tableView!)
-		helper!.addCell(0, cell: tableView.dequeueReusableCellWithIdentifier("None")!, name: "None")
-		helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier("1d")!, name: "1d")
-		helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier("2d")!, name: "2d")
-		helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier("1w")!, name: "1w")
-		helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier("2w")!, name: "2w")
-		helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier("1m")!, name: "1m")
+		helper!.addCell(0, cell: tableView.dequeueReusableCell(withIdentifier: "None")!, name: "None")
+		helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "1d")!, name: "1d")
+		helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "2d")!, name: "2d")
+		helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "1w")!, name: "1w")
+		helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "2w")!, name: "2w")
+		helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "1m")!, name: "1m")
 	}
 	
-	override func viewDidDisappear(animated: Bool) {
+	override func viewDidDisappear(_ animated: Bool) {
 		if let delegate = delegate {
 			delegate.alertSet()
 		}
 	}
 	
-	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	func numberOfSections(in tableView: UITableView) -> Int {
 		return 2
 	}
 	
-	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return (section == 0 ? 1 : 5)
 	}
 	
-	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let name = helper!.cellNameAtIndexPath(indexPath)!
 		let cell = helper!.cellForRowAtIndexPath(indexPath)
 		var checkmark = false
@@ -61,12 +61,12 @@ class AlertController: UIViewController, UITableViewDelegate, UITableViewDataSou
 			}
 		}
 		
-		cell.accessoryType = (checkmark ? .Checkmark : .None)
+		cell.accessoryType = (checkmark ? .checkmark : .none)
 		return cell
 	}
 	
-	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		if indexPath.section == 0 {
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		if (indexPath as NSIndexPath).section == 0 {
 			transaction.alerts = nil
 		} else {
 			if transaction.alerts == nil {
@@ -74,7 +74,7 @@ class AlertController: UIViewController, UITableViewDelegate, UITableViewDataSou
 			}
 			
 			var identifier = ""
-			switch indexPath.row {
+			switch (indexPath as NSIndexPath).row {
 			case 0:
 				identifier = "1d"
 			case 1:

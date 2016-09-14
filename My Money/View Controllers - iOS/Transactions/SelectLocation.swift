@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol LocationDelegate {
-	func locationSet(location: Location)
+	func locationSet(_ location: Location)
 }
 
 class SelectLocationController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
@@ -22,9 +22,9 @@ class SelectLocationController: UIViewController, UITableViewDataSource, UITable
 	var locationKeys = [String]()
 	var selectedLocation: Location?
 	var searching = false
-	let searchQueue: dispatch_queue_t = dispatch_queue_create("com.aaronlbratcher.myMoneyLocationSearch", DISPATCH_QUEUE_SERIAL)
+	let searchQueue: DispatchQueue = DispatchQueue(label: "com.aaronlbratcher.myMoneyLocationSearch")
 
-	override func viewDidAppear(animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
 		if selectedLocation != nil {
 			textField.text = selectedLocation!.name
 			selectedLocation = nil
@@ -34,46 +34,46 @@ class SelectLocationController: UIViewController, UITableViewDataSource, UITable
 	}
 
 	// MARK: - TableView
-	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
 
-	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return locationKeys.count
 	}
 
-	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCellWithIdentifier("LocationCell", forIndexPath: indexPath)
-		let location = Location(key: locationKeys[indexPath.row])!
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "LocationCell", for: indexPath)
+		let location = Location(key: locationKeys[(indexPath as NSIndexPath).row])!
 		cell.textLabel!.text = location.name
 
 		return cell
 	}
 
-	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		let location = Location(key: locationKeys[indexPath.row])!
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		let location = Location(key: locationKeys[(indexPath as NSIndexPath).row])!
 		textField.text = location.name
-		selectedLocation = Location(key: locationKeys[indexPath.row])
+		selectedLocation = Location(key: locationKeys[(indexPath as NSIndexPath).row])
 		save(self)
 	}
 
 	// MARK: - TextField
-	@IBAction func valueChanged(sender: AnyObject) {
+	@IBAction func valueChanged(_ sender: AnyObject) {
 		performSearch()
 	}
 
-	func textFieldShouldReturn(textField: UITextField) -> Bool {
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 		save(self)
 		return false;
 	}
 
 	// MARK: - Other
-	@IBAction func save(sender: AnyObject) {
+	@IBAction func save(_ sender: AnyObject) {
 		if selectedLocation == nil, let locationText = self.textField.text {
 			selectedLocation = CommonDB.locationForName(locationText)
 		}
 
-		navigationController!.popViewControllerAnimated(true)
+		navigationController!.popViewController(animated: true)
 		delay(0.6, closure: { () -> () in
 			self.delegate!.locationSet(self.selectedLocation!)
 		})
@@ -84,14 +84,14 @@ class SelectLocationController: UIViewController, UITableViewDataSource, UITable
 			return
 		}
 
-		dispatch_async(searchQueue, { [weak self]() -> Void in
+		searchQueue.async(execute: { [weak self]() -> Void in
 			guard let controller = self else { return }
 
 			if let locationText = controller.textField.text {
 				controller.searching = true
 				controller.locationKeys = CommonDB.locationKeysForString(locationText)
 				controller.searching = false
-				dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+				DispatchQueue.main.sync(execute: { () -> Void in
 					controller.tableView.reloadData()
 				})
 			}

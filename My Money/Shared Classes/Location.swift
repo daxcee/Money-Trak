@@ -40,9 +40,9 @@ class Location:ALBNoSQLDBObject {
     
     override func dictionaryValue() ->[String:AnyObject] {
         var dictValue = [String:AnyObject]()
-        dictValue["name"] = name
+        dictValue["name"] = name as AnyObject?
         if categoryKey != nil {
-            dictValue["categoryKey"] = categoryKey!
+            dictValue["categoryKey"] = categoryKey! as AnyObject?
         }
         
         return dictValue
@@ -77,7 +77,7 @@ class LocationAddress:ALBNoSQLDBObject {
     
     override func dictionaryValue() ->[String:AnyObject] {
         var dictValue = [String:AnyObject]()
-        dictValue["locationKey"] = locationKey
+        dictValue["locationKey"] = locationKey as AnyObject?
         
         return dictValue
     }

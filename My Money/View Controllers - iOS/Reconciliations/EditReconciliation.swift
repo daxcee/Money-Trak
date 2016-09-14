@@ -10,11 +10,11 @@ import Foundation
 import UIKit
 
 protocol EditReconciliationProtocol {
-	func reconciliationAdded(reconciliation: Reconciliation)
-	func reconciliationUpdated(reconciliation: Reconciliation)
+	func reconciliationAdded(_ reconciliation: Reconciliation)
+	func reconciliationUpdated(_ reconciliation: Reconciliation)
 }
 
-class EditReconciliationController: UIViewController, ReconciliationHeaderDelegate, EditTransactionProtocol, UISearchBarDelegate, Numbers {
+class EditReconciliationController: UIViewController, ReconciliationHeaderDelegate, EditTransactionProtocol, UISearchBarDelegate, UsesCurrency {
 
 	@IBOutlet weak var searchbar: UISearchBar!
 	@IBOutlet weak var headerView: UIView!
@@ -28,14 +28,14 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 	var delegate: EditReconciliationProtocol?
 	var reconciliation = Reconciliation()
 
-	private var _transactionKeys = [String]()
-	private var _lastSelection: NSIndexPath?
-	private var _searching = false
-	private var _buffered = false
-	private var _firstForAccount = false
-	private var _initialBalanceTansactionKey: String?
+	fileprivate var _transactionKeys = [String]()
+	fileprivate var _lastSelection: IndexPath?
+	fileprivate var _searching = false
+	fileprivate var _buffered = false
+	fileprivate var _firstForAccount = false
+	fileprivate var _initialBalanceTansactionKey: String?
 
-	private let _keyboardToolbar = UIToolbar(frame: CGRectMake(0, 0, 100, 34))
+	fileprivate let _keyboardToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 100, height: 34))
 
 	enum Segues: String {
 		case ShowHeader = "ShowHeader"
@@ -49,7 +49,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 		super.viewDidLoad()
 
 		if reconciliation.isNew {
-			performSegueWithIdentifier(Segues.ShowHeader.rawValue, sender: nil)
+			performSegue(withIdentifier: Segues.ShowHeader.rawValue, sender: nil)
 			if let lastReconciliation = CommonDB.lastReconciliationForAccount(reconciliation.accountKey, ignoreUnreconciled: true) {
 				reconciliation.beginningBalance = lastReconciliation.endingBalance
 			} else {
@@ -64,7 +64,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 			searchbar.removeFromSuperview()
 			tableConstraint.constant = -80
 		} else {
-			let addButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: #selector(addTransaction))
+			let addButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(addTransaction))
 			let saveButton = navigationItem.rightBarButtonItem!
 			navigationItem.rightBarButtonItems = [saveButton, addButton]
 		}
@@ -72,20 +72,20 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 		updateHeader()
 		loadTransactions()
 
-		_keyboardToolbar.barStyle = UIBarStyle.BlackTranslucent
-		_keyboardToolbar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 34)
-		let flexSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-		let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: #selector(doneTyping))
-		doneButton.tintColor = UIColor.whiteColor() // (red: 0, green: 0.478431, blue: 1.0, alpha: 1.0)
+		_keyboardToolbar.barStyle = UIBarStyle.blackTranslucent
+		_keyboardToolbar.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: 34)
+		let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+		let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(doneTyping))
+		doneButton.tintColor = UIColor.white // (red: 0, green: 0.478431, blue: 1.0, alpha: 1.0)
 		_keyboardToolbar.items = [flexSpace, doneButton]
 	}
 
-	override func viewDidAppear(animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
 		if let lastSelection = _lastSelection {
 			delay(0.25, closure: { () -> () in
-				self.tableView.selectRowAtIndexPath(lastSelection, animated: true, scrollPosition: UITableViewScrollPosition.None)
+				self.tableView.selectRow(at: lastSelection, animated: true, scrollPosition: UITableViewScrollPosition.none)
 				delay(1.0, closure: { () -> () in
-					self.tableView.deselectRowAtIndexPath(lastSelection, animated: true)
+					self.tableView.deselectRow(at: lastSelection, animated: true)
 					self._lastSelection = nil
 				})
 			})
@@ -94,27 +94,27 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 		searchbar.inputAccessoryView = _keyboardToolbar
 	}
 
-	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+	func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 		if segue.identifier != nil, let segueName = Segues(rawValue: segue.identifier!) {
 			switch segueName {
 			case .ShowHeader:
-				let controller = segue.destinationViewController as! EditReconciliationHeaderController
+				let controller = segue.destination as! EditReconciliationHeaderController
 				controller.reconciliation = reconciliation
 				controller.delegate = self
 
 			case .EditTransaction:
-				let navController = segue.destinationViewController as! UINavigationController
+				let navController = segue.destination as! UINavigationController
 				let controller = navController.viewControllers[0] as! EditEntryController
 				controller.delegate = self
 
-				let indexPath = sender as! NSIndexPath
-				let key = _transactionKeys[indexPath.row]
+				let indexPath = sender as! IndexPath
+				let key = _transactionKeys[(indexPath as NSIndexPath).row]
 				controller.showAccountSelector = false
 				controller.transaction = Transaction(key: key)!
 				controller.title = "Edit Transaction"
 
 			case .AddTransaction:
-				let navController = segue.destinationViewController as! UINavigationController
+				let navController = segue.destination as! UINavigationController
 				let controller = navController.viewControllers[0] as! EditEntryController
 				controller.delegate = self
 				controller.maxDate = reconciliation.date
@@ -143,11 +143,11 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 		updateHeader()
 	}
 
-	func loadTransactions(searchString: String? = nil) {
+	func loadTransactions(_ searchString: String? = nil) {
 		_searching = true
 
 		CommonDB.loadTransactionsForReconciliation(reconciliation, searchString: searchString) { (transactionKeys) -> () in
-			dispatch_async(dispatch_get_main_queue(), { () -> Void in
+			DispatchQueue.main.async(execute: { () -> Void in
 				self._transactionKeys = transactionKeys
 				self.tableView.reloadData()
 				self._searching = false
@@ -163,35 +163,35 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 	}
 
 	// MARK: - Searchbar
-	func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
+	func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
 		searchbar.showsCancelButton = true
 		return true
 	}
 
-	func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+	func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
 		if let text = searchbar.text {
 			performSearch(text)
 		}
 	}
 
-	func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
 		searchbar.text = ""
 		searchbar.endEditing(true)
 		performSearch("")
 	}
 
-	func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool {
+	func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
 		searchbar.showsCancelButton = false
 		return true
 	}
 
-	func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+	func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
 		// if a search is already in progress... wait a second before doing a search.
 		// Only do this dispatch once per search.
 		if _searching {
 			if !_buffered {
 				_buffered = true
-				dispatch_after(1, dispatch_get_main_queue(), { () -> Void in
+				DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: 1000000000), execute: { () -> Void in
 					if let text = self.searchbar.text {
 						self.performSearch(text)
 					}
@@ -203,7 +203,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 		}
 
 		var useText = true
-		if searchBar.text?.characters.count < 2 {
+		if let text = searchBar.text, text.characters.count < 2 {
 			useText = false
 		}
 
@@ -214,37 +214,37 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 		}
 	}
 
-	func performSearch(text: String) {
+	func performSearch(_ text: String) {
 		loadTransactions(text)
 	}
 
 	// MARK: - User Actions
 
-	@IBAction func headerTapped(sender: AnyObject) {
-		performSegueWithIdentifier(Segues.ShowHeader.rawValue, sender: nil)
+	@IBAction func headerTapped(_ sender: AnyObject) {
+		performSegue(withIdentifier: Segues.ShowHeader.rawValue, sender: nil)
 	}
 
-	@IBAction func cancelTapped(sender: AnyObject) {
+	@IBAction func cancelTapped(_ sender: AnyObject) {
 		// TODO: Show alert if changes made
 
 		if reconciliation.isNew {
-			dismissViewControllerAnimated(true, completion: nil)
+			dismiss(animated: true, completion: nil)
 		} else {
-			navigationController?.popViewControllerAnimated(true)
+			let _ = navigationController?.popViewController(animated: true)
 		}
 	}
 
-	@IBAction func saveTapped(sender: AnyObject) {
+	@IBAction func saveTapped(_ sender: AnyObject) {
 		doneTyping()
 
 		if reconciliation.difference == 0 && reconciliation.transactionKeys.count > 0 {
-			dispatch_async(dispatch_get_main_queue(), { [unowned self]() -> Void in
-				SweetAlert().showAlert("Reconciled?", subTitle: "Save this as fully reconciled? This cannot be undone.", style: AlertStyle.Warning, buttonTitle: "Yes", buttonColor: UIColorFromRGB(0x909090), otherButtonTitle: "No", otherButtonColor: UIColorFromRGB(0xDD6B55)) { (isOtherButton) -> Void in
+			DispatchQueue.main.async(execute: { [unowned self]() -> Void in
+				SweetAlert().showAlert("Reconciled?", subTitle: "Save this as fully reconciled? This cannot be undone.", style: AlertStyle.warning, buttonTitle: "Yes", buttonColor: UIColorFromRGB(0x909090), otherButtonTitle: "No", otherButtonColor: UIColorFromRGB(0xDD6B55)) { (isOtherButton) -> Void in
 
 					if isOtherButton == true {
-						CozyLoadingActivity.show("Saving...", sender: self, disableUI: true)
+						let _ = CozyLoadingActivity.show("Saving...", sender: self, disableUI: true)
 
-						dispatch_async(dbProcessingQueue, { () -> Void in
+						dbProcessingQueue.async(execute: { () -> Void in
 							self.reconciliation.reconciled = true
 							for key in self.reconciliation.transactionKeys {
 								let transaction = Transaction(key: key)!
@@ -252,9 +252,9 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 								transaction.save()
 							}
 
-							CozyLoadingActivity.hide(success: true, animated: true)
+							let _ = CozyLoadingActivity.hide(success: true, animated: true)
 
-							dispatch_async(dispatch_get_main_queue(), { () -> Void in
+							DispatchQueue.main.async(execute: { () -> Void in
 								self.closeView()
 							})
 						})
@@ -272,21 +272,21 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 		reconciliation.save()
 
 		if reconciliation.isNew {
-			dismissViewControllerAnimated(true, completion: { () -> Void in
+			dismiss(animated: true, completion: { () -> Void in
 				self.delegate?.reconciliationAdded(self.reconciliation)
 				return
 			})
 		} else {
-			navigationController?.popViewControllerAnimated(true)
+			let _ = navigationController?.popViewController(animated: true)
 			delegate?.reconciliationUpdated(reconciliation)
 		}
 	}
 
 	func addTransaction() {
-		performSegueWithIdentifier(Segues.AddTransaction.rawValue, sender: nil)
+		performSegue(withIdentifier: Segues.AddTransaction.rawValue, sender: nil)
 	}
 
-	func transactionAdded(transaction: Transaction) {
+	func transactionAdded(_ transaction: Transaction) {
 		var index = 0
 		for key in _transactionKeys {
 			let testTransaction = Transaction(key: key)!
@@ -299,40 +299,40 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 			}
 		}
 
-		_transactionKeys.insert(transaction.key, atIndex: index)
-		let path = NSIndexPath(forRow: index, inSection: 0)
+		_transactionKeys.insert(transaction.key, at: index)
+		let path = IndexPath(row: index, section: 0)
 		if _transactionKeys.count > 5 {
-			self.tableView.scrollToRowAtIndexPath(path, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
+			self.tableView.scrollToRow(at: path, at: UITableViewScrollPosition.middle, animated: true)
 		}
-		self.tableView.insertRowsAtIndexPaths([path], withRowAnimation: UITableViewRowAnimation.Top)
-		self.tableView.selectRowAtIndexPath(path, animated: true, scrollPosition: .Middle)
+		self.tableView.insertRows(at: [path], with: UITableViewRowAnimation.top)
+		self.tableView.selectRow(at: path, animated: true, scrollPosition: .middle)
 		delay(0.5, closure: { () -> () in
-			self.tableView(self.tableView, didSelectRowAtIndexPath: path)
-			self.tableView.deselectRowAtIndexPath(path, animated: true)
+			self.tableView(self.tableView, didSelectRowAt: path)
+			self.tableView.deselectRow(at: path, animated: true)
 		})
 	}
 
-	func transactionUpdated(transaction: Transaction) {
-		var path = NSIndexPath(forRow: 0, inSection: 0)
+	func transactionUpdated(_ transaction: Transaction) {
+		var path = IndexPath(row: 0, section: 0)
 
 		for index in 0 ..< _transactionKeys.count {
 			if _transactionKeys[index] == transaction.key {
-				path = NSIndexPath(forRow: index, inSection: 0)
+				path = IndexPath(row: index, section: 0)
 				break
 			}
 		}
 
-		tableView.reloadRowsAtIndexPaths([path], withRowAnimation: UITableViewRowAnimation.None)
+		tableView.reloadRows(at: [path], with: UITableViewRowAnimation.none)
 	}
 }
 
 // MARK: - TableView
 extension EditReconciliationController: UITableViewDataSource, UITableViewDelegate {
-	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	func numberOfSections(in tableView: UITableView) -> Int {
 		return 2
 	}
 
-	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		if section == 0 {
 			return _transactionKeys.count
 		} else {
@@ -340,25 +340,25 @@ extension EditReconciliationController: UITableViewDataSource, UITableViewDelega
 		}
 	}
 
-	func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-		if indexPath.section == 0 {
+	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		if (indexPath as NSIndexPath).section == 0 {
 			return tableView.rowHeight
 		}
 
 		return 44
 	}
 
-	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		var tableCell: UITableViewCell
-		if indexPath.section == 0 {
+		if (indexPath as NSIndexPath).section == 0 {
 			var cell: TransactionCell
-			if let transaction = Transaction(key: _transactionKeys[indexPath.row]) {
+			if let transaction = Transaction(key: _transactionKeys[(indexPath as NSIndexPath).row]) {
 				if transaction.checkNumber != nil && transaction.checkNumber! > 0 {
-					cell = tableView.dequeueReusableCellWithIdentifier("CheckCell") as! TransactionCell
+					cell = tableView.dequeueReusableCell(withIdentifier: "CheckCell") as! TransactionCell
 				} else {
 					cell = tableView.dequeueReusableCell(indexPath: indexPath) as TransactionCell
 				}
-				cell.transactionKey = _transactionKeys[indexPath.row]
+				cell.transactionKey = _transactionKeys[(indexPath as NSIndexPath).row]
 				if !reconciliation.reconciled {
 					let cleared = reconciliation.transactionKeys.filter({ $0 == transaction.key }).count > 0
 					cell.reconciled = cleared
@@ -378,17 +378,17 @@ extension EditReconciliationController: UITableViewDataSource, UITableViewDelega
 		return tableCell
 	}
 
-	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if reconciliation.reconciled {
-			tableView.deselectRowAtIndexPath(indexPath, animated: true)
+			tableView.deselectRow(at: indexPath, animated: true)
 			return
 		}
 
 		delay(1.0, closure: { () -> () in
-			tableView.deselectRowAtIndexPath(indexPath, animated: true)
+			tableView.deselectRow(at: indexPath, animated: true)
 		})
 
-		let key = _transactionKeys[indexPath.row]
+		let key = _transactionKeys[(indexPath as NSIndexPath).row]
 		if reconciliation.hasTransactionKey(key) {
 			reconciliation.removeTransactionKey(key)
 		} else {
@@ -396,18 +396,18 @@ extension EditReconciliationController: UITableViewDataSource, UITableViewDelega
 		}
 
 		updateHeader()
-		tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+		tableView.reloadRows(at: [indexPath], with: .none)
 	}
 
-	func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
+	func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
 		_lastSelection = indexPath
-		performSegueWithIdentifier(Segues.EditTransaction.rawValue, sender: indexPath)
+		performSegue(withIdentifier: Segues.EditTransaction.rawValue, sender: indexPath)
 	}
 }
 
 extension EditReconciliationController: ClearAllProtocol {
 	func clearAllTapped() {
-		SweetAlert().showAlert("Clear Selections?", subTitle: "All selections will be cleared.", style: AlertStyle.Warning, buttonTitle: "Cancel", buttonColor: UIColorFromRGB(0x909090), otherButtonTitle: "Clear", otherButtonColor: UIColorFromRGB(0xDD6B55)) { (isOtherButton) -> Void in
+		SweetAlert().showAlert("Clear Selections?", subTitle: "All selections will be cleared.", style: AlertStyle.warning, buttonTitle: "Cancel", buttonColor: UIColorFromRGB(0x909090), otherButtonTitle: "Clear", otherButtonColor: UIColorFromRGB(0xDD6B55)) { (isOtherButton) -> Void in
 
 			if !isOtherButton {
 				self.reconciliation.transactionKeys.removeAll()

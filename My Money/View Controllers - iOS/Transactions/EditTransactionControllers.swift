@@ -10,18 +10,18 @@ import Foundation
 import UIKit
 
 protocol EditTransactionProtocol {
-	func transactionAdded(transaction: Transaction)
-	func transactionUpdated(transaction: Transaction)
+	func transactionAdded(_ transaction: Transaction)
+	func transactionUpdated(_ transaction: Transaction)
 }
 
 //MARK: - Edit Entry Controller
-class EditEntryController: UIViewController, UITableViewDataSource, UITableViewDelegate, AccountDelegate, LocationDelegate, CategoryDelegate, AlertDelegate, UITextFieldDelegate, AccountCellDelegate, MemoDelegate, UIPickerViewDataSource, UIPickerViewDelegate, Numbers {
+class EditEntryController: UIViewController, UITableViewDataSource, UITableViewDelegate, AccountDelegate, LocationDelegate, CategoryDelegate, AlertDelegate, UITextFieldDelegate, AccountCellDelegate, MemoDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UsesCurrency {
 	@IBOutlet private weak var tableView: UITableView!
 
 	var showAccountSelector = true
 	var upcomingTransaction = false
 	var recurringTransaction = false
-	var maxDate: NSDate?
+	var maxDate: Date?
 	var delegate: EditTransactionProtocol?
 	var transaction = Transaction()
 
@@ -29,9 +29,9 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	private var _accountView: AccountView?
 	private var _numCCAccounts = CommonDB.numCCAccounts()
 	private var _account = Account(key: CommonFunctions.currentAccountKey)!
-	private var _lastSelection: NSIndexPath?
+	private var _lastSelection: IndexPath?
 
-	private let _keyboardToolbar = UIToolbar(frame: CGRectMake(0, 0, 100, 34))
+	private let _keyboardToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 100, height: 34))
 
 	private var _recurringHeader: String?
 	private var _transactionCount: UITextField?
@@ -77,31 +77,31 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	override func viewDidLoad() {
 		_helper = TableViewHelper(tableView: self.tableView)
 
-		_helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.TransactionType.rawValue)!, name: CellNames.TransactionType.rawValue)
-		_helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.Amount.rawValue)!, name: CellNames.Amount.rawValue)
-		_helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.CCAccount.rawValue)!, name: CellNames.CCAccount.rawValue)
-		_helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.Date.rawValue)!, name: CellNames.Date.rawValue)
-		_helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.DatePicker.rawValue)!, name: CellNames.DatePicker.rawValue)
-		_helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.Location.rawValue)!, name: CellNames.Location.rawValue)
-		_helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.Category.rawValue)!, name: CellNames.Category.rawValue)
-		_helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.CheckNumber.rawValue)!, name: CellNames.CheckNumber.rawValue)
-		_helper!.addCell(1, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.Notes.rawValue)!, name: CellNames.Notes.rawValue)
-		_helper!.addCell(2, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.Alert.rawValue)!, name: CellNames.Alert.rawValue)
+		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.TransactionType.rawValue)!, name: CellNames.TransactionType.rawValue)
+		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Amount.rawValue)!, name: CellNames.Amount.rawValue)
+		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.CCAccount.rawValue)!, name: CellNames.CCAccount.rawValue)
+		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Date.rawValue)!, name: CellNames.Date.rawValue)
+		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.DatePicker.rawValue)!, name: CellNames.DatePicker.rawValue)
+		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Location.rawValue)!, name: CellNames.Location.rawValue)
+		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Category.rawValue)!, name: CellNames.Category.rawValue)
+		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.CheckNumber.rawValue)!, name: CellNames.CheckNumber.rawValue)
+		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Notes.rawValue)!, name: CellNames.Notes.rawValue)
+		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Alert.rawValue)!, name: CellNames.Alert.rawValue)
 
-		_helper!.addCell(2, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.Frequency.rawValue)!, name: CellNames.Frequency.rawValue)
-		_helper!.addCell(2, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.FrequencyPicker.rawValue)!, name: CellNames.FrequencyPicker.rawValue)
-		_helper!.addCell(2, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.StartDate.rawValue)!, name: CellNames.StartDate.rawValue)
-		_helper!.addCell(2, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.StartDatePicker.rawValue)!, name: CellNames.StartDatePicker.rawValue)
-		_helper!.addCell(2, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.UseEndDate.rawValue)!, name: CellNames.UseEndDate.rawValue)
-		_helper!.addCell(2, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.EndDate.rawValue)!, name: CellNames.EndDate.rawValue)
-		_helper!.addCell(2, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.EndDatePicker.rawValue)!, name: CellNames.EndDatePicker.rawValue)
-		_helper!.addCell(2, cell: tableView.dequeueReusableCellWithIdentifier(CellNames.TransactionCount.rawValue)!, name: CellNames.TransactionCount.rawValue)
+		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Frequency.rawValue)!, name: CellNames.Frequency.rawValue)
+		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.FrequencyPicker.rawValue)!, name: CellNames.FrequencyPicker.rawValue)
+		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.StartDate.rawValue)!, name: CellNames.StartDate.rawValue)
+		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.StartDatePicker.rawValue)!, name: CellNames.StartDatePicker.rawValue)
+		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.UseEndDate.rawValue)!, name: CellNames.UseEndDate.rawValue)
+		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.EndDate.rawValue)!, name: CellNames.EndDate.rawValue)
+		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.EndDatePicker.rawValue)!, name: CellNames.EndDatePicker.rawValue)
+		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.TransactionCount.rawValue)!, name: CellNames.TransactionCount.rawValue)
 
-		_keyboardToolbar.barStyle = UIBarStyle.BlackTranslucent
-		_keyboardToolbar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 34)
-		let flexSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-		let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: #selector(doneTyping))
-		doneButton.tintColor = UIColor.whiteColor() // (red: 0, green: 0.478431, blue: 1.0, alpha: 1.0)
+		_keyboardToolbar.barStyle = UIBarStyle.blackTranslucent
+		_keyboardToolbar.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: 34)
+		let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+		let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(doneTyping))
+		doneButton.tintColor = UIColor.white // (red: 0, green: 0.478431, blue: 1.0, alpha: 1.0)
 		_keyboardToolbar.items = [flexSpace, doneButton]
 
 //		if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
@@ -113,7 +113,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		}
 
 		_account = Account(key: transaction.accountKey)!
-		let minimumDate = NSDate().midnight().addDate(years: 0, months: 0, weeks: 0, days: 1)
+		let minimumDate = Date().midnight().addDate(years: 0, months: 0, weeks: 0, days: 1)
 		if transaction.isNew {
 			if upcomingTransaction {
 				transaction = UpcomingTransaction()
@@ -146,13 +146,13 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		let datePickerCell = _helper!.visibleCellsWithName("DatePicker")[0]
 		let datePicker = datePickerCell.viewWithTag(1) as! UIDatePicker
 		datePicker.date = transaction.date
-		datePicker.addTarget(self, action: #selector(dateChanged), forControlEvents: UIControlEvents.ValueChanged)
+		datePicker.addTarget(self, action: #selector(dateChanged), for: UIControlEvents.valueChanged)
 
 		if upcomingTransaction {
 			datePicker.minimumDate = minimumDate
 		}
 
-		if let accountView = NSBundle.mainBundle().loadNibNamed("AccountView", owner: self, options: nil)[0] as? AccountView {
+		if let accountView = Bundle.main.loadNibNamed("AccountView", owner: self, options: nil)?[0] as? AccountView {
 			self._accountView = accountView
 			if let keys = ALBNoSQLDB.keysInTable("Accounts", sortOrder: nil) {
 				if keys.count == 1 || !showAccountSelector {
@@ -176,7 +176,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 
 		if recurringTransaction {
 			_helper!.hideCell("Date")
-			let recurringCondition = DBCondition(set: 0, objectKey: "recurringTransactionKey", conditionOperator: .equal, value: transaction.recurringTransactionKey)
+			let recurringCondition = DBCondition(set: 0, objectKey: "recurringTransactionKey", conditionOperator: .equal, value: transaction.recurringTransactionKey as AnyObject)
 			let keys = ALBNoSQLDB.keysInTableForConditions(kTransactionsTable, sortOrder: "date desc", conditions: [recurringCondition])
 			if keys != nil && keys!.count > 0 {
 				let lastTransaction = Transaction(key: keys![0])!
@@ -221,12 +221,12 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		}
 
 		if transaction.isNew && !recurringTransaction && !upcomingTransaction {
-			CurrentLocation.currentLocation({ (currentLocation: CurrentLocation!) -> Void in
-				if currentLocation == nil || currentLocation!.addressParts == nil {
-					return
-				}
-
-				if let address = currentLocation!.addressParts[0].addressDictionary as? [String: AnyObject], addressLines = address["FormattedAddressLines"] as? [String] {
+			CurrentLocation.currentLocation({ (currentLocation) in
+				guard let currentLocation = currentLocation
+					, let addressParts = currentLocation.addressParts as? [CLPlacemark]
+					else { return }
+				
+				if let address = addressParts[0].addressDictionary as? [String: AnyObject], let addressLines = address["FormattedAddressLines"] as? [String] {
 					var compoundAddress = ""
 					for addressLine in addressLines {
 						compoundAddress += addressLine + ":"
@@ -243,73 +243,65 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		super.viewDidLoad()
 	}
 
-	override func viewDidAppear(animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
 		if let lastSelection = _lastSelection {
-			tableView.deselectRowAtIndexPath(lastSelection, animated: true)
+			tableView.deselectRow(at: lastSelection, animated: true)
 			self._lastSelection = nil
 		}
 
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardShown(_:)), name: UIKeyboardDidShowNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardHidden(_:)), name: UIKeyboardDidHideNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardShown(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardHidden(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
 	}
 
-	override func viewDidDisappear(animated: Bool) {
-		NSNotificationCenter.defaultCenter().removeObserver(self)
+	override func viewDidDisappear(_ animated: Bool) {
+		NotificationCenter.default.removeObserver(self)
 	}
 
-	override func preferredInterfaceOrientationForPresentation() -> UIInterfaceOrientation {
-		return UIInterfaceOrientation.Portrait
-	}
-
-	override func shouldAutorotate() -> Bool {
-		return false
-	}
-
-	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+	func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 		view.endEditing(true)
 		if segue.identifier != nil, let segueName = Segues(rawValue: segue.identifier!) {
 			switch segueName {
 			case .SetAccount:
-				let controller = segue.destinationViewController as! SelectAccountController
+				let controller = segue.destination as! SelectAccountController
 				controller.includeCreditCards = true
 				controller.includeNonCreditCards = true
 				controller.currentAccountKey = transaction.accountKey
 				controller.accountDelegate = self
 
 			case .SetCCAccount:
-				let controller = segue.destinationViewController as! SelectAccountController
+				let controller = segue.destination as! SelectAccountController
 				controller.includeCreditCards = true
 				controller.includeNonCreditCards = false
 				controller.currentAccountKey = transaction.ccAccountKey!
 				controller.accountDelegate = self
 
 			case .SetLocation:
-				let controller = segue.destinationViewController as! SelectLocationController
+				let controller = segue.destination as! SelectLocationController
 				controller.delegate = self
 				if transaction.locationKey != nil {
 					controller.selectedLocation = Location(key: transaction.locationKey!)
 				}
 
 			case .SetCategory:
-				let controller = segue.destinationViewController as! SelectCategoryController
+				let controller = segue.destination as! SelectCategoryController
 				controller.delegate = self
 				if transaction.categoryKey != nil {
 					controller.selectedCategory = Category(key: transaction.categoryKey!)
 				}
 
 			case .SetAlert:
-				let controller = segue.destinationViewController as! AlertController
+				let controller = segue.destination as! AlertController
 				let upcoming = transaction as? UpcomingTransaction
 				controller.transaction = upcoming!
 				controller.delegate = self
 
 			case .SetFrequency:
-				let controller = segue.destinationViewController as! FrenquencyController
+				let controller = segue.destination as! FrenquencyController
 				let recurring = transaction as? RecurringTransaction
 				controller.transaction = recurring!
 
 			case .SetMemo:
-				let controller = segue.destinationViewController as! SetMemoController
+				let controller = segue.destination as! SetMemoController
 				controller.transaction = transaction
 				controller.delegate = self
 			}
@@ -317,20 +309,21 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	}
 
 	// MARK: - Text Fields
-	func keyboardShown(notification: NSNotification) {
-		if let userInfo = notification.userInfo, keyboardHeight = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size.height {
+	func keyboardShown(_ notification: Notification) {
+		if let userInfo = notification.userInfo, let rectValue = userInfo[UIKeyboardFrameEndUserInfoKey] as? CGRect {
+			let keyboardHeight = rectValue.size.height
 			self._keyboardHeight = keyboardHeight
 			offsetTable()
 		}
 	}
 
-	func keyboardHidden(notification: NSNotification) {
+	func keyboardHidden(_ notification: Notification) {
 		self._keyboardHeight = 0
 		offsetTable()
 	}
 
 	func offsetTable() {
-		let height = UIScreen.mainScreen().bounds.size.height
+		let height = UIScreen.main.bounds.size.height
 		let minOffset = height - _keyboardHeight - 64
 		var contentOffset = tableView.contentOffset
 		if _keyboardHeight != 0 && _fieldOffset != 0 && _fieldOffset > minOffset {
@@ -342,22 +335,22 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		self.tableView.setContentOffset(contentOffset, animated: true)
 	}
 
-	func textFieldDidBeginEditing(textField: UITextField) {
+	func textFieldDidBeginEditing(_ textField: UITextField) {
 		hidePickers()
 		if let selectedPath = tableView.indexPathForSelectedRow {
-			tableView.deselectRowAtIndexPath(selectedPath, animated: true)
+			tableView.deselectRow(at: selectedPath, animated: true)
 		}
 
-		let pointInTable = textField.superview?.convertPoint(textField.frame.origin, toView: self.tableView) as CGPoint!
-		_fieldOffset = pointInTable.y
+		let pointInTable = textField.superview?.convert(textField.frame.origin, to: self.tableView) as CGPoint!
+		_fieldOffset = (pointInTable?.y)!
 		offsetTable()
 	}
 
-	func textFieldDidEndEditing(textField: UITextField) {
+	func textFieldDidEndEditing(_ textField: UITextField) {
 		textField.resignFirstResponder()
-		let buttonPosition = textField.convertPoint(CGPointZero, toView: self.tableView)
-		let indexPath = tableView.indexPathForRowAtPoint(buttonPosition)
-		tableView.scrollToRowAtIndexPath(indexPath!, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
+		let buttonPosition = textField.convert(CGPoint.zero, to: self.tableView)
+		let indexPath = tableView.indexPathForRow(at: buttonPosition)
+		tableView.scrollToRow(at: indexPath!, at: UITableViewScrollPosition.middle, animated: true)
 		if textField == _transactionCount {
 			if let recurring = transaction as? RecurringTransaction {
 				recurring.transactionCount = NSString(string: textField.text!).integerValue
@@ -365,7 +358,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		}
 	}
 
-	func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 		if textField == _transactionCount {
 			if let recurring = transaction as? RecurringTransaction {
 				recurring.transactionCount = NSString(string: textField.text!).integerValue
@@ -386,7 +379,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		hidePickerNamed("EndDatePicker", parentName: "EndDate")
 	}
 
-	func hidePickerNamed(pickerName: String, parentName: String) {
+	func hidePickerNamed(_ pickerName: String, parentName: String) {
 		_helper!.hideCell(pickerName)
 		let cells = _helper!.visibleCellsWithName(parentName)
 		if cells.count > 0 {
@@ -394,16 +387,16 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		}
 	}
 
-	func showPickerNamed(pickerName: String, parentName: String) {
+	func showPickerNamed(_ pickerName: String, parentName: String) {
 		_helper!.showCell(pickerName)
 		let cells = _helper!.visibleCellsWithName(parentName)
 		if cells.count > 0 {
-			cells[0].detailTextLabel?.textColor = UIColor.redColor()
+			cells[0].detailTextLabel?.textColor = UIColor.red
 		}
 	}
 
 	// MARK: - TableView
-	func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		if section == 0 && _accountView != nil {
 			return 56
 		}
@@ -411,7 +404,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		return 0
 	}
 
-	func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		if section == 0 && _accountView != nil {
 			return _accountView!
 		}
@@ -419,15 +412,15 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		return nil
 	}
 
-	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	func numberOfSections(in tableView: UITableView) -> Int {
 		return _helper!.numberOfSections()
 	}
 
-	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return _helper!.numberOfRowsInSection(section)
 	}
 
-	func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+	func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
 		if section == 1 && recurringTransaction {
 			return _recurringHeader
 		}
@@ -435,7 +428,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		return nil
 	}
 
-	func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		let cellName = _helper!.cellNameAtIndexPath(indexPath)
 
 		if cellName == "DatePicker" || cellName == "StartDatePicker" || cellName == "EndDatePicker" || cellName == "FrequencyPicker" {
@@ -445,9 +438,9 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		return 44
 	}
 
-	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = _helper!.cellForRowAtIndexPath(indexPath)
-		if let name = _helper!.cellNameAtIndexPath(indexPath), cellName = CellNames(rawValue: name) {
+		if let name = _helper!.cellNameAtIndexPath(indexPath), let cellName = CellNames(rawValue: name) {
 			switch cellName {
 			case .CCAccount:
 				cell.detailTextLabel?.text = Account(key: transaction.ccAccountKey!)!.name
@@ -455,11 +448,11 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 			case .TransactionType:
 				let transactionType = cell.viewWithTag(1)! as! UISegmentedControl
 				transactionType.removeAllSegments()
-				transactionType.insertSegmentWithTitle("Payment", atIndex: 0, animated: false)
-				transactionType.insertSegmentWithTitle("Deposit", atIndex: 1, animated: false)
-				transactionType.insertSegmentWithTitle("CC Payment", atIndex: 2, animated: false)
+				transactionType.insertSegment(withTitle: "Payment", at: 0, animated: false)
+				transactionType.insertSegment(withTitle: "Deposit", at: 1, animated: false)
+				transactionType.insertSegment(withTitle: "CC Payment", at: 2, animated: false)
 
-				transactionType.addTarget(self, action: #selector(typeChanged), forControlEvents: UIControlEvents.ValueChanged)
+				transactionType.addTarget(self, action: #selector(typeChanged), for: UIControlEvents.valueChanged)
 
 				switch transaction.type {
 				case .purchase:
@@ -471,19 +464,19 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 				}
 
 				if _numCCAccounts == 0 {
-					transactionType.removeSegmentAtIndex(2, animated: false)
+					transactionType.removeSegment(at: 2, animated: false)
 				}
 
 				if _account.type == .creditCard {
 					if transaction.type == .deposit {
-						transactionType.removeSegmentAtIndex(1, animated: false)
-						transactionType.removeSegmentAtIndex(0, animated: false)
+						transactionType.removeSegment(at: 1, animated: false)
+						transactionType.removeSegment(at: 0, animated: false)
 						transactionType.selectedSegmentIndex = -1
 						transactionType.selectedSegmentIndex = 0
 					} else {
-						transactionType.setTitle("Purchase", forSegmentAtIndex: 0)
-						transactionType.setTitle("Payment", forSegmentAtIndex: 1)
-						transactionType.removeSegmentAtIndex(2, animated: false)
+						transactionType.setTitle("Purchase", forSegmentAt: 0)
+						transactionType.setTitle("Payment", forSegmentAt: 1)
+						transactionType.removeSegment(at: 2, animated: false)
 					}
 				}
 
@@ -492,21 +485,21 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 				if transaction.checkNumber != nil && transaction.checkNumber! > 0 {
 					checkNumber.text = "\(transaction.checkNumber!)"
 				}
-				checkNumber.keyboardType = .NumberPad
+				checkNumber.keyboardType = .numberPad
 				checkNumber.delegate = self
 				checkNumber.inputAccessoryView = _keyboardToolbar
 
 			case .Date:
-				cell.detailTextLabel?.text = mediumDateFormatter.stringFromDate(transaction.date)
+				cell.detailTextLabel?.text = mediumDateFormatter.string(from: transaction.date)
 
 			case .DatePicker:
 				let datePicker = cell.viewWithTag(1) as! UIDatePicker
 				if transaction.isNew {
 					if upcomingTransaction {
-						datePicker.minimumDate = NSDate().addDate(years: 0, months: 0, weeks: 0, days: 1)
+						datePicker.minimumDate = Date().addDate(years: 0, months: 0, weeks: 0, days: 1)
 						datePicker.date = datePicker.minimumDate!
 					} else {
-						datePicker.date = NSDate()
+						datePicker.date = Date()
 					}
 				} else {
 					datePicker.date = transaction.date
@@ -518,7 +511,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 				if transaction.amount != 0 {
 					amount.text = formatForAmount(abs(transaction.amount), useThousandsSeparator: false)
 				}
-				amount.keyboardType = .DecimalPad
+				amount.keyboardType = .decimalPad
 				amount.inputAccessoryView = _keyboardToolbar
 
 			case .Location:
@@ -547,8 +540,8 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 				if let recurring = transaction as? RecurringTransaction {
 					let picker = cell.viewWithTag(1) as! UIDatePicker
 					picker.date = recurring.startDate
-					picker.minimumDate = NSDate().midnight()
-					picker.addTarget(self, action: #selector(startDateChanged), forControlEvents: .ValueChanged)
+					picker.minimumDate = Date().midnight()
+					picker.addTarget(self, action: #selector(startDateChanged), for: .valueChanged)
 				}
 
 			case .EndDate:
@@ -560,19 +553,19 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 				if let recurring = transaction as? RecurringTransaction {
 					let picker = cell.viewWithTag(1) as! UIDatePicker
 					if recurring.endDate == nil {
-						picker.date = NSDate().midnight()
+						picker.date = Date().midnight()
 					} else {
 						picker.date = recurring.endDate!
 					}
-					picker.minimumDate = NSDate().midnight()
-					picker.addTarget(self, action: #selector(endDateChanged), forControlEvents: .ValueChanged)
+					picker.minimumDate = Date().midnight()
+					picker.addTarget(self, action: #selector(endDateChanged), for: .valueChanged)
 				}
 
 			case .UseEndDate:
 				if let recurring = transaction as? RecurringTransaction {
 					let useEndDate = cell.viewWithTag(1)! as! UISwitch
-					useEndDate.addTarget(self, action: #selector(useEndDateChanged), forControlEvents: UIControlEvents.ValueChanged)
-					useEndDate.on = recurring.endDate != nil
+					useEndDate.addTarget(self, action: #selector(useEndDateChanged), for: UIControlEvents.valueChanged)
+					useEndDate.isOn = recurring.endDate != nil
 				}
 
 			case .TransactionCount:
@@ -602,7 +595,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		return cell
 	}
 
-	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		view.endEditing(true)
 		_lastSelection = indexPath
 		let showingDate = _helper!.visibleCellsWithName("DatePicker").count > 0
@@ -615,10 +608,10 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 
 			switch name {
 			case "Account":
-				performSegueWithIdentifier(Segues.SetAccount.rawValue, sender: nil)
+				performSegue(withIdentifier: Segues.SetAccount.rawValue, sender: nil)
 
 			case "CCAccount":
-				performSegueWithIdentifier(Segues.SetCCAccount.rawValue, sender: nil)
+				performSegue(withIdentifier: Segues.SetCCAccount.rawValue, sender: nil)
 
 			case "Date":
 				if !showingDate {
@@ -631,16 +624,16 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 				}
 
 			case "Category":
-				performSegueWithIdentifier(Segues.SetCategory.rawValue, sender: nil)
+				performSegue(withIdentifier: Segues.SetCategory.rawValue, sender: nil)
 
 			case "Location":
-				performSegueWithIdentifier(Segues.SetLocation.rawValue, sender: nil)
+				performSegue(withIdentifier: Segues.SetLocation.rawValue, sender: nil)
 
 			case "Alert":
-				performSegueWithIdentifier(Segues.SetAlert.rawValue, sender: nil)
+				performSegue(withIdentifier: Segues.SetAlert.rawValue, sender: nil)
 
 			case "Notes":
-				performSegueWithIdentifier(Segues.SetMemo.rawValue, sender: nil)
+				performSegue(withIdentifier: Segues.SetMemo.rawValue, sender: nil)
 
 			case "StartDate":
 				if !showingStartDate {
@@ -660,7 +653,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 			}
 		}
 
-		tableView.deselectRowAtIndexPath(indexPath, animated: true)
+		tableView.deselectRow(at: indexPath, animated: true)
 	}
 
 	// MARK: - User Actions
@@ -670,7 +663,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 			let picker = cell.viewWithTag(1) as! UIDatePicker
 
 			recurring.startDate = picker.date.midnight()
-			self.tableView.reloadRowsAtIndexPaths([_helper!.indexPathForCellNamed(CellNames.StartDate.rawValue)!], withRowAnimation: .None)
+			self.tableView.reloadRows(at: [_helper!.indexPathForCellNamed(CellNames.StartDate.rawValue)!], with: .none)
 		}
 	}
 
@@ -680,7 +673,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 			let picker = cell.viewWithTag(1) as! UIDatePicker
 
 			recurring.endDate = picker.date.midnight()
-			self.tableView.reloadRowsAtIndexPaths([_helper!.indexPathForCellNamed(CellNames.EndDate.rawValue)!], withRowAnimation: .None)
+			self.tableView.reloadRows(at: [_helper!.indexPathForCellNamed(CellNames.EndDate.rawValue)!], with: .none)
 		}
 	}
 
@@ -689,8 +682,8 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		if let recurring = transaction as? RecurringTransaction {
 			let cell = _helper!.visibleCellsWithName("UseEndDate")[0]
 			let useEndDate = cell.viewWithTag(1)! as! UISwitch
-			if useEndDate.on {
-				recurring.endDate = NSDate().addDate(years: 0, months: 12, weeks: 0, days: 0).midnight()
+			if useEndDate.isOn {
+				recurring.endDate = Date().addDate(years: 0, months: 12, weeks: 0, days: 0).midnight()
 				_helper!.showCell("EndDate")
 				_helper!.hideCell("TransactionCount")
 			} else {
@@ -702,15 +695,15 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	}
 
 	@IBAction func accountCellTapped() {
-		performSegueWithIdentifier(Segues.SetAccount.rawValue, sender: nil)
+		performSegue(withIdentifier: Segues.SetAccount.rawValue, sender: nil)
 	}
 
-	@IBAction func cancelTapped(sender: AnyObject) {
+	@IBAction func cancelTapped(_ sender: AnyObject) {
 		view.endEditing(true)
-		dismissViewControllerAnimated(true, completion: nil)
+		dismiss(animated: true, completion: nil)
 	}
 
-	@IBAction func saveTapped(sender: AnyObject) {
+	@IBAction func saveTapped(_ sender: AnyObject) {
 		let amountCell = _helper!.visibleCellsWithName("Amount")[0]
 		let amountField = amountCell.viewWithTag(1)! as! AmountField
 		var amountValue = amountField.amount()
@@ -762,7 +755,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 			CommonDB.generateUpcomingFromRecurring(recurring)
 		}
 
-		dismissViewControllerAnimated(true, completion: { () -> Void in
+		dismiss(animated: true, completion: { () -> Void in
 			if self.transaction.isNew {
 				self.delegate?.transactionAdded(self.transaction)
 			} else {
@@ -800,11 +793,11 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 					transaction.amount = abs(ccAccount.balance)
 					transaction.categoryKey = defaultPrefix + DefaultCategory.Debt.rawValue
 					if let path = self._helper!.indexPathForCellNamed(CellNames.Amount.rawValue) {
-						self.tableView.reloadRowsAtIndexPaths([path], withRowAnimation: .None)
+						self.tableView.reloadRows(at: [path], with: .none)
 					}
 					if let path = self._helper!.indexPathForCellNamed(CellNames.Category.rawValue) {
-						self.tableView.reloadRowsAtIndexPaths([path], withRowAnimation: .None)
-						self.tableView.reloadRowsAtIndexPaths([path], withRowAnimation: .None)
+						self.tableView.reloadRows(at: [path], with: .none)
+						self.tableView.reloadRows(at: [path], with: .none)
 					}
 				}
 
@@ -832,23 +825,23 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 
 		transaction.date = datePicker.date
 		if let path = _helper!.indexPathForCellNamed(CellNames.Date.rawValue) {
-			tableView.reloadRowsAtIndexPaths([path], withRowAnimation: .None)
+			tableView.reloadRows(at: [path], with: .none)
 		}
 	}
 
 	// MARK: - Delegate Calls
 
-	func accountSet(account: Account) {
+	func accountSet(_ account: Account) {
 		self._account = account
 		transaction.accountKey = account.key
 		_accountView?.account = account
 
 		if let path = _helper!.indexPathForCellNamed(CellNames.TransactionType.rawValue) {
-			tableView.reloadRowsAtIndexPaths([path], withRowAnimation: .None)
+			tableView.reloadRows(at: [path], with: .none)
 		}
 	}
 
-	func ccAccountSet(account: Account) {
+	func ccAccountSet(_ account: Account) {
 		transaction.ccAccountKey = account.key
 		let cell = _helper!.visibleCellsWithName(CellNames.CCAccount.rawValue)[0]
 		cell.detailTextLabel?.text = account.name
@@ -856,70 +849,70 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		if transaction.amount == 0 {
 			transaction.amount = abs(account.balance)
 			if let path = _helper!.indexPathForCellNamed(CellNames.Amount.rawValue) {
-				tableView.reloadRowsAtIndexPaths([path], withRowAnimation: .None)
+				tableView.reloadRows(at: [path], with: .none)
 			}
 		}
 	}
 
-	func locationSet(location: Location) {
+	func locationSet(_ location: Location) {
 		transaction.locationKey = location.key
 
 		if let path = _helper!.indexPathForCellNamed("Location") {
-			tableView.reloadRowsAtIndexPaths([path], withRowAnimation: .None)
-			tableView.reloadRowsAtIndexPaths([path], withRowAnimation: .None)
+			tableView.reloadRows(at: [path], with: .none)
+			tableView.reloadRows(at: [path], with: .none)
 		}
 
 		if location.categoryKey != nil {
 			transaction.categoryKey = location.categoryKey
 			categorySet(Category(key: location.categoryKey!)!)
 			if let categoryPath = _helper!.indexPathForCellNamed("Category") {
-				tableView.reloadRowsAtIndexPaths([categoryPath], withRowAnimation: .None)
-				tableView.reloadRowsAtIndexPaths([categoryPath], withRowAnimation: .None)
+				tableView.reloadRows(at: [categoryPath], with: .none)
+				tableView.reloadRows(at: [categoryPath], with: .none)
 			}
 		}
 	}
 
-	func categorySet(category: Category) {
+	func categorySet(_ category: Category) {
 		transaction.categoryKey = category.key
 
 		if let path = _helper!.indexPathForCellNamed("Category") {
-			tableView.reloadRowsAtIndexPaths([path], withRowAnimation: .None)
-			tableView.reloadRowsAtIndexPaths([path], withRowAnimation: .None)
+			tableView.reloadRows(at: [path], with: .none)
+			tableView.reloadRows(at: [path], with: .none)
 		}
 	}
 
 	func alertSet() {
 		if transaction is UpcomingTransaction {
 			if let path = _helper!.indexPathForCellNamed("Alert") {
-				tableView.reloadRowsAtIndexPaths([path], withRowAnimation: .None)
+				tableView.reloadRows(at: [path], with: .none)
 			}
 		}
 	}
 
 	func memoSet() {
 		if let path = _helper!.indexPathForCellNamed("Notes") {
-			tableView.reloadRowsAtIndexPaths([path], withRowAnimation: .None)
-			tableView.reloadRowsAtIndexPaths([path], withRowAnimation: .None)
+			tableView.reloadRows(at: [path], with: .none)
+			tableView.reloadRows(at: [path], with: .none)
 		}
 	}
 
 	// MARK: - Frequency items
-	func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+	func numberOfComponents(in pickerView: UIPickerView) -> Int {
 		return 1
 	}
 
-	func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+	func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
 		return 7
 	}
 
-	func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+	func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
 		return _frequencyItems[row]
 	}
 
-	func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
 		if let recurring = transaction as? RecurringTransaction {
 			recurring.frequency = TransactionFrequency(rawValue: row)!
-			self.tableView.reloadRowsAtIndexPaths([_helper!.indexPathForCellNamed("Frequency")!], withRowAnimation: .None)
+			self.tableView.reloadRows(at: [_helper!.indexPathForCellNamed("Frequency")!], with: .none)
 		}
 	}
 }

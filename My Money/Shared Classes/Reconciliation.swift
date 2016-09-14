@@ -19,7 +19,7 @@ class Reconciliation: ALBNoSQLDBObject {
 		}
 	}
 	
-	var date = NSDate()
+	var date = Date()
 	var transactionKeys = [String]()
 	var reconciled = false
 	var isNew = true;
@@ -67,17 +67,17 @@ class Reconciliation: ALBNoSQLDBObject {
 	
 	override func dictionaryValue() -> [String: AnyObject] {
 		var dictValue = [String: AnyObject]()
-		dictValue["accountKey"] = accountKey
-		dictValue["beginningBalance"] = beginningBalance
-		dictValue["endingBalance"] = endingBalance
-		dictValue["date"] = ALBNoSQLDB.stringValueForDate(date)
-		dictValue["transactionKeys"] = transactionKeys
-		dictValue["reconciled"] = reconciled ? "true" : "false"
+		dictValue["accountKey"] = accountKey as AnyObject
+		dictValue["beginningBalance"] = beginningBalance as AnyObject
+		dictValue["endingBalance"] = endingBalance as AnyObject
+		dictValue["date"] = ALBNoSQLDB.stringValueForDate(date) as AnyObject
+		dictValue["transactionKeys"] = transactionKeys as AnyObject
+		dictValue["reconciled"] = (reconciled ? "true" : "false") as AnyObject
 		
 		return dictValue
 	}
 	
-	func addTransactionKey(transactionKey: String) {
+	func addTransactionKey(_ transactionKey: String) {
 		if !hasTransactionKey(transactionKey) {
 			transactionKeys.append(transactionKey)
 			let transaction = Transaction(key: transactionKey)!
@@ -85,14 +85,14 @@ class Reconciliation: ALBNoSQLDBObject {
 		}
 	}
 	
-	func removeTransactionKey(transactionKey: String) {
+	func removeTransactionKey(_ transactionKey: String) {
 		transactionKeys = transactionKeys.filter({$0 != transactionKey})
 		
 		let transaction = Transaction(key: transactionKey)!
 		_transactionSum -= transaction.amount
 	}
 	
-	func hasTransactionKey(transactionKey: String) -> Bool {
+	func hasTransactionKey(_ transactionKey: String) -> Bool {
 		return transactionKeys.filter({$0 == transactionKey}).count > 0
 	}
 }

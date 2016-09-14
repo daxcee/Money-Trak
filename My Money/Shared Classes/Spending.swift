@@ -11,8 +11,8 @@ import Foundation
 class Budget: ALBNoSQLDBObject {
 	var name = ""
 	var accountKey = ""
-	var startDate = NSDate()
-	var endDate = NSDate()
+	var startDate = Date()
+	var endDate = Date()
 	
 	
 	func save() {
@@ -43,10 +43,10 @@ class Budget: ALBNoSQLDBObject {
 	
 	override func dictionaryValue() -> [String: AnyObject] {
 		var dictValue = [String: AnyObject]()
-		dictValue["name"] = name
-		dictValue["accountKey"] = accountKey
-		dictValue["startDate"] = ALBNoSQLDB.stringValueForDate(startDate)
-		dictValue["endDate"] = ALBNoSQLDB.stringValueForDate(endDate)
+		dictValue["name"] = name as AnyObject
+		dictValue["accountKey"] = accountKey as AnyObject
+		dictValue["startDate"] = ALBNoSQLDB.stringValueForDate(startDate) as AnyObject
+		dictValue["endDate"] = ALBNoSQLDB.stringValueForDate(endDate) as AnyObject
 		
 		return dictValue
 	}
@@ -86,10 +86,10 @@ class BudgetEntry: ALBNoSQLDBObject {
 	
 	override func dictionaryValue() -> [String: AnyObject] {
 		var dictValue = [String: AnyObject]()
-		dictValue["name"] = name
-		dictValue["budgetKey"] = budgetKey
-		dictValue["categoryKey"] = categoryKey
-		dictValue["amount"] = amount
+		dictValue["name"] = name as AnyObject
+		dictValue["budgetKey"] = budgetKey as AnyObject
+		dictValue["categoryKey"] = categoryKey as AnyObject
+		dictValue["amount"] = amount as AnyObject
 		
 		return dictValue
 	}
@@ -99,8 +99,8 @@ class BudgetEntry: ALBNoSQLDBObject {
 class MonthlySummaryEntry: ALBNoSQLDBObject {
 	var name = ""
 	var categoryKey = ""
-	var startDate = NSDate()
-	var endDate = NSDate()
+	var startDate = Date()
+	var endDate = Date()
 	var amount = 0
 	
 	func save() {
@@ -132,11 +132,11 @@ class MonthlySummaryEntry: ALBNoSQLDBObject {
 	
 	override func dictionaryValue() -> [String: AnyObject] {
 		var dictValue = [String: AnyObject]()
-		dictValue["name"] = name
-		dictValue["categoryKey"] = categoryKey
-		dictValue["startDate"] = ALBNoSQLDB.stringValueForDate(startDate)
-		dictValue["endDate"] = ALBNoSQLDB.stringValueForDate(endDate)
-		dictValue["amount"] = amount
+		dictValue["name"] = name as AnyObject
+		dictValue["categoryKey"] = categoryKey as AnyObject
+		dictValue["startDate"] = ALBNoSQLDB.stringValueForDate(startDate) as AnyObject
+		dictValue["endDate"] = ALBNoSQLDB.stringValueForDate(endDate) as AnyObject
+		dictValue["amount"] = amount as AnyObject
 		
 		return dictValue
 	}

@@ -17,36 +17,36 @@ class TableViewHelper {
         self.tableView = tableView
     }
     
-    func addCell(section:Int, cell:UITableViewCell, name:String) {
+    func addCell(_ section:Int, cell:UITableViewCell, name:String) {
         let newCell = Cell(section: section, name: name, tableViewCell: cell)
         cells.append(newCell)
-        var indexPath:NSIndexPath
+        var indexPath:IndexPath
         
         if let count = cellCount[section] {
             cellCount[section] = count+1
-            indexPath = NSIndexPath(forRow: count, inSection: section)
+            indexPath = IndexPath(row: count, section: section)
         } else {
             cellCount[section] = 1
-            indexPath = NSIndexPath(forRow: 0, inSection: section)
+            indexPath = IndexPath(row: 0, section: section)
         }
         
         indexedCells[indexPath] = newCell
     }
     
-    func hideCell(name:String) {
-        var removePaths = [NSIndexPath]()
+    func hideCell(_ name:String) {
+        var removePaths = [IndexPath]()
         let removeSections = NSMutableIndexSet()
         
         for section in 0..<numberOfSections() {
             for row in 0..<numberOfRowsInSection(section) {
-                let indexPath = NSIndexPath(forRow: row, inSection: section)
+                let indexPath = IndexPath(row: row, section: section)
                 let cell = indexedCells[indexPath]!
                 if cell.name == name && cell.visible {
                     cell.visible = false
                     removePaths.append(indexPath)
                     cellCount[section] = cellCount[section]! - 1
                     if cellCount[section] == 0 {
-                        removeSections.addIndex(section)
+                        removeSections.add(section)
                     }
                 }
             }
@@ -55,14 +55,14 @@ class TableViewHelper {
         recalcIndexedCells()
         
         if removeSections.count == 0 {
-            tableView.deleteRowsAtIndexPaths(removePaths, withRowAnimation: .Top)
+            tableView.deleteRows(at: removePaths, with: .top)
         } else {
-            tableView.deleteSections(removeSections, withRowAnimation: .Top)
+            tableView.deleteSections(removeSections as IndexSet, with: .top)
         }
     }
     
-    func showCell(name:String) {
-        var addPaths = [NSIndexPath]()
+    func showCell(_ name:String) {
+        var addPaths = [IndexPath]()
         var cellSection = 0
         var section = 0
         var row = 0
@@ -79,7 +79,7 @@ class TableViewHelper {
                 row += 1
             } else {
                 if cell.name == name {
-                    let indexPath = NSIndexPath(forRow: row, inSection: section)
+                    let indexPath = IndexPath(row: row, section: section)
                     cell.visible = true
                     addPaths.append(indexPath)
                 }
@@ -90,15 +90,15 @@ class TableViewHelper {
         recalcIndexedCells()
         
         if initialCount == numberOfSections() {
-            tableView.insertRowsAtIndexPaths(addPaths, withRowAnimation: .Top)
+            tableView.insertRows(at: addPaths, with: .top)
         } else {
             tableView.reloadData()
         }
     }
     
-    func cellNameAtIndexPath(indexPath:NSIndexPath) -> String? {
+    func cellNameAtIndexPath(_ indexPath:IndexPath) -> String? {
         for path in indexedCells.keys {
-            if path.section == indexPath.section && path.row == indexPath.row {
+            if (path as NSIndexPath).section == (indexPath as NSIndexPath).section && (path as NSIndexPath).row == (indexPath as NSIndexPath).row {
               return indexedCells[path]!.name
             }
         }
@@ -106,7 +106,7 @@ class TableViewHelper {
         return nil
     }
     
-    func indexPathForCellNamed(name:String) -> NSIndexPath? {
+    func indexPathForCellNamed(_ name:String) -> IndexPath? {
         for path in indexedCells.keys {
             let cell = indexedCells[path]!
             if cell.name == name {
@@ -117,8 +117,8 @@ class TableViewHelper {
         return nil
     }
 	
-	func indexPathsForCellNamed(name:String) -> [NSIndexPath] {
-		var paths = [NSIndexPath]()
+	func indexPathsForCellNamed(_ name:String) -> [IndexPath] {
+		var paths = [IndexPath]()
 		for path in indexedCells.keys {
 			let cell = indexedCells[path]!
 			if cell.name == name {
@@ -129,7 +129,7 @@ class TableViewHelper {
 		return paths
 	}
 	
-    func visibleCellsWithName(name:String) -> [UITableViewCell] {
+    func visibleCellsWithName(_ name:String) -> [UITableViewCell] {
         var matchingCells = [UITableViewCell]()
         for cell in cells {
             if cell.name == name && cell.visible {
@@ -141,7 +141,7 @@ class TableViewHelper {
     }
     
     /// returns true if ALL cells with that name are visible
-    func cellIsVisible(name:String) -> Bool {
+    func cellIsVisible(_ name:String) -> Bool {
         var visible = true
         for cell in cells {
             if cell.name == name && !cell.visible {
@@ -155,18 +155,18 @@ class TableViewHelper {
     
     
     func numberOfSections() -> Int {
-        var count = 0
+        var totalCount = 0
         
-        for section in cellCount.keys {
-            if cellCount[section] > 0 {
-                count += 1
+        for (_,count) in cellCount {
+            if count > 0 {
+                totalCount += 1
             }
         }
         
-        return count
+        return totalCount
     }
     
-    func numberOfRowsInSection(section: Int) -> Int {
+    func numberOfRowsInSection(_ section: Int) -> Int {
         if let count = cellCount[section] {
             return count
         } else {
@@ -174,10 +174,10 @@ class TableViewHelper {
         }
     }
     
-    func cellForRowAtIndexPath(indexPath: NSIndexPath) -> UITableViewCell {
+    func cellForRowAtIndexPath(_ indexPath: IndexPath) -> UITableViewCell {
         var cell:Cell?
         for path in indexedCells.keys {
-            if path.section == indexPath.section && path.row == indexPath.row {
+            if (path as NSIndexPath).section == (indexPath as NSIndexPath).section && (path as NSIndexPath).row == (indexPath as NSIndexPath).row {
                 cell = indexedCells[path]
                 break
             }
@@ -200,14 +200,14 @@ class TableViewHelper {
     }
     
     private var cells = [Cell]()
-    private var indexedCells = [NSIndexPath:Cell]()
+    private var indexedCells = [IndexPath:Cell]()
     private var cellCount = [Int:Int]()
     
     private func recalcIndexedCells() {
         var index = 0
         var section = 0
         var cellSection = 0
-        indexedCells = [NSIndexPath:Cell]();
+        indexedCells = [IndexPath:Cell]();
         cellCount = [Int:Int]()
         for cell in cells {
             if cell.section != cellSection {
@@ -220,7 +220,7 @@ class TableViewHelper {
             }
             
             if cell.visible {
-                let indexPath = NSIndexPath(forRow: index, inSection: section)
+                let indexPath = IndexPath(row: index, section: section)
                 indexedCells[indexPath] = cell
                 index += 1
             }

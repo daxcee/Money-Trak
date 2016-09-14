@@ -13,7 +13,7 @@ protocol AccountCellDelegate {
 	func accountCellTapped()
 }
 
-class AccountView: UIView, Numbers {
+class AccountView: UIView, UsesCurrency {
 	var delegate: AccountCellDelegate?
 	var account: Account {
 		get {
@@ -35,17 +35,17 @@ class AccountView: UIView, Numbers {
 	
 	private var _account: Account = Account()
 	
-	func allowTap(allow: Bool) {
+	func allowTap(_ allow: Bool) {
 		if allow {
 			arrowConstraint.constant = 8
-			accountButton.hidden = false
+			accountButton.isHidden = false
 		} else {
 			arrowConstraint.constant = -10
-			accountButton.hidden = true
+			accountButton.isHidden = true
 		}
 	}
 	
-	@IBAction private func buttonTapped(sender: AnyObject) {
+	@IBAction private func buttonTapped(_ sender: AnyObject) {
 		delegate?.accountCellTapped()
 	}
 }

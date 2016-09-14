@@ -15,7 +15,7 @@ class NotificationManager {
 
 	func reset() {
 		for observer in observers.values {
-			NSNotificationCenter.defaultCenter().removeObserver(observer)
+			NotificationCenter.default.removeObserver(observer)
 		}
 	}
 
@@ -28,8 +28,8 @@ class NotificationManager {
 	 - parameter name: NotificationName from enumeration
 	 - parameter userInfo: (optional) dictionary of information to be passed in the notification
 	 */
-	func postNotificationWithName(name: NotificationName, userInfo: [NSObject: AnyObject]? = nil) {
-		NSNotificationCenter.defaultCenter().postNotificationName(name.rawValue, object: nil, userInfo: userInfo)
+	func postNotificationWithName(_ name: NotificationName, userInfo: [NSObject: AnyObject]? = nil) {
+		NotificationCenter.default.post(name: Notification.Name(rawValue: name.rawValue), object: nil, userInfo: userInfo)
 	}
 
 	/**
@@ -37,8 +37,8 @@ class NotificationManager {
 	 - parameter name: Name of notification that is not enumerated.
 	 - parameter userInfo: (optional) dictionary of information to be passed in the notification
 	 */
-	func postNotificationWithName(name: String, userInfo: [NSObject: AnyObject]? = nil) {
-		NSNotificationCenter.defaultCenter().postNotificationName(name, object: nil, userInfo: userInfo)
+	func postNotificationWithName(_ name: String, userInfo: [NSObject: AnyObject]? = nil) {
+		NotificationCenter.default.post(name: Notification.Name(rawValue: name), object: nil, userInfo: userInfo)
 	}
 
 	/**
@@ -46,11 +46,11 @@ class NotificationManager {
 	 - parameter name: NotificationName from enumeration
 	 - parameter block: code to be executed when notification is received. Notification recevied is the passed parameter.
 	 */
-	func addObserverForName(name: NotificationName, block: (NSNotification) -> Void) {
+	func addObserverForName(_ name: NotificationName, block: @escaping (Notification) -> Void) {
 		// make sure observer isn't already in place
 		guard observers[name.rawValue] == nil else { return }
 
-		let observer = NSNotificationCenter.defaultCenter().addObserverForName(name.rawValue, object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: block)
+		let observer = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: name.rawValue), object: nil, queue: OperationQueue.main, using: block)
 		observers[name.rawValue] = observer
 	}
 
@@ -59,11 +59,11 @@ class NotificationManager {
 	 - parameter name: Name of notification that is not enumerated
 	 - parameter block: code to be executed when notification is received. Notification recevied is the passed parameter.
 	 */
-	func addObserverForName(name: String, block: (NSNotification) -> Void) {
+	func addObserverForName(_ name: String, block: @escaping (Notification) -> Void) {
 		// make sure observer isn't already in place
 		guard observers[name] == nil else { return }
 
-		let observer = NSNotificationCenter.defaultCenter().addObserverForName(name, object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: block)
+		let observer = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: name), object: nil, queue: OperationQueue.main, using: block)
 		observers[name] = observer
 	}
 
@@ -71,32 +71,32 @@ class NotificationManager {
 	 Removes a notification with the given name
 	 - parameter name: NotificationName from enumeration
 	 */
-	func removeObserverForName(name: NotificationName) {
+	func removeObserverForName(_ name: NotificationName) {
 		guard let observer = observers[name.rawValue] else { return }
 
-		NSNotificationCenter.defaultCenter().removeObserver(observer)
-		observers.removeValueForKey(name.rawValue)
+		NotificationCenter.default.removeObserver(observer)
+		observers.removeValue(forKey: name.rawValue)
 	}
 
 	/**
 	 Removes a notification with the given name
 	 - parameter name: Name of notification that is not enumerated
 	 */
-	func removeObserverForName(name: String) {
+	func removeObserverForName(_ name: String) {
 		guard let observer = observers[name] else { return }
 
-		NSNotificationCenter.defaultCenter().removeObserver(observer)
-		observers.removeValueForKey(name)
+		NotificationCenter.default.removeObserver(observer)
+		observers.removeValue(forKey: name)
 	}
 }
 
-extension NSNotificationCenter {
+extension NotificationCenter {
 	/**
 	 Posts a notification with the given name and optional userInfo throught the defaultCenter
 	 - parameter name: NotificationName from enumeration
 	 - parameter userInfo: (optional) dictionary of information to be passed in the notification
 	 */
-	static func postNotificationWithName(name: NotificationName, userInfo: [NSObject: AnyObject]? = nil) {
-		NSNotificationCenter.defaultCenter().postNotificationName(name.rawValue, object: nil, userInfo: userInfo)
+	static func postNotificationWithName(_ name: NotificationName, userInfo: [NSObject: AnyObject]? = nil) {
+		NotificationCenter.default.post(name: Notification.Name(rawValue: name.rawValue), object: nil, userInfo: userInfo)
 	}
 }

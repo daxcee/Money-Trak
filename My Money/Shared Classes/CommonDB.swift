@@ -35,7 +35,7 @@ let kUpdateUpcomingTransactionsNotification = "UpdateUpcomingTransactions"
 let kInitialBalance = "Initial Balance"
 let defaultPrefix = "MMDefault:"
 
-let dbProcessingQueue = dispatch_queue_create("com.AaronLBratcher.processingQueue", DISPATCH_QUEUE_CONCURRENT)
+let dbProcessingQueue = DispatchQueue(label: "com.AaronLBratcher.processingQueue")
 
 enum TransactionFilter {
 	case all(String)
@@ -96,7 +96,7 @@ enum DefaultCategory: String {
 	}
 }
 
-class CommonDB: Numbers {
+class CommonDB: UsesCurrency {
 	static let instance = CommonDB()
 	var defaults = DefaultManager()
 
@@ -116,7 +116,7 @@ class CommonDB: Numbers {
 		}
 
 		// setup default account
-		if let accountKeys = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: nil) where accountKeys.count == 0 {
+		if let accountKeys = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: nil) , accountKeys.count == 0 {
 			let checking = Account()
 			checking.key = defaultPrefix + "Checking"
 			checking.save()
@@ -133,7 +133,7 @@ class CommonDB: Numbers {
 		ALBNoSQLDB.setTableIndexes(table: kTransactionsTable, indexes: ["accountKey", "date"])
 		ALBNoSQLDB.setTableIndexes(table: kUpcomingTransactionsTable, indexes: ["date"])
 
-		dispatch_async(dbProcessingQueue, { () -> Void in
+		dbProcessingQueue.async(execute: { () -> Void in
 			CommonDB.processUpcomingTransactions(false)
 			CommonDB.checkForNegativeUpcoming(nil)
 			CommonDB.removeUnusedLocations()
@@ -141,10 +141,10 @@ class CommonDB: Numbers {
 		})
 	}
 
-	class func addCategory(category: DefaultCategory) {
+	class func addCategory(_ category: DefaultCategory) {
 		let categoryKey = defaultPrefix + category.rawValue
-		let condition = DBCondition(set: 0, objectKey: "key", conditionOperator: .equal, value: categoryKey)
-		if let keys = ALBNoSQLDB.keysInTableForConditions(kCategoryTable, sortOrder: nil, conditions: [condition]) where keys.count > 0 {
+		let condition = DBCondition(set: 0, objectKey: "key", conditionOperator: .equal, value: categoryKey as AnyObject)
+		if let keys = ALBNoSQLDB.keysInTableForConditions(kCategoryTable, sortOrder: nil, conditions: [condition]) , keys.count > 0 {
 			// category already exists
 			return
 		}
@@ -160,10 +160,10 @@ class CommonDB: Numbers {
 	}
 
 	class func calcAmountAvailable() {
-		dispatch_async(dbProcessingQueue) { () -> Void in
+		dbProcessingQueue.async { () -> Void in
 			var amountAvailable = 0
 
-			let updateCondition = DBCondition(set: 0, objectKey: "updateTotalAll", conditionOperator: .equal, value: 1)
+			let updateCondition = DBCondition(set: 0, objectKey: "updateTotalAll", conditionOperator: .equal, value: 1 as AnyObject)
 			if let accountKeys = ALBNoSQLDB.keysInTableForConditions(kAccountsTable, sortOrder: nil, conditions: [updateCondition]) {
 				for accountKey in accountKeys {
 					let account = Account(key: accountKey)!
@@ -173,9 +173,9 @@ class CommonDB: Numbers {
 
 					// process upcoming transactions
 					let processDate = UpcomingTransaction.processDate(account)
-					let accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: account.key)
-					let depositCondition = DBCondition(set: 0, objectKey: "type", conditionOperator: .notEqual, value: "deposit")
-					let dateCondition = DBCondition(set: 0, objectKey: "date", conditionOperator: .lessThanOrEqual, value: processDate.stringValue())
+					let accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: account.key as AnyObject)
+					let depositCondition = DBCondition(set: 0, objectKey: "type", conditionOperator: .notEqual, value: "deposit" as AnyObject)
+					let dateCondition = DBCondition(set: 0, objectKey: "date", conditionOperator: .lessThanOrEqual, value: processDate.stringValue() as AnyObject)
 
 					if let upcomingKeys = ALBNoSQLDB.keysInTableForConditions(kUpcomingTransactionsTable, sortOrder: "date,amount", conditions: [accountCondition, depositCondition, dateCondition]) {
 						for transactionKey in upcomingKeys {
@@ -193,45 +193,45 @@ class CommonDB: Numbers {
 							}
 
 							amountAvailable += transaction.amount
-							ALBNoSQLDB.setValue(table: kProcessedTransactionsTable, key: transaction.key, value: "{}", autoDeleteAfter: nil)
+							let _ = ALBNoSQLDB.setValue(table: kProcessedTransactionsTable, key: transaction.key, value: "{}", autoDeleteAfter: nil)
 						}
 					}
 				}
 			}
 
 			CommonDB.instance.defaults.setInteger(amountAvailable, forKey: .AmountAvailable)
-			NSNotificationCenter.defaultCenter().postNotificationName(kUpdateTotalAvailableNotification, object: nil)
+			NotificationCenter.default.post(name: Notification.Name(rawValue: kUpdateTotalAvailableNotification), object: nil)
 		}
 	}
 
 	// MARK: - Transactions
-	class func processUpcomingTransactions(force: Bool) {
-		let now = NSDate()
+	class func processUpcomingTransactions(_ force: Bool) {
+		let now = Date()
 
 		if !force {
 			// only do this twice a day
-			if let processDate = CommonDB.instance.defaults.objectForKey(.UpcomingTransactionScan) as? NSDate {
+			if let processDate = CommonDB.instance.defaults.objectForKey(.UpcomingTransactionScan) as? Date {
 				let checkDate = processDate.addTime(hours: 12, minutes: 0, seconds: 0)
-				if checkDate.earlierDate(now) == now {
+				if (checkDate as NSDate).earlierDate(now) == now {
 					return
 				}
 			}
 		}
 
 		if let instanceKey = ALBNoSQLDB.dbInstanceKey() {
-			let deviceCondition = DBCondition(set: 0, objectKey: "dbInstanceKey", conditionOperator: .equal, value: instanceKey)
-			let dateCondition = DBCondition(set: 0, objectKey: "date", conditionOperator: .lessThan, value: ALBNoSQLDB.stringValueForDate(NSDate().addDate(years: 0, months: 2, weeks: 0, days: 0)))
-			let today = NSDate().midnight()
-			var accountProcessDates = [String: NSDate]()
+			let deviceCondition = DBCondition(set: 0, objectKey: "dbInstanceKey", conditionOperator: .equal, value: instanceKey as AnyObject)
+			let dateCondition = DBCondition(set: 0, objectKey: "date", conditionOperator: .lessThan, value: ALBNoSQLDB.stringValueForDate(Date().addDate(years: 0, months: 2, weeks: 0, days: 0)) as AnyObject)
+			let today = Date().midnight()
+			var accountProcessDates = [String: Date]()
 
 			if let keys = ALBNoSQLDB.keysInTableForConditions(kUpcomingTransactionsTable, sortOrder: "date", conditions: [deviceCondition, dateCondition]) {
 				var finalRecurringKeys = [String]()
 				for key in keys {
 					guard let upcomingTransaction = UpcomingTransaction(key: key)
-					, account = Account(key: upcomingTransaction.accountKey) else { continue }
+					, let account = Account(key: upcomingTransaction.accountKey) else { continue }
 
 					// move from upcoming into standard transaction if necessary
-					if today.laterDate(upcomingTransaction.date) == today {
+					if (today as NSDate).laterDate(upcomingTransaction.date) == today {
 						if upcomingTransaction.recurringTransactionKey != "" {
 							let recurring = RecurringTransaction(key: upcomingTransaction.recurringTransactionKey)!
 							recurring.transactionCount -= 1
@@ -248,20 +248,20 @@ class CommonDB: Numbers {
 						newTransaction.save()
 					} else {
 						// possibly process total available instead
-						var processDate: NSDate
+						var processDate: Date
 
 						if accountProcessDates[account.key] == nil {
-							let accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: account.key)
-							let depositCondition = DBCondition(set: 0, objectKey: "type", conditionOperator: .equal, value: "deposit")
-							let updateCondition = DBCondition(set: 0, objectKey: "date", conditionOperator: .lessThanOrEqual, value: NSDate().midnight().addDate(years: 0, months: 0, weeks: 0, days: account.updateUpcomingDays).stringValue())
+							let accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: account.key as AnyObject)
+							let depositCondition = DBCondition(set: 0, objectKey: "type", conditionOperator: .equal, value: "deposit" as AnyObject)
+							let updateCondition = DBCondition(set: 0, objectKey: "date", conditionOperator: .lessThanOrEqual, value: Date().midnight().addDate(years: 0, months: 0, weeks: 0, days: account.updateUpcomingDays).stringValue() as AnyObject)
 
-							processDate = NSDate().midnight().addDate(years: 0, months: 0, weeks: 0, days: account.updateUpcomingDays)
+							processDate = Date().midnight().addDate(years: 0, months: 0, weeks: 0, days: account.updateUpcomingDays)
 
 							if account.stopUpdatingAtDeposit {
 								let depositKeys = ALBNoSQLDB.keysInTableForConditions(kUpcomingTransactionsTable, sortOrder: "date", conditions: [accountCondition, depositCondition, updateCondition])
 								if depositKeys != nil && depositKeys!.count > 0 {
 									let deposit = UpcomingTransaction(key: depositKeys![0])!
-									if deposit.date.laterDate(processDate) == processDate {
+									if deposit.date < processDate {
 										processDate = deposit.date
 									}
 								}
@@ -272,7 +272,7 @@ class CommonDB: Numbers {
 							processDate = accountProcessDates[account.key]!
 						}
 
-						if upcomingTransaction.type != .deposit && upcomingTransaction.date.earlierDate(processDate) == upcomingTransaction.date {
+						if upcomingTransaction.type != .deposit && upcomingTransaction.date >= processDate {
 							// see if need to adjust total available
 							let hasKey = ALBNoSQLDB.tableHasKey(table: kProcessedTransactionsTable, key: key)
 							if !hasKey! {
@@ -282,41 +282,41 @@ class CommonDB: Numbers {
 
 						// see if an alert notification needs to be made
 						let userInfo = ["transaction": upcomingTransaction]
-						NSNotificationCenter.defaultCenter().postNotificationName("CreateLocalNotification", object: nil, userInfo: userInfo)
+						NotificationCenter.default.post(name: Notification.Name(rawValue: "CreateLocalNotification"), object: nil, userInfo: userInfo)
 					}
 				}
 
 				if finalRecurringKeys.count > 0 {
 					let userInfo = ["keys": finalRecurringKeys]
-					NSNotificationCenter.defaultCenter().postNotificationName("LastRecurringProcessed", object: nil, userInfo: userInfo)
+					NotificationCenter.default.post(name: Notification.Name(rawValue: "LastRecurringProcessed"), object: nil, userInfo: userInfo)
 				}
 			} else {
 				// error opening DB, couldn't get keys
 				return
 			}
 
-			CommonDB.instance.defaults.setObject(now.midnight(), forKey: .UpcomingTransactionScan)
+			CommonDB.instance.defaults.setObject(now.midnight() as AnyObject?, forKey: .UpcomingTransactionScan)
 
-			NSNotificationCenter.defaultCenter().postNotificationName(kUpdateTotalAvailableNotification, object: nil)
+			NotificationCenter.default.post(name: Notification.Name(rawValue: kUpdateTotalAvailableNotification), object: nil)
 		}
 
 		calcAmountAvailable()
 	}
 
-	class func checkForNegativeUpcoming(accountKey: String?) {
-		let now = NSDate()
+	class func checkForNegativeUpcoming(_ accountKey: String?) {
+		let now = Date()
 
 		if accountKey == nil {
-			let processDate: NSDate? = CommonDB.instance.defaults.objectForKey(.UpcomingBalanceScan) as? NSDate
+			let processDate: Date? = CommonDB.instance.defaults.objectForKey(.UpcomingBalanceScan) as? Date
 			if processDate != nil {
 				let checkDate = processDate!.addTime(hours: 24, minutes: 0, seconds: 0)
-				if checkDate.earlierDate(now) == now {
+				if (checkDate as NSDate).earlierDate(now) == now {
 					return
 				}
 			}
 		}
 
-		CommonDB.instance.defaults.setObject(now, forKey: .UpcomingBalanceScan)
+		CommonDB.instance.defaults.setObject(now as AnyObject?, forKey: .UpcomingBalanceScan)
 
 		let keys = upcomingTransactionKeys(.all(""))
 		var accountKeys = [String]()
@@ -352,38 +352,38 @@ class CommonDB: Numbers {
 			}
 		}
 
-		let alertDate = CommonDB.instance.defaults.objectForKey(.UpcomingTransactionsWarning) as? NSDate
+		let alertDate = CommonDB.instance.defaults.objectForKey(.UpcomingTransactionsWarning) as? Date
 
 		if showAlert {
 			if alertDate != nil {
 				let newShowDate = alertDate!.addTime(hours: 24, minutes: 0, seconds: 0)
 				// alert was previously shown. Wait 24 hours before showing it again.
-				if NSDate().laterDate(newShowDate) == newShowDate {
+				if (Date() as NSDate).laterDate(newShowDate) == newShowDate {
 					return
 				}
 			}
 
-			CommonDB.instance.defaults.setObject(now, forKey: .UpcomingTransactionsWarning)
+			CommonDB.instance.defaults.setObject(now as AnyObject?, forKey: .UpcomingTransactionsWarning)
 
-			dispatch_async(dispatch_get_main_queue(), { () -> Void in
-				NSNotificationCenter.defaultCenter().postNotificationName(kNegativeBalanceWarning, object: nil)
+			DispatchQueue.main.async(execute: { () -> Void in
+				NotificationCenter.default.post(name: Notification.Name(rawValue: kNegativeBalanceWarning), object: nil)
 			})
 		} else {
 			CommonDB.instance.defaults.removeObjectForKey(.UpcomingTransactionsWarning)
 
 			if alertDate != nil {
 				// alert was previously shown and now we're okay
-				dispatch_async(dispatch_get_main_queue(), { () -> Void in
-					NSNotificationCenter.defaultCenter().postNotificationName(kNegativeBalanceGone, object: nil)
+				DispatchQueue.main.async(execute: { () -> Void in
+					NotificationCenter.default.post(name: Notification.Name(rawValue: kNegativeBalanceGone), object: nil)
 				})
 			}
 		}
 	}
 
-	class func generateUpcomingFromRecurring(recurringTransaction: RecurringTransaction) {
+	class func generateUpcomingFromRecurring(_ recurringTransaction: RecurringTransaction) {
 		// delete all pending upcoming transactions
-		dispatch_async(dbProcessingQueue, { () -> Void in
-			let recurringCondition = DBCondition(set: 0, objectKey: "recurringTransactionKey", conditionOperator: .equal, value: recurringTransaction.recurringTransactionKey)
+		dbProcessingQueue.async(execute: { () -> Void in
+			let recurringCondition = DBCondition(set: 0, objectKey: "recurringTransactionKey", conditionOperator: .equal, value: recurringTransaction.recurringTransactionKey as AnyObject)
 			let keys = ALBNoSQLDB.keysInTableForConditions(kUpcomingTransactionsTable, sortOrder: nil, conditions: [recurringCondition])
 			if keys == nil {
 				// TODO: handle error
@@ -430,7 +430,7 @@ class CommonDB: Numbers {
 				}
 
 				if recurringTransaction.endDate != nil {
-					if recurringTransaction.endDate!.laterDate(date) == date {
+					if recurringTransaction.endDate! < date {
 						complete = true
 					}
 				} else {
@@ -445,17 +445,17 @@ class CommonDB: Numbers {
 			self.processUpcomingTransactions(true)
 			self.checkForNegativeUpcoming(recurringTransaction.accountKey)
 
-			dispatch_async(dispatch_get_main_queue(), { () -> Void in
-				NSNotificationCenter.defaultCenter().postNotificationName(kUpdateUpcomingTransactionsNotification, object: nil)
-				NSNotificationCenter.defaultCenter().postNotificationName(kUpdateTotalAvailableNotification, object: nil)
+			DispatchQueue.main.async(execute: { () -> Void in
+				NotificationCenter.default.post(name: Notification.Name(rawValue: kUpdateUpcomingTransactionsNotification), object: nil)
+				NotificationCenter.default.post(name: Notification.Name(rawValue: kUpdateTotalAvailableNotification), object: nil)
 			})
 		})
 	}
 
-	class func transactionKeys(filter: TransactionFilter) -> [String] {
+	class func transactionKeys(_ filter: TransactionFilter) -> [String] {
 		let account = CommonFunctions.currentAccountKey
 		if account != "" {
-			var accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: account)
+			var accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: account as AnyObject)
 			var searchString = ""
 			var reconciledCondition: DBCondition?
 
@@ -464,10 +464,10 @@ class CommonDB: Numbers {
 				searchString = searchText
 			case .cleared(let searchText):
 				searchString = searchText
-				reconciledCondition = DBCondition(set: 0, objectKey: "reconciled", conditionOperator: .equal, value: "true")
+				reconciledCondition = DBCondition(set: 0, objectKey: "reconciled", conditionOperator: .equal, value: "true" as AnyObject)
 			case .outstanding(let searchText):
 				searchString = searchText
-				reconciledCondition = DBCondition(set: 0, objectKey: "reconciled", conditionOperator: .equal, value: "false")
+				reconciledCondition = DBCondition(set: 0, objectKey: "reconciled", conditionOperator: .equal, value: "false" as AnyObject)
 			}
 
 			var finalConditionSet = [DBCondition]()
@@ -503,11 +503,11 @@ class CommonDB: Numbers {
 		return []
 	}
 
-	class func upcomingTransactionKeys(filter: TransactionFilter) -> [String] {
-		let futureDate = NSDate().addDate(years: 0, months: 1, weeks: 0, days: 0)
-		let dateCondition = DBCondition(set: 0, objectKey: "date", conditionOperator: .lessThanOrEqual, value: futureDate.stringValue())
-		let recurringCondition = DBCondition(set: 0, objectKey: "recurringTransactionKey", conditionOperator: .notEqual, value: "")
-		let manualCondition = DBCondition(set: 1, objectKey: "recurringTransactionKey", conditionOperator: .equal, value: "")
+	class func upcomingTransactionKeys(_ filter: TransactionFilter) -> [String] {
+		let futureDate = Date().addDate(years: 0, months: 1, weeks: 0, days: 0)
+		let dateCondition = DBCondition(set: 0, objectKey: "date", conditionOperator: .lessThanOrEqual, value: futureDate.stringValue() as AnyObject)
+		let recurringCondition = DBCondition(set: 0, objectKey: "recurringTransactionKey", conditionOperator: .notEqual, value: "" as AnyObject)
+		let manualCondition = DBCondition(set: 1, objectKey: "recurringTransactionKey", conditionOperator: .equal, value: "" as AnyObject)
 
 		var searchString = ""
 		switch filter {
@@ -545,7 +545,7 @@ class CommonDB: Numbers {
 		return 0
 	}
 
-	class func recurringTransactionKeys(filter: TransactionFilter) -> [String] {
+	class func recurringTransactionKeys(_ filter: TransactionFilter) -> [String] {
 		var searchString = ""
 		switch filter {
 		case .all(let searchText):
@@ -569,7 +569,7 @@ class CommonDB: Numbers {
 		return []
 	}
 
-	class func conditionsForSearchString(text: String) -> [DBCondition]? {
+	class func conditionsForSearchString(_ text: String) -> [DBCondition]? {
 		if text == "" || text.characters.count < 2 {
 			return nil
 		}
@@ -580,38 +580,38 @@ class CommonDB: Numbers {
 		let amount = CommonDB.instance.amountFromText(text)
 		if amount == 0 {
 			var set = 0
-			let categoryCondition = DBCondition(set: 0, objectKey: "name", conditionOperator: .contains, value: text)
-			if let keys = ALBNoSQLDB.keysInTableForConditions(kCategoryTable, sortOrder: nil, conditions: [categoryCondition]) where keys.count > 0 {
+			let categoryCondition = DBCondition(set: 0, objectKey: "name", conditionOperator: .contains, value: text as AnyObject)
+			if let keys = ALBNoSQLDB.keysInTableForConditions(kCategoryTable, sortOrder: nil, conditions: [categoryCondition]) , keys.count > 0 {
 				for key in keys {
-					condition = DBCondition(set: set, objectKey: "categoryKey", conditionOperator: .equal, value: key)
+					condition = DBCondition(set: set, objectKey: "categoryKey", conditionOperator: .equal, value: key as AnyObject)
 					conditionSet.append(condition)
 					set += 1
 				}
 			}
 
-			let locationCondition = DBCondition(set: 0, objectKey: "name", conditionOperator: .contains, value: text)
-			if let keys = ALBNoSQLDB.keysInTableForConditions(kLocationsTable, sortOrder: nil, conditions: [locationCondition]) where keys.count > 0 {
+			let locationCondition = DBCondition(set: 0, objectKey: "name", conditionOperator: .contains, value: text as AnyObject)
+			if let keys = ALBNoSQLDB.keysInTableForConditions(kLocationsTable, sortOrder: nil, conditions: [locationCondition]) , keys.count > 0 {
 				for key in keys {
-					condition = DBCondition(set: set, objectKey: "locationKey", conditionOperator: .equal, value: key)
+					condition = DBCondition(set: set, objectKey: "locationKey", conditionOperator: .equal, value: key as AnyObject)
 					conditionSet.append(condition)
 					set += 1
 				}
 			}
 
-			condition = DBCondition(set: set, objectKey: "note", conditionOperator: .contains, value: text)
+			condition = DBCondition(set: set, objectKey: "note", conditionOperator: .contains, value: text as AnyObject)
 			conditionSet.append(condition)
 
 			return conditionSet
 		} else {
-			condition = DBCondition(set: 0, objectKey: "amount", conditionOperator: .equal, value: abs(amount))
+			condition = DBCondition(set: 0, objectKey: "amount", conditionOperator: .equal, value: abs(amount) as AnyObject)
 			conditionSet.append(condition)
-			condition = DBCondition(set: 1, objectKey: "amount", conditionOperator: .equal, value: -abs(amount))
+			condition = DBCondition(set: 1, objectKey: "amount", conditionOperator: .equal, value: -abs(amount) as AnyObject)
 			conditionSet.append(condition)
 
 			var checkNumber = Double(amount) / 100.0
 			checkNumber = floor(checkNumber)
 			if checkNumber > 0 {
-				condition = DBCondition(set: 2, objectKey: "checkNumber", conditionOperator: .equal, value: checkNumber)
+				condition = DBCondition(set: 2, objectKey: "checkNumber", conditionOperator: .equal, value: checkNumber as AnyObject)
 				conditionSet.append(condition)
 			}
 		}
@@ -621,23 +621,23 @@ class CommonDB: Numbers {
 
 	class func recalculateAllBalances() {
 		var amountAvailable = 0
-		ALBNoSQLDB.dropTable(kProcessedTransactionsTable)
+		let _ = ALBNoSQLDB.dropTable(kProcessedTransactionsTable)
 
 		// clear spending summary cache
 		if let summaryKeys = ALBNoSQLDB.keysInTable(kMonthlySummaryEntriesTable, sortOrder: nil) {
 			for key in summaryKeys {
-				ALBNoSQLDB.deleteForKey(table: kMonthlySummaryEntriesTable, key: key)
+				let _ = ALBNoSQLDB.deleteForKey(table: kMonthlySummaryEntriesTable, key: key)
 			}
 		}
 
 		// reset processDate cache
-		CommonDB.instance.defaults.setObject(NSDate().addDate(years: 0, months: 0, weeks: 0, days: -2), forKey: .LastCheckDate)
+		CommonDB.instance.defaults.setObject(Date().addDate(years: 0, months: 0, weeks: 0, days: -2) as AnyObject?, forKey: .LastCheckDate)
 
 		if let accountKeys = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: nil) {
 			for accountKey in accountKeys {
 				let account = Account(key: accountKey)!
 				// process transactions to update account balance
-				let accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: account.key)
+				let accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: account.key as AnyObject)
 				if let transactionKeys = ALBNoSQLDB.keysInTableForConditions(kTransactionsTable, sortOrder: nil, conditions: [accountCondition]) {
 					account.balance = 0
 					for transactionKey in transactionKeys {
@@ -653,9 +653,9 @@ class CommonDB: Numbers {
 
 					// process upcoming transactions
 					let processDate = UpcomingTransaction.processDate(account)
-					let accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: account.key)
-					let depositCondition = DBCondition(set: 0, objectKey: "type", conditionOperator: .notEqual, value: "deposit")
-					let dateCondition = DBCondition(set: 0, objectKey: "date", conditionOperator: .lessThanOrEqual, value: processDate.stringValue())
+					let accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: account.key as AnyObject)
+					let depositCondition = DBCondition(set: 0, objectKey: "type", conditionOperator: .notEqual, value: "deposit" as AnyObject)
+					let dateCondition = DBCondition(set: 0, objectKey: "date", conditionOperator: .lessThanOrEqual, value: processDate.stringValue() as AnyObject)
 
 					if let upcomingKeys = ALBNoSQLDB.keysInTableForConditions(kUpcomingTransactionsTable, sortOrder: "date,amount", conditions: [accountCondition, depositCondition, dateCondition]) {
 						for transactionKey in upcomingKeys {
@@ -673,7 +673,7 @@ class CommonDB: Numbers {
 							}
 
 							amountAvailable += transaction.amount
-							ALBNoSQLDB.setValue(table: kProcessedTransactionsTable, key: transaction.key, value: "{}", autoDeleteAfter: nil)
+							let _ = ALBNoSQLDB.setValue(table: kProcessedTransactionsTable, key: transaction.key, value: "{}", autoDeleteAfter: nil)
 						}
 					}
 				}
@@ -682,10 +682,10 @@ class CommonDB: Numbers {
 
 		CommonDB.instance.defaults.setInteger(amountAvailable, forKey: .AmountAvailable)
 
-		NSNotificationCenter.defaultCenter().postNotificationName(kUpdateTotalAvailableNotification, object: nil)
+		NotificationCenter.default.post(name: Notification.Name(rawValue: kUpdateTotalAvailableNotification), object: nil)
 	}
 
-	class func sumTransactions(transactionKeys: [String], table: String) -> Int {
+	class func sumTransactions(_ transactionKeys: [String], table: String) -> Int {
 		var sql = "select sum(amount) from \(table) where key in ("
 
 		for key in transactionKeys {
@@ -717,8 +717,8 @@ class CommonDB: Numbers {
 		return 0
 	}
 
-	class func accountReconciliations(accountKey: String) -> [String] {
-		let accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: accountKey)
+	class func accountReconciliations(_ accountKey: String) -> [String] {
+		let accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: accountKey as AnyObject)
 
 		if let keys = ALBNoSQLDB.keysInTableForConditions(kReconcilationsTable, sortOrder: "date desc", conditions: [accountCondition]) {
 			return keys
@@ -727,27 +727,27 @@ class CommonDB: Numbers {
 		return [String]()
 	}
 
-	typealias reconciliationTransactionsFound = (transactionKeys: [String]) -> ()
-	class func loadTransactionsForReconciliation(reconciliation: Reconciliation, searchString: String? = nil, onComplete: reconciliationTransactionsFound) {
+	typealias reconciliationTransactionsFound = (_ transactionKeys: [String]) -> ()
+	class func loadTransactionsForReconciliation(_ reconciliation: Reconciliation, searchString: String? = nil, onComplete: @escaping reconciliationTransactionsFound) {
 		// if this isn't new, then just use the transactions saved with the reconciliation
 		if reconciliation.reconciled {
 			let db = ALBNoSQLDB.sharedInstance
-			let keys = reconciliation.transactionKeys.map({ "'" + $0 + "'" }).joinWithSeparator(",")
+			let keys = reconciliation.transactionKeys.map({ "'" + $0 + "'" }).joined(separator: ",")
 			let sql = "select key from transactions where key in (\(keys)) order by date desc, amount desc"
 			if let results = db.sqlSelect(sql) {
-				onComplete(transactionKeys: results.map({ $0.values[0] as! String }))
+				onComplete(results.map({ $0.values[0] as! String }))
 				return
 			}
 
-			onComplete(transactionKeys: reconciliation.transactionKeys)
+			onComplete(reconciliation.transactionKeys)
 			return
 		}
 
-		dispatch_async(dbProcessingQueue, { () -> Void in
+		dbProcessingQueue.async(execute: { () -> Void in
 			// get unreconciled transactions for this account with a date less than this reconciliation date
-			var endDateCondition = DBCondition(set: 0, objectKey: "date", conditionOperator: .lessThanOrEqual, value: reconciliation.date.midnight().stringValue())
-			var accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: reconciliation.accountKey)
-			var reconciledCondition = DBCondition(set: 0, objectKey: "reconciled", conditionOperator: .equal, value: "false")
+			var endDateCondition = DBCondition(set: 0, objectKey: "date", conditionOperator: .lessThanOrEqual, value: reconciliation.date.midnight().stringValue() as AnyObject)
+			var accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: reconciliation.accountKey as AnyObject)
+			var reconciledCondition = DBCondition(set: 0, objectKey: "reconciled", conditionOperator: .equal, value: "false" as AnyObject)
 
 			// take searchText into consideration
 			var finalConditionSet = [DBCondition]()
@@ -774,15 +774,15 @@ class CommonDB: Numbers {
 
 			let transactionKeys = ALBNoSQLDB.keysInTableForConditions(kTransactionsTable, sortOrder: "date desc,amount desc", conditions: finalConditionSet)!
 
-			onComplete(transactionKeys: transactionKeys)
+			onComplete(transactionKeys)
 		})
 	}
 
-	class func lastReconciliationForAccount(accountKey: String, ignoreUnreconciled: Bool = false) -> Reconciliation? {
-		let accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: accountKey)
+	class func lastReconciliationForAccount(_ accountKey: String, ignoreUnreconciled: Bool = false) -> Reconciliation? {
+		let accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: accountKey as AnyObject)
 		var lastReconciliation: Reconciliation?
 
-		if let reconciliationKeys = ALBNoSQLDB.keysInTableForConditions(kReconcilationsTable, sortOrder: "date desc", conditions: [accountCondition]) where reconciliationKeys.count > 0 {
+		if let reconciliationKeys = ALBNoSQLDB.keysInTableForConditions(kReconcilationsTable, sortOrder: "date desc", conditions: [accountCondition]), reconciliationKeys.count > 0 {
 			for index in 0 ..< reconciliationKeys.count {
 				if let reconciliation = Reconciliation(key: reconciliationKeys[index]) {
 					if (!ignoreUnreconciled || reconciliation.reconciled) {
@@ -796,7 +796,7 @@ class CommonDB: Numbers {
 		return lastReconciliation
 	}
 
-	class func createInitialBalanceTransaction(reconciliation: Reconciliation) -> String {
+	class func createInitialBalanceTransaction(_ reconciliation: Reconciliation) -> String {
 		let account = Account(key: reconciliation.accountKey)!
 		let transaction = Transaction()
 		transaction.accountKey = reconciliation.accountKey
@@ -812,25 +812,29 @@ class CommonDB: Numbers {
 		let sql = "select date from \(kTransactionsTable) where accountKey = '\(reconciliation.accountKey)' order by date limit 1"
 		let db = ALBNoSQLDB.sharedInstance
 		var minDate = reconciliation.date
-		if let results = db.sqlSelect(sql) where results.count > 0 {
+		if let results = db.sqlSelect(sql), results.count > 0 {
 			let dateString = results[0].values[0] as! String
 			minDate = ALBNoSQLDB.dateValueForString(dateString)!
 		}
 
-		minDate = minDate.earlierDate(reconciliation.date)
+		minDate = min(minDate, reconciliation.date as Date)
 
 		// set minDate to a month prior
 		minDate = minDate.addDate(years: 0, months: -1, weeks: 0, days: 0)
 
-		let calendar = NSCalendar.currentCalendar()
-		let dateComponents = calendar.components([NSCalendarUnit.Year, NSCalendarUnit.Month, NSCalendarUnit.Day], fromDate: minDate)
-
+		let calendar = Calendar.current
+		let year = calendar.component(.year, from: minDate)
+		let month = calendar.component(.month, from: minDate)
+		
+		var dateComponents = DateComponents()
+		dateComponents.year = year
+		dateComponents.month = month
 		dateComponents.day = 1
 		dateComponents.hour = 0
 		dateComponents.minute = 0
 		dateComponents.second = 0
 
-		minDate = calendar.dateFromComponents(dateComponents)!
+		minDate = calendar.date(from: dateComponents)!
 
 		let location = locationForName(kInitialBalance)
 		transaction.date = minDate
@@ -841,7 +845,7 @@ class CommonDB: Numbers {
 		return transaction.key
 	}
 
-	class func updateInitialBalanceTransaction(transactionKey: String, reconciliation: Reconciliation) {
+	class func updateInitialBalanceTransaction(_ transactionKey: String, reconciliation: Reconciliation) {
 		let transaction = Transaction(key: transactionKey)!
 		let account = Account(key: reconciliation.accountKey)!
 
@@ -855,13 +859,13 @@ class CommonDB: Numbers {
 	}
 
 	// MARK: - Locations
-	class func locationForName(name: String) -> Location {
+	class func locationForName(_ name: String) -> Location {
 		let location = Location()
 		location.name = name
 
-		let condition = DBCondition(set: 0, objectKey: "name", conditionOperator: .equal, value: name)
+		let condition = DBCondition(set: 0, objectKey: "name", conditionOperator: .equal, value: name as AnyObject)
 		let conditionArray = [condition]
-		if let keys = ALBNoSQLDB.keysInTableForConditions(kLocationsTable, sortOrder: nil, conditions: conditionArray) where keys.count > 0 {
+		if let keys = ALBNoSQLDB.keysInTableForConditions(kLocationsTable, sortOrder: nil, conditions: conditionArray) , keys.count > 0 {
 			return Location(key: keys[0])!
 		}
 
@@ -869,12 +873,12 @@ class CommonDB: Numbers {
 		return location
 	}
 
-	class func locationKeysForString(string: String) -> [String] {
+	class func locationKeysForString(_ string: String) -> [String] {
 		if string == "" {
 			return []
 		}
 
-		let condition = DBCondition(set: 0, objectKey: "name", conditionOperator: .contains, value: string)
+		let condition = DBCondition(set: 0, objectKey: "name", conditionOperator: .contains, value: string as AnyObject)
 		let conditionArray = [condition]
 		if let keys = ALBNoSQLDB.keysInTableForConditions(kLocationsTable, sortOrder: "name", conditions: conditionArray) {
 			return keys
@@ -883,7 +887,7 @@ class CommonDB: Numbers {
 		return []
 	}
 
-	class func saveLocationForAddress(addressKey: String, locationKey: String) {
+	class func saveLocationForAddress(_ addressKey: String, locationKey: String) {
 		// see if we have this address registered
 		var locationAddress = LocationAddress()
 
@@ -898,13 +902,13 @@ class CommonDB: Numbers {
 		locationAddress.save()
 	}
 
-	class func locationForAddress(addressKey: String) -> Location? {
-		guard let locationAddress = LocationAddress(key: addressKey), location = Location(key: locationAddress.locationKey) else { return nil }
+	class func locationForAddress(_ addressKey: String) -> Location? {
+		guard let locationAddress = LocationAddress(key: addressKey), let location = Location(key: locationAddress.locationKey) else { return nil }
 		return location
 	}
 
 	class func removeUnusedLocations() {
-		let latestDate = NSDate().addDate(years: 0, months: -1, weeks: 0, days: 0)
+		let latestDate = Date().addDate(years: 0, months: -1, weeks: 0, days: 0)
 		let sql = "select l.key from \(kLocationsTable) l left outer join \(kTransactionsTable) t on t.locationKey = l.key left outer join \(kUpcomingTransactionsTable) u on u.locationKey = l.key where t.locationKey is null and u.locationKey is null and l.addedDateTime < '\(latestDate.stringValue())'"
 
 		let db = ALBNoSQLDB.sharedInstance
@@ -912,7 +916,7 @@ class CommonDB: Numbers {
 
 		for row in results {
 			guard let key = row.values[0] as? String else { continue }
-			ALBNoSQLDB.deleteForKey(table: kLocationsTable, key: key)
+			let _ = ALBNoSQLDB.deleteForKey(table: kLocationsTable, key: key)
 		}
 	}
 
@@ -920,7 +924,7 @@ class CommonDB: Numbers {
 		let duplicateNamesSQL = "select name from \(kLocationsTable) group by name having count(*) > 1"
 
 		let db = ALBNoSQLDB.sharedInstance
-		guard let nameResults = db.sqlSelect(duplicateNamesSQL) where nameResults.count > 0 else { return }
+		guard let nameResults = db.sqlSelect(duplicateNamesSQL) , nameResults.count > 0 else { return }
 		for nameRow in nameResults {
 			// if there's a problem here, just return
 			guard let name = nameRow.values[0] as? String else { return }
@@ -945,7 +949,7 @@ class CommonDB: Numbers {
 				for transactionKey in transactionKeys {
 					guard let transaction = Transaction(key: transactionKey.values[0] as! String) else { return }
 					transaction.locationKey = keptLocationKey
-					ALBNoSQLDB.setValue(table: kTransactionsTable, key: transaction.key, value: transaction.jsonValue())
+					let _ = ALBNoSQLDB.setValue(table: kTransactionsTable, key: transaction.key, value: transaction.jsonValue())
 				}
 
 				sql = "select key from \(kUpcomingTransactionsTable) where locationKey = '\(locationKey)'"
@@ -953,7 +957,7 @@ class CommonDB: Numbers {
 				for transactionKey in upcomingTransactionKeys {
 					guard let transaction = Transaction(key: transactionKey.values[0] as! String) else { return }
 					transaction.locationKey = keptLocationKey
-					ALBNoSQLDB.setValue(table: kTransactionsTable, key: transaction.key, value: transaction.jsonValue())
+					let _ = ALBNoSQLDB.setValue(table: kTransactionsTable, key: transaction.key, value: transaction.jsonValue())
 				}
 
 				sql = "select key from \(kRecurringTransactionsTable) where locationKey = '\(locationKey)'"
@@ -961,7 +965,7 @@ class CommonDB: Numbers {
 				for transactionKey in recurringTransactionKeys {
 					guard let transaction = Transaction(key: transactionKey.values[0] as! String) else { return }
 					transaction.locationKey = keptLocationKey
-					ALBNoSQLDB.setValue(table: kTransactionsTable, key: transaction.key, value: transaction.jsonValue())
+					let _ = ALBNoSQLDB.setValue(table: kTransactionsTable, key: transaction.key, value: transaction.jsonValue())
 				}
 
 				sql = "select key from \(kLocationAddressesTable) where locationKey = '\(locationKey)'"
@@ -973,7 +977,7 @@ class CommonDB: Numbers {
 				}
 
 				// delete location
-				ALBNoSQLDB.deleteForKey(table: kLocationsTable, key: locationKey)
+				let _ = ALBNoSQLDB.deleteForKey(table: kLocationsTable, key: locationKey)
 			}
 		}
 
@@ -990,12 +994,12 @@ class CommonDB: Numbers {
 		return []
 	}
 
-	class func categoryForName(name: String) -> Category {
+	class func categoryForName(_ name: String) -> Category {
 		let category = Category()
 		category.name = name
 
-		let condition = DBCondition(set: 0, objectKey: "name", conditionOperator: .equal, value: name)
-		if let keys = ALBNoSQLDB.keysInTableForConditions(kCategoryTable, sortOrder: nil, conditions: [condition]) where keys.count > 0 {
+		let condition = DBCondition(set: 0, objectKey: "name", conditionOperator: .equal, value: name as AnyObject)
+		if let keys = ALBNoSQLDB.keysInTableForConditions(kCategoryTable, sortOrder: nil, conditions: [condition]) , keys.count > 0 {
 			return Category(key: keys[0])!
 		}
 
@@ -1017,7 +1021,7 @@ class CommonDB: Numbers {
 	class func numCCAccounts() -> Int {
 		var accounts = 0
 
-		let condition = DBCondition(set: 0, objectKey: "type", conditionOperator: .equal, value: "Credit Card")
+		let condition = DBCondition(set: 0, objectKey: "type", conditionOperator: .equal, value: "Credit Card" as AnyObject)
 		if let keys = ALBNoSQLDB.keysInTableForConditions(kAccountsTable, sortOrder: nil, conditions: [condition]) {
 			accounts = keys.count
 		}
@@ -1026,7 +1030,7 @@ class CommonDB: Numbers {
 	}
 
 	class func firstCCAccount() -> Account {
-		let condition = DBCondition(set: 0, objectKey: "type", conditionOperator: .equal, value: "Credit Card")
+		let condition = DBCondition(set: 0, objectKey: "type", conditionOperator: .equal, value: "Credit Card" as AnyObject)
 		if let keys = ALBNoSQLDB.keysInTableForConditions(kAccountsTable, sortOrder: nil, conditions: [condition]) {
 			var firstAccount = Account(key: keys[0])!
 			let balance = 0

@@ -9,9 +9,9 @@
 import Foundation
 import UIKit
 
-let _searchQueue = dispatch_queue_create("com.AaronLBratcher.MyMoneySearch", DISPATCH_QUEUE_SERIAL)
+let _searchQueue = DispatchQueue(label: "com.AaronLBratcher.MyMoneySearch")
 
-final class TransactionsController: UITableViewController, EditTransactionProtocol, AccountCellDelegate, AccountDelegate, Numbers {
+final class TransactionsController: UITableViewController, EditTransactionProtocol, AccountCellDelegate, AccountDelegate, UsesCurrency {
 	@IBOutlet weak var searchbar: UISearchBar!
 
 	var inSummary = false
@@ -19,7 +19,7 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 	var recurringTransactions = false
 	var transactionKeys = [String]() {
 		didSet {
-			if let text = self.searchbar.text where text.characters.count > 0 {
+			if let text = self.searchbar.text, text.characters.count > 0 {
 				_sum = CommonDB.sumTransactions(transactionKeys, table: kTransactionsTable)
 			} else {
 				_sum = nil
@@ -27,11 +27,11 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 		}
 	}
 
-	private var _currentAccountKey = CommonFunctions.currentAccountKey
-	private var _accountView: AccountView?
-	private var _lastSelection: NSIndexPath?
-	private var _searching = false
-	private var _sum: Int?
+	fileprivate var _currentAccountKey = CommonFunctions.currentAccountKey
+	fileprivate var _accountView: AccountView?
+	fileprivate var _lastSelection: IndexPath?
+	fileprivate var _searching = false
+	fileprivate var _sum: Int?
 
 	enum Segue: String {
 		case SetAccount
@@ -41,15 +41,15 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 
 	override func viewDidLoad() {
 		if !upcomingTransactions && !recurringTransactions {
-			if !inSummary, let accountView = NSBundle.mainBundle().loadNibNamed("AccountView", owner: self, options: nil)[0] as? AccountView {
+			if !inSummary, let accountView = Bundle.main.loadNibNamed("AccountView", owner: self, options: nil)?[0] as? AccountView {
 				self._accountView = accountView
 				accountView.delegate = self
 				updateAccountInfo()
 
-				if let searchbar = searchbar, keys = ALBNoSQLDB.keysInTable(kReconcilationsTable, sortOrder: nil) where keys.count > 0 {
+				if let searchbar = searchbar, let keys = ALBNoSQLDB.keysInTable(kReconcilationsTable, sortOrder: nil) , keys.count > 0 {
 					searchbar.showsScopeBar = true
 					searchbar.scopeButtonTitles = ["All", "Outstanding", "Cleared"]
-					searchbar.backgroundColor = UIColor.whiteColor()
+					searchbar.backgroundColor = UIColor.white
 					searchbar.selectedScopeButtonIndex = 0
 					searchbar.sizeToFit()
 				}
@@ -57,7 +57,7 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 		}
 
 		if upcomingTransactions {
-			NSNotificationCenter.defaultCenter().addObserverForName(kUpdateUpcomingTransactionsNotification, object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: { (notification) -> Void in
+			NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: kUpdateUpcomingTransactionsNotification), object: nil, queue: OperationQueue.main, using: { (notification) -> Void in
 				self.loadTransactions(.all(""))
 				self.tableView.reloadData()
 			})
@@ -69,11 +69,11 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 
 		if let searchbar = searchbar {
 			let keyboardToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 100, height: 34))
-			keyboardToolbar.barStyle = UIBarStyle.BlackTranslucent
-			keyboardToolbar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 34)
-			let flexSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-			let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: #selector(doneTyping))
-			doneButton.tintColor = UIColor.whiteColor()
+			keyboardToolbar.barStyle = UIBarStyle.blackTranslucent
+			keyboardToolbar.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: 34)
+			let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+			let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(doneTyping))
+			doneButton.tintColor = UIColor.white
 			keyboardToolbar.items = [flexSpace, doneButton]
 
 			searchbar.inputAccessoryView = keyboardToolbar
@@ -84,7 +84,7 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 		_accountView?.account = Account(key: _currentAccountKey)!
 	}
 
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		if upcomingTransactions {
 			navigationItem.title = "Upcoming"
 		} else {
@@ -98,36 +98,27 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 
 	func doneTyping() {
 		searchbar.resignFirstResponder()
-		if searchbar.text?.characters.count > 0 {
-			searchbar.showsCancelButton = true
-		}
+		guard let text = searchbar.text, text.characters.count > 0 else { return }
+		searchbar.showsCancelButton = true
 	}
 
-	override func viewDidAppear(animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
 		if let lastSelection = _lastSelection {
-			self.tableView.selectRowAtIndexPath(lastSelection, animated: true, scrollPosition: UITableViewScrollPosition.None)
+			self.tableView.selectRow(at: lastSelection, animated: true, scrollPosition: UITableViewScrollPosition.none)
 
 			delay(0.5, closure: { () -> () in
-				self.tableView.deselectRowAtIndexPath(lastSelection, animated: true)
+				self.tableView.deselectRow(at: lastSelection, animated: true)
 				self._lastSelection = nil
 			})
 		}
 	}
 
-	override func preferredInterfaceOrientationForPresentation() -> UIInterfaceOrientation {
-		return UIInterfaceOrientation.Portrait
-	}
-
-	override func shouldAutorotate() -> Bool {
-		return false
-	}
-
-	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+	func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 		if segue.identifier != nil, let segueName = Segue(rawValue: segue.identifier!) {
 			switch segueName {
 
 			case .SetAccount:
-				let navController = segue.destinationViewController as! UINavigationController
+				let navController = segue.destination as! UINavigationController
 				let controller = navController.viewControllers[0] as! SelectAccountController
 				controller.currentAccountKey = _currentAccountKey
 				controller.accountDelegate = self
@@ -138,10 +129,10 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 			case .EditTransaction:
 				let controller: EditEntryController
 
-				if let navController = segue.destinationViewController as? UINavigationController {
+				if let navController = segue.destination as? UINavigationController {
 					controller = navController.viewControllers[0] as! EditEntryController
 				} else {
-					controller = segue.destinationViewController as! EditEntryController
+					controller = segue.destination as! EditEntryController
 				}
 
 				controller.delegate = self
@@ -149,8 +140,8 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 				controller.recurringTransaction = recurringTransactions
 
 				if segueName == .EditTransaction {
-					let indexPath = sender as! NSIndexPath
-					let key = transactionKeys[indexPath.row]
+					let indexPath = sender as! IndexPath
+					let key = transactionKeys[(indexPath as NSIndexPath).row]
 					if upcomingTransactions {
 						controller.transaction = UpcomingTransaction(key: key)!
 						controller.title = "Edit Upcoming"
@@ -179,7 +170,7 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 		}
 	}
 
-	func loadTransactions(filter: TransactionFilter) {
+	func loadTransactions(_ filter: TransactionFilter) {
 		if recurringTransactions {
 			transactionKeys = CommonDB.recurringTransactionKeys(filter)
 		} else {
@@ -190,7 +181,7 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 			}
 		}
 
-		dispatch_async(dispatch_get_main_queue(), { () -> Void in
+		DispatchQueue.main.async(execute: { () -> Void in
 			self.tableView.reloadData()
 		})
 	}
@@ -198,27 +189,27 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 	// MARK: - Other
 
 	func accountCellTapped() {
-		performSegueWithIdentifier(Segue.SetAccount.rawValue, sender: nil)
+		performSegue(withIdentifier: Segue.SetAccount.rawValue, sender: nil)
 	}
 
-	@IBAction func addTapped(sender: AnyObject) {
-		performSegueWithIdentifier(Segue.AddTransaction.rawValue, sender: nil)
+	@IBAction func addTapped(_ sender: AnyObject) {
+		performSegue(withIdentifier: Segue.AddTransaction.rawValue, sender: nil)
 	}
 
-	func accountSet(account: Account) {
+	func accountSet(_ account: Account) {
 		_currentAccountKey = account.key
 		CommonFunctions.currentAccountKey = _currentAccountKey
 		updateAccountInfo()
 		processSearchText()
 	}
 
-	func ccAccountSet(account: Account) {
+	func ccAccountSet(_ account: Account) {
 		// not used
 	}
 
-	func deleteTransaction(row: Int) {
+	func deleteTransaction(_ row: Int) {
 		var transaction: Transaction?
-		var indexPath = NSIndexPath(forRow: row, inSection: 0)
+		var indexPath = IndexPath(row: row, section: 0)
 
 		if upcomingTransactions {
 			transaction = UpcomingTransaction(key: transactionKeys[row])
@@ -227,48 +218,48 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 				transaction = RecurringTransaction(key: transactionKeys[row])
 			} else {
 				transaction = Transaction(key: transactionKeys[row])
-				indexPath = NSIndexPath(forRow: row, inSection: 0)
+				indexPath = IndexPath(row: row, section: 0)
 			}
 		}
 
 		if transaction != nil {
 			transaction?.delete()
-			transactionKeys.removeAtIndex(row)
-			tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+			transactionKeys.remove(at: row)
+			tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
 			updateAccountInfo()
 		}
 	}
 
-	func transactionAdded(transaction: Transaction) {
-		transactionKeys.insert(transaction.key, atIndex: 0)
+	func transactionAdded(_ transaction: Transaction) {
+		transactionKeys.insert(transaction.key, at: 0)
 
-		let path = NSIndexPath(forRow: 0, inSection: 0)
-		tableView.insertRowsAtIndexPaths([path], withRowAnimation: UITableViewRowAnimation.Top)
+		let path = IndexPath(row: 0, section: 0)
+		tableView.insertRows(at: [path], with: UITableViewRowAnimation.top)
 		updateAccountInfo()
 	}
 
-	func transactionUpdated(transaction: Transaction) {
-		var path = NSIndexPath(forRow: 0, inSection: 0)
+	func transactionUpdated(_ transaction: Transaction) {
+		var path = IndexPath(row: 0, section: 0)
 
 		for index in 0 ..< transactionKeys.count {
 			if transactionKeys[index] == transaction.key {
-				path = NSIndexPath(forRow: index, inSection: 0)
+				path = IndexPath(row: index, section: 0)
 				break
 			}
 		}
 
-		tableView.reloadRowsAtIndexPaths([path], withRowAnimation: UITableViewRowAnimation.None)
+		tableView.reloadRows(at: [path], with: UITableViewRowAnimation.none)
 		updateAccountInfo()
 	}
 
-	@IBAction func doneTapped(sender: AnyObject) {
-		dismissViewControllerAnimated(true, completion: nil);
+	@IBAction func doneTapped(_ sender: AnyObject) {
+		dismiss(animated: true, completion: nil);
 	}
 }
 
 // MARK: - TableView
 extension TransactionsController {
-	override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		if _accountView != nil {
 			return 40
 		}
@@ -276,46 +267,46 @@ extension TransactionsController {
 		return 0
 	}
 
-	override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		return _accountView
 	}
 
-	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
 
-	override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		return 60
 	}
 
-	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return transactionKeys.count
 	}
 
-	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let transactionCell = tableView.dequeueReusableCellWithIdentifier("TransactionCell", forIndexPath: indexPath) as! TransactionCell
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let transactionCell = tableView.dequeueReusableCell(withIdentifier: "TransactionCell", for: indexPath) as! TransactionCell
 		transactionCell.upcomingTransaction = upcomingTransactions
 		transactionCell.recurringTransaction = recurringTransactions
-		transactionCell.transactionKey = transactionKeys[indexPath.row]
+		transactionCell.transactionKey = transactionKeys[(indexPath as NSIndexPath).row]
 
 		return transactionCell
 	}
 
-	override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 		if recurringTransactions || upcomingTransactions {
 			return true
 		}
 
-		let transaction = Transaction(key: transactionKeys[indexPath.row])!
+		let transaction = Transaction(key: transactionKeys[(indexPath as NSIndexPath).row])!
 		return !transaction.reconciled
 	}
 
-	override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-		if editingStyle == UITableViewCellEditingStyle.Delete {
+	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+		if editingStyle == UITableViewCellEditingStyle.delete {
 			// if recurring, delete all remaining upcoming
 			if recurringTransactions {
-				let transaction = RecurringTransaction(key: transactionKeys[indexPath.row])!
-				let recurringCondition = DBCondition(set: 0, objectKey: "recurringTransactionKey", conditionOperator: .equal, value: transaction.recurringTransactionKey)
+				let transaction = RecurringTransaction(key: transactionKeys[(indexPath as NSIndexPath).row])!
+				let recurringCondition = DBCondition(set: 0, objectKey: "recurringTransactionKey", conditionOperator: .equal, value: transaction.recurringTransactionKey as AnyObject)
 				let keys = ALBNoSQLDB.keysInTableForConditions(kUpcomingTransactionsTable, sortOrder: nil, conditions: [recurringCondition])
 				if keys == nil {
 					delay(0.5, closure: { () -> () in
@@ -325,9 +316,9 @@ extension TransactionsController {
 				}
 
 				if keys!.count == 0 {
-					self.deleteTransaction(indexPath.row)
+					self.deleteTransaction((indexPath as NSIndexPath).row)
 				} else {
-					SweetAlert().showAlert("Delete Recurring?", subTitle: "\(keys!.count) pending transactions will be deleted.", style: AlertStyle.Warning, buttonTitle: "Cancel", buttonColor: UIColorFromRGB(0x909090), otherButtonTitle: "Delete", otherButtonColor: UIColorFromRGB(0xDD6B55)) { (isOtherButton) -> Void in
+					SweetAlert().showAlert("Delete Recurring?", subTitle: "\(keys!.count) pending transactions will be deleted.", style: AlertStyle.warning, buttonTitle: "Cancel", buttonColor: UIColorFromRGB(0x909090), otherButtonTitle: "Delete", otherButtonColor: UIColorFromRGB(0xDD6B55)) { (isOtherButton) -> Void in
 						if isOtherButton == true {
 							self.tableView.setEditing(false, animated: true)
 						}
@@ -336,23 +327,23 @@ extension TransactionsController {
 								let upcoming = UpcomingTransaction(key: key)!
 								upcoming.delete()
 							}
-							self.deleteTransaction(indexPath.row)
-							SweetAlert().showAlert("Complete", subTitle: "Recurring transactions have been deleted.", style: AlertStyle.Success)
+							self.deleteTransaction((indexPath as NSIndexPath).row)
+							let _ = SweetAlert().showAlert("Complete", subTitle: "Recurring transactions have been deleted.", style: AlertStyle.success)
 						}
 					}
 				}
 			} else {
-				deleteTransaction(indexPath.row)
+				deleteTransaction((indexPath as NSIndexPath).row)
 			}
 		}
 	}
 
-	override func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
+	override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
 		_lastSelection = indexPath
-		performSegueWithIdentifier(Segue.EditTransaction.rawValue, sender: indexPath)
+		performSegue(withIdentifier: Segue.EditTransaction.rawValue, sender: indexPath)
 	}
 
-	override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+	override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
 		if let sum = _sum {
 			let entryName = transactionKeys.count == 1 ? "entry" : "entries"
 			return "\(transactionKeys.count) \(entryName) \n \(formatForAmount(sum, useThousandsSeparator: true))"
@@ -364,40 +355,40 @@ extension TransactionsController {
 
 // MARK: - Search Bar
 extension TransactionsController: UISearchBarDelegate {
-	func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
+	func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
 		searchbar.showsCancelButton = true
 		return true
 	}
 
-	func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+	func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
 		if let text = searchbar.text {
 			performSearch(text, selectedScope: selectedScope)
 		}
 	}
 
-	func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		processSearchText()
-		dispatch_async(dispatch_get_main_queue()) {
+		DispatchQueue.main.async {
 			self.view.endEditing(false)
 		}
 	}
 
-	func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
 		searchbar.text = ""
 		searchbar.endEditing(true)
 		performSearch("", selectedScope: searchBar.selectedScopeButtonIndex)
 	}
 
-	func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool {
+	func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
 		searchbar.showsCancelButton = false
 		return true
 	}
 
-	func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+	func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
 		processSearchText()
 	}
 
-	func textFieldShouldReturn(textField: UITextField) -> Bool {
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 		view.endEditing(false)
 
 		return true
@@ -417,7 +408,7 @@ extension TransactionsController: UISearchBarDelegate {
 			selectedScope = 0
 		}
 
-		dispatch_async(_searchQueue, { () -> Void in
+		_searchQueue.async(execute: { () -> Void in
 			if let text = self.searchbar.text {
 				self.performSearch(text, selectedScope: selectedScope)
 			}
@@ -425,7 +416,7 @@ extension TransactionsController: UISearchBarDelegate {
 		})
 	}
 
-	func performSearch(text: String, selectedScope: Int) {
+	func performSearch(_ text: String, selectedScope: Int) {
 		switch selectedScope {
 		case 1:
 			loadTransactions(.outstanding(text))

@@ -10,11 +10,11 @@ import Foundation
 import UIKit
 
 protocol AccountDelegate {
-	func accountSet(account: Account)
-	func ccAccountSet(account: Account)
+	func accountSet(_ account: Account)
+	func ccAccountSet(_ account: Account)
 }
 
-class SelectAccountController: UITableViewController, Numbers {
+class SelectAccountController: UITableViewController, UsesCurrency {
 	var accountDelegate: AccountDelegate?
 	var currentAccountKey = ""
 	var includeCreditCards = true
@@ -25,7 +25,7 @@ class SelectAccountController: UITableViewController, Numbers {
 
 	override func viewDidLoad() {
 		if !includeCreditCards || !includeNonCreditCards {
-			let ccCondition = DBCondition(set: 0, objectKey: "type", conditionOperator: (includeCreditCards ? .equal : .notEqual), value: "Credit Card")
+			let ccCondition = DBCondition(set: 0, objectKey: "type", conditionOperator: (includeCreditCards ? .equal : .notEqual), value: "Credit Card" as AnyObject)
 			if let keys = ALBNoSQLDB.keysInTableForConditions(kAccountsTable, sortOrder: "name", conditions: [ccCondition]) {
 				_accountKeys = keys
 			}
@@ -38,43 +38,43 @@ class SelectAccountController: UITableViewController, Numbers {
 		let stack = navigationController?.viewControllers
 		if stack!.count == 1 {
 			popOnSelection = false
-			navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: #selector(dismissController))
+			navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(dismissController))
 		}
 	}
 
 	func dismissController() {
 		if popOnSelection {
-			navigationController?.popViewControllerAnimated(true)
+			let _ = navigationController?.popViewController(animated: true)
 		} else {
-			self.dismissViewControllerAnimated(true, completion: nil)
+			self.dismiss(animated: true, completion: nil)
 		}
 	}
 
-	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
 
-	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return _accountKeys.count
 	}
 
-	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-		let account = Account(key: _accountKeys[indexPath.row])!
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+		let account = Account(key: _accountKeys[(indexPath as NSIndexPath).row])!
 		cell.textLabel?.text = account.name
 		cell.detailTextLabel?.text = formatForAmount(account.balance, useThousandsSeparator: true)
 
 		if account.key == currentAccountKey {
-			cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+			cell.accessoryType = UITableViewCellAccessoryType.checkmark
 		} else {
-			cell.accessoryType = UITableViewCellAccessoryType.None
+			cell.accessoryType = UITableViewCellAccessoryType.none
 		}
 
 		return cell
 	}
 
-	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		currentAccountKey = _accountKeys[indexPath.row]
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		currentAccountKey = _accountKeys[(indexPath as NSIndexPath).row]
 
 		if includeNonCreditCards {
 			accountDelegate?.accountSet(Account(key: currentAccountKey)!)

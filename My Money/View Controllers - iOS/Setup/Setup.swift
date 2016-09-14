@@ -10,11 +10,11 @@ import Foundation
 import UIKit
 
 class SetupViewController: UITableViewController {
-	@IBAction func doneTapped(sender: AnyObject) {
-		dismissViewControllerAnimated(true, completion: nil)
+	@IBAction func doneTapped(_ sender: AnyObject) {
+		dismiss(animated: true, completion: nil)
 	}
 	
-	@IBAction func recalcTapped(sender: AnyObject) {
+	@IBAction func recalcTapped(_ sender: AnyObject) {
 		CommonDB.recalculateAllBalances()
 	}
 }

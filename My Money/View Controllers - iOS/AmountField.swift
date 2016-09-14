@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class AmountField: UITextField, UITextFieldDelegate, Numbers {
+class AmountField: UITextField, UITextFieldDelegate, UsesCurrency {
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		delegate = self
@@ -20,12 +20,12 @@ class AmountField: UITextField, UITextFieldDelegate, Numbers {
 		delegate = self
 	}
 
-	func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 		if let text = textField.text {
-			let newString = NSString(string: text).stringByReplacingCharactersInRange(range, withString: string)
+			let newString = NSString(string: text).replacingCharacters(in: range, with: string)
 			let expression = "^([0-9]+)?(\\.([0-9]{1,2})?)?$"
-			let regex = try? NSRegularExpression(pattern: expression, options: NSRegularExpressionOptions.CaseInsensitive)
-			let numberOfMatches = regex?.numberOfMatchesInString(newString, options: NSMatchingOptions.ReportProgress, range: NSMakeRange(0, newString.characters.count))
+			let regex = try? NSRegularExpression(pattern: expression, options: NSRegularExpression.Options.caseInsensitive)
+			let numberOfMatches = regex?.numberOfMatches(in: newString, options: NSRegularExpression.MatchingOptions.reportProgress, range: NSMakeRange(0, newString.characters.count))
 
 			if numberOfMatches == 0 {
 				return false

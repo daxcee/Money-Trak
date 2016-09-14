@@ -22,7 +22,7 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 	}
 
 	override func viewDidLoad() {
-		if let accountView = NSBundle.mainBundle().loadNibNamed("AccountView", owner: self, options: nil)[0] as? AccountView {
+		if let accountView = Bundle.main.loadNibNamed("AccountView", owner: self, options: nil)?[0] as? AccountView {
 			self.accountView = accountView
 			accountView.delegate = self
 			updateAccountInfo()
@@ -35,21 +35,21 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 		tableView.reloadData()
 	}
 
-	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+	func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 		if segue.identifier != nil, let segueName = Segue(rawValue: segue.identifier!) {
 			switch segueName {
 			case .ViewReconciliation:
-				let controller = segue.destinationViewController as! EditReconciliationController
+				let controller = segue.destination as! EditReconciliationController
 				controller.reconciliation = Reconciliation(key: sender as! String)!
 				controller.delegate = self
 
 			case .AddReconciliation:
-				let navController = segue.destinationViewController as! UINavigationController
+				let navController = segue.destination as! UINavigationController
 				let controller = navController.viewControllers[0] as! EditReconciliationController
 				controller.delegate = self
 
 			case .SetAccount:
-				let navController = segue.destinationViewController as! UINavigationController
+				let navController = segue.destination as! UINavigationController
 				let controller = navController.viewControllers[0] as! SelectAccountController
 				controller.currentAccountKey = currentAccountKey
 				controller.accountDelegate = self
@@ -58,7 +58,7 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 	}
 
 	// MARK: - TableView
-	override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		if accountView != nil {
 			return 56
 		}
@@ -66,85 +66,85 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 		return 0
 	}
 
-	override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		return accountView
 	}
 
-	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
 
-	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return reconciliationKeys.count
 	}
 
-	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as! ReconciliationCell
-		cell.reconciliationKey = reconciliationKeys[indexPath.row]
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! ReconciliationCell
+		cell.reconciliationKey = reconciliationKeys[(indexPath as NSIndexPath).row]
 
 		return cell
 	}
 
-	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		performSegueWithIdentifier(Segue.ViewReconciliation.rawValue, sender: reconciliationKeys[indexPath.row])
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		performSegue(withIdentifier: Segue.ViewReconciliation.rawValue, sender: reconciliationKeys[(indexPath as NSIndexPath).row])
 	}
 
 	// MARK: - User Actions
 
-	@IBAction func doneTapped(sender: AnyObject) {
-		dismissViewControllerAnimated(true, completion: nil)
+	@IBAction func doneTapped(_ sender: AnyObject) {
+		dismiss(animated: true, completion: nil)
 	}
 
-	@IBAction func addTapped(sender: AnyObject) {
+	@IBAction func addTapped(_ sender: AnyObject) {
 		// see if last reconciliation is complete
 		if let reconciliation = CommonDB.lastReconciliationForAccount(currentAccountKey, ignoreUnreconciled: false) {
 			if !reconciliation.reconciled {
-				SweetAlert().showAlert("Incomplete", subTitle: "The last reconciliation must be complete before adding more.", style: AlertStyle.Error)
+				let _ = SweetAlert().showAlert("Incomplete", subTitle: "The last reconciliation must be complete before adding more.", style: AlertStyle.error)
 
 				return
 			}
 		}
 
-		performSegueWithIdentifier(Segue.AddReconciliation.rawValue, sender: self)
+		performSegue(withIdentifier: Segue.AddReconciliation.rawValue, sender: self)
 	}
 
 // MARK: - Delegate Calls
 
-	func reconciliationAdded(reconciliation: Reconciliation) {
-		reconciliationKeys.insert(reconciliation.key, atIndex: 0)
+	func reconciliationAdded(_ reconciliation: Reconciliation) {
+		reconciliationKeys.insert(reconciliation.key, at: 0)
 
-		let path = NSIndexPath(forRow: 0, inSection: 0)
-		tableView.insertRowsAtIndexPaths([path], withRowAnimation: UITableViewRowAnimation.Top)
+		let path = IndexPath(row: 0, section: 0)
+		tableView.insertRows(at: [path], with: UITableViewRowAnimation.top)
 	}
 
-	func reconciliationUpdated(reconciliation: Reconciliation) {
-		var path = NSIndexPath(forRow: 0, inSection: 0)
+	func reconciliationUpdated(_ reconciliation: Reconciliation) {
+		var path = IndexPath(row: 0, section: 0)
 
 		for index in 0 ..< reconciliationKeys.count {
 			if reconciliationKeys[index] == reconciliation.key {
-				path = NSIndexPath(forRow: index, inSection: 0)
+				path = IndexPath(row: index, section: 0)
 				break
 			}
 		}
 
-		tableView.reloadRowsAtIndexPaths([path], withRowAnimation: UITableViewRowAnimation.None)
+		tableView.reloadRows(at: [path], with: UITableViewRowAnimation.none)
 	}
 
 	func accountCellTapped() {
-		performSegueWithIdentifier(Segue.SetAccount.rawValue, sender: nil)
+		performSegue(withIdentifier: Segue.SetAccount.rawValue, sender: nil)
 	}
 
-	func accountSet(account: Account) {
+	func accountSet(_ account: Account) {
 		currentAccountKey = account.key
 		CommonFunctions.currentAccountKey = currentAccountKey
 		updateAccountInfo()
 	}
 
-	func ccAccountSet(account: Account) {
+	func ccAccountSet(_ account: Account) {
 	}
 }
 
-class ReconciliationCell: UITableViewCell, Numbers {
+class ReconciliationCell: UITableViewCell, UsesCurrency {
 	@IBOutlet weak var reconciliationDate: UILabel!
 	@IBOutlet weak var reconciliationYear: UILabel!
 	@IBOutlet weak var endingBalance: UILabel!
@@ -157,8 +157,8 @@ class ReconciliationCell: UITableViewCell, Numbers {
 		set(key) {
 			let _reconciliation = Reconciliation(key: key)!
 
-			reconciliationDate.text = dayFormatter.stringFromDate(_reconciliation.date)
-			reconciliationYear.text = yearFormatter.stringFromDate(_reconciliation.date)
+			reconciliationDate.text = dayFormatter.string(from: _reconciliation.date)
+			reconciliationYear.text = yearFormatter.string(from: _reconciliation.date)
 			endingBalance.text = formatForAmount(_reconciliation.endingBalance, useThousandsSeparator: true)
 		}
 	}

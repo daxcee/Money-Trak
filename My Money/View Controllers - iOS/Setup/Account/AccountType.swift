@@ -18,12 +18,12 @@ class AccountTypeController: UITableViewController {
 	var type = AccountType.checking
 	var delegate: AccountTypeDelegate?
 	
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		selectCell()
 	}
 	
-	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		switch indexPath.row {
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		switch (indexPath as NSIndexPath).row {
 		case 0:
 			type = .checking
 		case 1:
@@ -34,15 +34,15 @@ class AccountTypeController: UITableViewController {
 			type = .creditCard
 		}
 		
-		tableView.deselectRowAtIndexPath(indexPath, animated: true)
+		tableView.deselectRow(at: indexPath, animated: true)
 		selectCell()
 		delegate?.accountTypeSelected(type)
 	}
 	
 	func selectCell() {
-		checkingCell.accessoryType = (type == .checking ? .Checkmark : .None)
-		savingsCell.accessoryType = (type == .savings ? .Checkmark : .None)
-		cashCell.accessoryType = (type == .cash ? .Checkmark : .None)
-		ccCell.accessoryType = (type == .creditCard ? .Checkmark : .None)
+		checkingCell.accessoryType = (type == .checking ? .checkmark : .none)
+		savingsCell.accessoryType = (type == .savings ? .checkmark : .none)
+		cashCell.accessoryType = (type == .cash ? .checkmark : .none)
+		ccCell.accessoryType = (type == .creditCard ? .checkmark : .none)
 	}
 }

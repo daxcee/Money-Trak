@@ -8,14 +8,14 @@
 
 import Foundation
 
-typealias ALBConnectionRequestResponse = (allow: Bool) -> ()
+typealias ALBConnectionRequestResponse = (_ allow: Bool) -> ()
 protocol ALBPeerServerDelegate {
 	/**
 	 Called when the server could not publish.
 
 	 - parameter errorDict: Dictionary with details of the error.
 	 */
-	func serverPublishingError(errorDict: [NSObject : AnyObject])
+	func serverPublishingError(_ errorDict: [NSObject : AnyObject])
 	
 	/**
 	 Called when a connection is requested.
@@ -23,24 +23,24 @@ protocol ALBPeerServerDelegate {
 	 - parameter remoteNode: An ALBPeer object initialized with a name and a unique identifier.
 	 - parameter requestResponse: A closure that is to be called with a Bool indicating whether to allow the connection or not. This can be done asynchronously so a dialog can be invoked, etc.
 	 */
-	func allowConnectionRequest(remoteNode: ALBPeer, requestResponse: ALBConnectionRequestResponse)
+	func allowConnectionRequest(_ remoteNode: ALBPeer, requestResponse: @escaping ALBConnectionRequestResponse)
 	
 	/**
 	 Called when a client has connected.
 
 	 - parameter connection: A fully initialized ALBPeerConnection object.
 	 */
-	func clientDidConnect(connection: ALBPeerConnection)
+	func clientDidConnect(_ connection: ALBPeerConnection)
 }
 
-class ALBPeerServer: NSObject, NSNetServiceDelegate, GCDAsyncSocketDelegate {
+class ALBPeerServer: NSObject, NetServiceDelegate, GCDAsyncSocketDelegate {
 	var delegate: ALBPeerServerDelegate?
 	
-	private var _serviceType: String
-	private var _localNode: ALBPeer
-	private var _netService: NSNetService?
-	private var _socket: GCDAsyncSocket?
-	private var _connectingSockets = [GCDAsyncSocket]()
+	fileprivate var _serviceType: String
+	fileprivate var _localNode: ALBPeer
+	fileprivate var _netService: NetService?
+	fileprivate var _socket: GCDAsyncSocket?
+	fileprivate var _connectingSockets = [GCDAsyncSocket]()
 	
 	let _initialHandshakeTimeout = 2.0
 	
@@ -68,25 +68,24 @@ class ALBPeerServer: NSObject, NSNetServiceDelegate, GCDAsyncSocketDelegate {
 	func startPublishing() -> Bool {
 		var publishing = false
 		
-		if let serverSocket = GCDAsyncSocket(delegate: self, delegateQueue: ALBPeerConnectionQueue, socketQueue: ALBPeerConnectionQueue) {
-			do {
-				try serverSocket.acceptOnPort(0)
-			} catch _ {
-				return publishing
-			}
-			
-			serverSocket.IPv4PreferredOverIPv6 = false
-			_socket = serverSocket
-			
-			let port = Int32(serverSocket.localPort)
-			
-			_netService = NSNetService(domain: "", type: _serviceType, name: _localNode.name, port: port)
-			_netService!.delegate = self
-			_netService!.includesPeerToPeer = true
-			_netService!.publish()
-			
-			publishing = true
+		let serverSocket = GCDAsyncSocket(delegate: self, delegateQueue: ALBPeerConnectionQueue, socketQueue: ALBPeerConnectionQueue)
+		do {
+			try serverSocket.accept(onPort: 0)
+		} catch _ {
+			return publishing
 		}
+		
+		serverSocket.isIPv4PreferredOverIPv6 = false
+		_socket = serverSocket
+		
+		let port = Int32(serverSocket.localPort)
+		
+		_netService = NetService(domain: "", type: _serviceType, name: _localNode.name, port: port)
+		_netService!.delegate = self
+		_netService!.includesPeerToPeer = true
+		_netService!.publish()
+		
+		publishing = true
 		
 		return publishing
 	}
@@ -103,23 +102,23 @@ class ALBPeerServer: NSObject, NSNetServiceDelegate, GCDAsyncSocketDelegate {
 	/**
 	 Internal use only.
 	 */
-	func netServiceWillPublish(service: NSNetService) {
+	func netServiceWillPublish(_ service: NetService) {
 	}
 	
 	/**
 	 Internal use only.
 	 */
-	func netService(sender: NSNetService, didNotPublish errorDict: [String : NSNumber]) {
-		delegate?.serverPublishingError(errorDict)
+	func netService(_ sender: NetService, didNotPublish errorDict: [String : NSNumber]) {
+		delegate?.serverPublishingError(errorDict as [NSObject : AnyObject])
 	}
 	
 	/**
 	 Internal use only.
 	 */
-	func netServiceDidPublish(service: NSNetService) {
-		let txtDict = ["peerID": _localNode.peerID.dataUsingEncoding(NSUTF8StringEncoding)!]
-		let txtData = NSNetService.dataFromTXTRecordDictionary(txtDict)
-		if !service.setTXTRecordData(txtData) {
+	func netServiceDidPublish(_ service: NetService) {
+		let txtDict = ["peerID": _localNode.peerID.data(using: String.Encoding.utf8)!]
+		let txtData = NetService.data(fromTXTRecord: txtDict)
+		if !service.setTXTRecord(txtData) {
 			print("did not set txtRecord")
 		}
 	}
@@ -128,37 +127,36 @@ class ALBPeerServer: NSObject, NSNetServiceDelegate, GCDAsyncSocketDelegate {
 	/**
 	 Internal use only.
 	 */
-	func socketDidDisconnect(sock: GCDAsyncSocket!, withError err: NSError!) {
-		
+	func socketDidDisconnect(_ sock: GCDAsyncSocket, withError err: Error?) {
 	}
 	
 	/**
 	 Internal use only.
 	 */
-	func socket(sock: GCDAsyncSocket!, didAcceptNewSocket newSocket: GCDAsyncSocket!) {
+	func socket(_ sock: GCDAsyncSocket, didAcceptNewSocket newSocket: GCDAsyncSocket) {
 		_connectingSockets.append(newSocket)
-		newSocket.readDataToData(ALBPeerPacketDelimiter, withTimeout: _initialHandshakeTimeout, tag: 0)
+		newSocket.readData(to: ALBPeerPacketDelimiter as Data!, withTimeout: _initialHandshakeTimeout, tag: 0)
 	}
 	
 	/**
 	 Internal use only.
 	 */
-	func socket(sock: GCDAsyncSocket!, didReadData data: NSData!, withTag tag: Int) {
+	func socket(_ sock: GCDAsyncSocket, didRead data: Data, withTag tag: Int) {
 		// client should send clientIdentity information packet
-		if let packet = ALBPeerPacket(packetData: data), clientNode = ALBPeer(dataValue: packet.data!) where packet.type == .connectionRequest {
+		if let packet = ALBPeerPacket(packetData: data), let clientNode = ALBPeer(dataValue: packet.data!), packet.type == .connectionRequest {
 			_connectingSockets = _connectingSockets.filter({$0 != sock})
 			
-			dispatch_async(dispatch_get_main_queue(), {[unowned self]() -> Void in
+			DispatchQueue.main.async(execute: {[unowned self]() -> Void in
 					self.delegate?.allowConnectionRequest(clientNode, requestResponse: {(allow) -> () in
 							if allow {
 								// write back connection allowed data packet
 								let accepted = ALBPeerPacket(type: .connectionAccepted)
-								sock.writeData(accepted.packetDataUsingData(self._localNode.dataValue()), withTimeout: self._initialHandshakeTimeout, tag: 1)
+								sock.write(accepted.packetDataUsingData(self._localNode.dataValue()), withTimeout: self._initialHandshakeTimeout, tag: 1)
 								let connection = ALBPeerConnection(socket: sock, remoteNode: clientNode)
 								self.delegate?.clientDidConnect(connection)
 							} else {
 								let denied = ALBPeerPacket(type: .connectionDenied)
-								sock.writeData(denied.packetDataUsingData(self._localNode.dataValue()), withTimeout: self._initialHandshakeTimeout, tag: 2)
+								sock.write(denied.packetDataUsingData(self._localNode.dataValue()), withTimeout: self._initialHandshakeTimeout, tag: 2)
 								sock.disconnectAfterWriting()
 							}
 						})

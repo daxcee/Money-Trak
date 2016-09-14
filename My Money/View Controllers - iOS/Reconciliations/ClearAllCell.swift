@@ -18,7 +18,7 @@ class ClearAllCell: UITableViewCell, Reusable {
 
 	weak var delegate: ClearAllProtocol?
 
-	@IBAction func clearTapped(sender: AnyObject) {
+	@IBAction func clearTapped(_ sender: AnyObject) {
 		delegate?.clearAllTapped()
 	}
 }

@@ -45,9 +45,9 @@ class Category: ALBNoSQLDBObject {
 	
 	override func dictionaryValue() -> [String: AnyObject] {
 		var dictValue = [String: AnyObject]()
-		dictValue["name"] = name
-		dictValue["accountKey"] = accountKey
-		dictValue["inSummary"] = (inSummary ? "1" : "0")
+		dictValue["name"] = name as AnyObject?
+		dictValue["accountKey"] = accountKey as AnyObject
+		dictValue["inSummary"] = (inSummary ? "1": "0") as AnyObject
 		
 		return dictValue
 	}

@@ -7,33 +7,33 @@
 //
 
 import Foundation
-protocol Numbers {
+protocol UsesCurrency {
 }
 
-extension Numbers {
-	func amountFromText(text: String) -> Int {
-		let decimalSeparator = NSLocale.currentLocale().objectForKey(NSLocaleDecimalSeparator) as! String
-		let groupingSeparator = NSLocale.currentLocale().objectForKey(NSLocaleGroupingSeparator) as! String
+extension UsesCurrency {
+	func amountFromText(_ text: String) -> Int {
+		let decimalSeparator = NSLocale.current.decimalSeparator!
+		let groupingSeparator = NSLocale.current.groupingSeparator!
 
 		var inputString = text
 		var negative = false
 
 		// remove groupingSeparator from inputString
-		let groupingInput = NSCharacterSet(charactersInString: groupingSeparator)
-		var commaRange = inputString.rangeOfCharacterFromSet(groupingInput)
+		let groupingInput = CharacterSet(charactersIn: groupingSeparator)
+		var commaRange = inputString.rangeOfCharacter(from: groupingInput)
 
 		while commaRange != nil {
-			inputString = inputString.stringByReplacingCharactersInRange(commaRange!, withString: "")
-			commaRange = inputString.rangeOfCharacterFromSet(groupingInput)
+			inputString = inputString.replacingCharacters(in: commaRange!, with: "")
+			commaRange = inputString.rangeOfCharacter(from: groupingInput)
 		}
 
-		let invalidCharacters = NSCharacterSet(charactersInString: "0123456789\(decimalSeparator)-").invertedSet
+		let invalidCharacters = CharacterSet(charactersIn: "0123456789\(decimalSeparator)-").inverted
 
-		if inputString.rangeOfCharacterFromSet(invalidCharacters) != nil {
+		if inputString.rangeOfCharacter(from: invalidCharacters) != nil {
 			return 0
 		}
 
-		let amountParts = inputString.componentsSeparatedByString(decimalSeparator)
+		let amountParts = inputString.components(separatedBy: decimalSeparator)
 		var amountValue = (amountParts[0] as NSString).integerValue * 100
 		if amountValue < 0 {
 			amountValue *= -1
@@ -43,7 +43,7 @@ extension Numbers {
 		if amountParts.count > 1 {
 			var decimal = amountParts[1]
 			if decimal.characters.count > 2 {
-				decimal = (decimal as NSString).substringToIndex(2)
+				decimal = (decimal as NSString).substring(to: 2)
 			}
 			if decimal.characters.count == 1 {
 				decimal += "0"
@@ -59,9 +59,9 @@ extension Numbers {
 		return amountValue
 	}
 
-	func formatForAmount(amount: Int, useThousandsSeparator: Bool = true) -> String {
-		let decimalSeparator = NSLocale.currentLocale().objectForKey(NSLocaleDecimalSeparator) as! String
-		let groupingSeparator = NSLocale.currentLocale().objectForKey(NSLocaleGroupingSeparator) as! String
+	func formatForAmount(_ amount: Int, useThousandsSeparator: Bool = true) -> String {
+		let decimalSeparator = NSLocale.current.decimalSeparator!
+		let groupingSeparator = NSLocale.current.groupingSeparator!
 
 		var amountString = "\(abs(amount))"
 
@@ -72,18 +72,18 @@ extension Numbers {
 		}
 		var range = NSMakeRange(length - 2, 2)
 
-		var formattedValue = decimalSeparator + (amountString as NSString).substringWithRange(range)
+		var formattedValue = decimalSeparator + (amountString as NSString).substring(with: range)
 		if length > 2 {
 			if !useThousandsSeparator {
-				formattedValue = (amountString as NSString).substringToIndex(length - 2) + formattedValue
+				formattedValue = (amountString as NSString).substring(to: length - 2) + formattedValue
 			} else {
-				amountString = (amountString as NSString).substringToIndex(length - 2)
+				amountString = (amountString as NSString).substring(to: length - 2)
 				length = amountString.characters.count
 				while length > 0 {
 					if length > 3 {
 						range = NSMakeRange(length - 3, 3)
-						formattedValue = groupingSeparator + (amountString as NSString).substringWithRange(range) + formattedValue
-						amountString = (amountString as NSString).substringToIndex(length - 3)
+						formattedValue = groupingSeparator + (amountString as NSString).substring(with: range) + formattedValue
+						amountString = (amountString as NSString).substring(to: length - 3)
 					} else {
 						formattedValue = amountString + formattedValue
 						amountString = ""
@@ -103,8 +103,8 @@ extension Numbers {
 		return formattedValue
 	}
 
-	func intFormatForAmount(amount: Int, useThousandsSeparator: Bool = true) -> String {
-		let groupingSeparator = NSLocale.currentLocale().objectForKey(NSLocaleGroupingSeparator) as! String
+	func intFormatForAmount(_ amount: Int, useThousandsSeparator: Bool = true) -> String {
+		let groupingSeparator = NSLocale.current.groupingSeparator!
 
 		var amountString = "\(abs(amount))"
 
@@ -118,15 +118,15 @@ extension Numbers {
 		var formattedValue = ""
 		if length > 2 {
 			if !useThousandsSeparator {
-				formattedValue = (amountString as NSString).substringToIndex(length - 2) + formattedValue
+				formattedValue = (amountString as NSString).substring(to: length - 2) + formattedValue
 			} else {
-				amountString = (amountString as NSString).substringToIndex(length - 2)
+				amountString = (amountString as NSString).substring(to: length - 2)
 				length = amountString.characters.count
 				while length > 0 {
 					if length > 3 {
 						range = NSMakeRange(length - 3, 3)
-						formattedValue = groupingSeparator + (amountString as NSString).substringWithRange(range) + formattedValue
-						amountString = (amountString as NSString).substringToIndex(length - 3)
+						formattedValue = groupingSeparator + (amountString as NSString).substring(with: range) + formattedValue
+						amountString = (amountString as NSString).substring(to: length - 3)
 					} else {
 						formattedValue = amountString + formattedValue
 						amountString = ""
@@ -146,13 +146,13 @@ extension Numbers {
 		return formattedValue
 	}
 
-	func formatInteger(amount: Int, useThousandsSeparator: Bool = true) -> String {
-		return intAmountFormatter.stringFromNumber(amount)!
+	func formatInteger(_ amount: Int, useThousandsSeparator: Bool = true) -> String {
+		return intAmountFormatter.string(from: NSNumber(value: amount))!
 	}
 
-	private var intAmountFormatter: NSNumberFormatter {
-		let formatter = NSNumberFormatter()
-		formatter.numberStyle = NSNumberFormatterStyle.CurrencyStyle
+	private var intAmountFormatter: NumberFormatter {
+		let formatter = NumberFormatter()
+		formatter.numberStyle = NumberFormatter.Style.currency
 		formatter.maximumFractionDigits = 0
 		formatter.currencySymbol = ""
 

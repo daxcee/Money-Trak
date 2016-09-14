@@ -12,18 +12,18 @@ import UIKit
 class OSSpecific {
 
 	init() {
-		let mainQueue = NSOperationQueue.mainQueue()
+		let mainQueue = OperationQueue.main
 
-		NSNotificationCenter.defaultCenter().addObserverForName("CreateLocalNotification", object: nil, queue: mainQueue) { (notification: NSNotification) -> Void in
+		NotificationCenter.default.addObserver(forName: NSNotification.Name("CreateLocalNotification"), object: nil, queue: mainQueue) { (notification: Notification) -> Void in
 			self.createNotificationForTransaction(notification)
 		}
 
-		NSNotificationCenter.defaultCenter().addObserverForName("LastRecurringProcessed", object: nil, queue: mainQueue) { (notification: NSNotification) -> Void in
+		NotificationCenter.default.addObserver(forName: NSNotification.Name("LastRecurringProcessed"), object: nil, queue: mainQueue) { (notification: Notification) -> Void in
 			self.lastRecurringProcessed(notification)
 		}
 	}
 
-	func createNotificationForTransaction(notification: NSNotification) {
+	func createNotificationForTransaction(_ notification: Notification) {
 		if let dict = notification.userInfo as? [String: UpcomingTransaction] {
 			let transaction = dict["transaction"]!
 
@@ -40,30 +40,30 @@ class OSSpecific {
 
 					switch alertTime {
 					case "1m":
-						notification.fireDate = transaction.date.addDate(years: 0, months: -1, weeks: 0, days: 0)
+						notification.fireDate = transaction.date.addDate(years: 0, months: -1, weeks: 0, days: 0) as Date
 					case "2w":
-						notification.fireDate = transaction.date.addDate(years: 0, months: 0, weeks: -2, days: 0)
+						notification.fireDate = transaction.date.addDate(years: 0, months: 0, weeks: -2, days: 0) as Date
 					case "1w":
-						notification.fireDate = transaction.date.addDate(years: 0, months: 0, weeks: -1, days: 0)
+						notification.fireDate = transaction.date.addDate(years: 0, months: 0, weeks: -1, days: 0) as Date
 					case "2d":
-						notification.fireDate = transaction.date.addDate(years: 0, months: 0, weeks: 0, days: -2)
+						notification.fireDate = transaction.date.addDate(years: 0, months: 0, weeks: 0, days: -2) as Date
 					case "1d":
-						notification.fireDate = transaction.date.addDate(years: 0, months: 0, weeks: 0, days: -1)
+						notification.fireDate = transaction.date.addDate(years: 0, months: 0, weeks: 0, days: -1) as Date
 					default:
 						break
 					}
 
-					UIApplication.sharedApplication().scheduleLocalNotification(notification)
+					UIApplication.shared.scheduleLocalNotification(notification)
 				}
 
-				ALBNoSQLDB.setValue(table: kNotifiedTransactionsTable, key: transaction.key, value: "{}", autoDeleteAfter: nil)
+				let _ = ALBNoSQLDB.setValue(table: kNotifiedTransactionsTable, key: transaction.key, value: "{}", autoDeleteAfter: nil)
 			}
 		}
 	}
 
-	func lastRecurringProcessed(notification: NSNotification) {
-		if notification.userInfo != nil {
-			SweetAlert().showAlert("Complete", subTitle: "At least one recurring transaction has finsihed.", style: AlertStyle.Success)
+	func lastRecurringProcessed(_ notification: Notification) {
+		if (notification as NSNotification).userInfo != nil {
+			let _ = SweetAlert().showAlert("Complete", subTitle: "At least one recurring transaction has finsihed.", style: AlertStyle.success)
 		}
 	}
 }

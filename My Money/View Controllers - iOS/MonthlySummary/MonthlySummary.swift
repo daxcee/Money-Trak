@@ -9,13 +9,13 @@
 import Foundation
 import UIKit
 
-class MonthlySummaryController: UIViewController, Numbers {
+class MonthlySummaryController: UIViewController, UsesCurrency {
 	@IBOutlet weak var progressWheel: UIActivityIndicatorView!
 
 	var tableView: ALBTableView!
 	var summary: SummaryMatrix?
 
-	let summaryQueue = dispatch_queue_create("com.AaronLBratcher.summaryQueue", DISPATCH_QUEUE_CONCURRENT)
+	let summaryQueue = DispatchQueue(label: "com.AaronLBratcher.summaryQueue")
 	let kTemplateCellCount = 5
 	let kColumnHeader = "ColumnHeader"
 	let kRowHeader = "RowHeader"
@@ -31,10 +31,10 @@ class MonthlySummaryController: UIViewController, Numbers {
 	}
 
 	func loadSummary() {
-		dispatch_async(summaryQueue, { () -> Void in
+		summaryQueue.async(execute: { () -> Void in
 			self.summary = SummaryMatrix()
 
-			dispatch_async(dispatch_get_main_queue(), { () -> Void in
+			DispatchQueue.main.async(execute: { () -> Void in
 				if self.tableView != nil {
 					self.tableView.removeFromSuperview()
 				}
@@ -44,9 +44,9 @@ class MonthlySummaryController: UIViewController, Numbers {
 		})
 	}
 
-	override func viewDidDisappear(animated: Bool) {
+	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
-		NSNotificationCenter.defaultCenter().removeObserver(self)
+		NotificationCenter.default.removeObserver(self)
 	}
 
 	func addTableView() {
@@ -56,10 +56,10 @@ class MonthlySummaryController: UIViewController, Numbers {
 		view.addSubview(self.tableView)
 
 		let views = ["tableView": tableView]
-		let metrics = ["margin": NSNumber(double: 0.0)]
+		let metrics = ["margin": NSNumber(value: 0.0)]
 
-		let hConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-margin-[tableView]-margin-|", options: NSLayoutFormatOptions(), metrics: metrics, views: views)
-		let vConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-margin-[tableView]-margin-|", options: NSLayoutFormatOptions(), metrics: metrics, views: views)
+		let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-margin-[tableView]-margin-|", options: NSLayoutFormatOptions(), metrics: metrics, views: views)
+		let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-margin-[tableView]-margin-|", options: NSLayoutFormatOptions(), metrics: metrics, views: views)
 
 		view.addConstraints(hConstraints)
 		view.addConstraints(vConstraints)
@@ -68,75 +68,71 @@ class MonthlySummaryController: UIViewController, Numbers {
 
 		tableView.hasColumnHeaders = true
 		tableView.hasRowHeaders = true
-		progressWheel.hidden = true
+		progressWheel.isHidden = true
 		tableView.delegate = self
 		tableView.dataSource = self
 	}
 
 	func loadTemplateCells() {
-		let dataCell = UINib(nibName: kData, bundle: NSBundle.mainBundle())
+		let dataCell = UINib(nibName: kData, bundle: Bundle.main)
 		tableView.registerDataCellNib(dataCell)
 
-		let columnHeader = UINib(nibName: kColumnHeader, bundle: NSBundle.mainBundle())
+		let columnHeader = UINib(nibName: kColumnHeader, bundle: Bundle.main)
 		tableView.registerColumnHeaderNib(columnHeader)
 
-		let rowHeader = UINib(nibName: kRowHeader, bundle: NSBundle.mainBundle())
+		let rowHeader = UINib(nibName: kRowHeader, bundle: Bundle.main)
 		tableView.registerRowHeaderNib(rowHeader)
 	}
 
-	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+	func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 		let segueName = Segues(rawValue: segue.identifier!)!
 
 		switch segueName {
 		case .ShowTransactions:
-			let controller = segue.destinationViewController.childViewControllers[0] as! TransactionsController
+			let controller = segue.destination.childViewControllers[0] as! TransactionsController
 			controller.transactionKeys = transactionKeys
 			controller.inSummary = true
 		}
 	}
 
-	override func shouldAutorotate() -> Bool {
-		return true
-	}
-
-	@IBAction func doneTapped(sender: AnyObject) {
-		dismissViewControllerAnimated(true, completion: nil)
+	@IBAction func doneTapped(_ sender: AnyObject) {
+		dismiss(animated: true, completion: nil)
 	}
 }
 
 extension MonthlySummaryController: ALBTableViewDelegate {
 	// tableView tap delegate calls
-	func didSelectColumn(tableView: ALBTableView, column: Int) {
+	func didSelectColumn(_ tableView: ALBTableView, column: Int) {
 		// TODO: Enable sorting
 	}
 
-	func didDeselectColumn(tableView: ALBTableView, column: Int) {
+	func didDeselectColumn(_ tableView: ALBTableView, column: Int) {
 	}
 
-	func didSelectRow(tableView: ALBTableView, row: Int) {
+	func didSelectRow(_ tableView: ALBTableView, row: Int) {
 		if let summary = summary {
 			transactionKeys = summary.transactionKeysForRow(row)
-			performSegueWithIdentifier(Segues.ShowTransactions.rawValue, sender: nil)
+			performSegue(withIdentifier: Segues.ShowTransactions.rawValue, sender: nil)
 		}
 	}
 
-	func didDeselectRow(tableView: ALBTableView, row: Int) {
+	func didDeselectRow(_ tableView: ALBTableView, row: Int) {
 	}
 
-	func didSelectCell(tableView: ALBTableView, column: Int, row: Int) {
+	func didSelectCell(_ tableView: ALBTableView, column: Int, row: Int) {
 		if let summary = summary {
 			transactionKeys = summary.transactionKeysForColumn(column, row: row)
-			performSegueWithIdentifier(Segues.ShowTransactions.rawValue, sender: nil)
+			performSegue(withIdentifier: Segues.ShowTransactions.rawValue, sender: nil)
 		}
 	}
 
-	func didDeselectCell(tableView: ALBTableView, column: Int, row: Int) {
+	func didDeselectCell(_ tableView: ALBTableView, column: Int, row: Int) {
 	}
 }
 
 extension MonthlySummaryController: ALBTableViewDataSource {
 	// Columns
-	func numberOfColumns(tableView: ALBTableView) -> Int {
+	func numberOfColumns(_ tableView: ALBTableView) -> Int {
 		if let summary = summary {
 			return summary.monthNames.count
 		}
@@ -144,15 +140,15 @@ extension MonthlySummaryController: ALBTableViewDataSource {
 		return 0
 	}
 
-	func columnWidth(tableView: ALBTableView) -> CGFloat {
+	func columnWidth(_ tableView: ALBTableView) -> CGFloat {
 		return 120
 	}
 
-	func heightOfColumnHeaders(tableView: ALBTableView) -> CGFloat {
+	func heightOfColumnHeaders(_ tableView: ALBTableView) -> CGFloat {
 		return 25
 	}
 
-	func columnHeaderCell(tableView: ALBTableView, column: Int) -> UICollectionViewCell {
+	func columnHeaderCell(_ tableView: ALBTableView, column: Int) -> UICollectionViewCell {
 		let cell = tableView.dequeueColumnHeaderForColumn(column)
 
 		if let label = cell.viewWithTag(1) as? UILabel {
@@ -169,7 +165,7 @@ extension MonthlySummaryController: ALBTableViewDataSource {
 	}
 
 	// Rows
-	func numberOfRows(tableView: ALBTableView) -> Int {
+	func numberOfRows(_ tableView: ALBTableView) -> Int {
 		if let summary = summary {
 			return summary.categoryNames.count
 		}
@@ -177,15 +173,15 @@ extension MonthlySummaryController: ALBTableViewDataSource {
 		return 0
 	}
 
-	func rowHeight(tableView: ALBTableView) -> CGFloat {
+	func rowHeight(_ tableView: ALBTableView) -> CGFloat {
 		return 35
 	}
 
-	func widthOfRowHeaderCells(tableView: ALBTableView) -> CGFloat {
+	func widthOfRowHeaderCells(_ tableView: ALBTableView) -> CGFloat {
 		return 120
 	}
 
-	func rowHeaderCell(tableView: ALBTableView, row: Int) -> UICollectionViewCell {
+	func rowHeaderCell(_ tableView: ALBTableView, row: Int) -> UICollectionViewCell {
 		let cell = tableView.dequeueRowHeaderForRow(row)
 
 		if let label = cell.viewWithTag(1) as? UILabel {
@@ -198,7 +194,7 @@ extension MonthlySummaryController: ALBTableViewDataSource {
 	}
 
 	// Data Cells
-	func dataCell(tableView: ALBTableView, column: Int, row: Int) -> UICollectionViewCell {
+	func dataCell(_ tableView: ALBTableView, column: Int, row: Int) -> UICollectionViewCell {
 		let cell = tableView.dequeDataCellForColumn(column, row: row)
 		if let summary = summary {
 			if let amountLabel = cell.viewWithTag(1) as? UILabel {

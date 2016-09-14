@@ -79,13 +79,13 @@ class Account:ALBNoSQLDBObject {
     
     override func dictionaryValue() -> [String:AnyObject] {
         var dictValue = [String:AnyObject]()
-        dictValue["name"] = name
-        dictValue["type"] = type.rawValue
-        dictValue["balance"] = balance
-        dictValue["maxBalance"] = maxBalance
-        dictValue["updateTotalAll"] = (updateTotalAll ? "1" : "0")
-		dictValue["updateUpcomingDays"] = updateUpcomingDays
-		dictValue["stopUpdatingAtDeposit"] = (stopUpdatingAtDeposit ? "1" : "0")
+        dictValue["name"] = name as AnyObject
+        dictValue["type"] = type.rawValue as AnyObject
+        dictValue["balance"] = balance as AnyObject
+        dictValue["maxBalance"] = maxBalance as AnyObject
+        dictValue["updateTotalAll"] = (updateTotalAll ? "1" : "0") as AnyObject
+		dictValue["updateUpcomingDays"] = updateUpcomingDays as AnyObject
+		dictValue["stopUpdatingAtDeposit"] = (stopUpdatingAtDeposit ? "1" : "0") as AnyObject
 		
         return dictValue
     }

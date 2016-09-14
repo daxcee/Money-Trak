@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol SyncDeviceCellDelegate {
-	func linkTappedForDevice(device: SyncDevice)
+	func linkTappedForDevice(_ device: SyncDevice)
 }
 
 class SyncViewController: UITableViewController, UIAlertViewDelegate {
@@ -25,9 +25,9 @@ class SyncViewController: UITableViewController, UIAlertViewDelegate {
 		case EnableSyncCell
 	}
 
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
-		let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+		let appDelegate = UIApplication.shared.delegate as! AppDelegate
 		syncEngine = appDelegate.syncEngine
 		if let syncEngine = syncEngine {
 			syncEngine.stopBonjour()
@@ -39,11 +39,11 @@ class SyncViewController: UITableViewController, UIAlertViewDelegate {
 		}
 	}
 
-	override func viewWillDisappear(animated: Bool) {
+	override func viewWillDisappear(_ animated: Bool) {
 		syncEngine?.delegate = nil
 	}
 
-	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		var sections = 1
 
 		if offlineDevices.count > 0 {
@@ -53,7 +53,7 @@ class SyncViewController: UITableViewController, UIAlertViewDelegate {
 		return sections
 	}
 
-	override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		switch section {
 		case 0:
 			return "Nearby Devices"
@@ -64,7 +64,7 @@ class SyncViewController: UITableViewController, UIAlertViewDelegate {
 		}
 	}
 
-	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		if syncEngine != nil {
 			switch section {
 
@@ -80,28 +80,28 @@ class SyncViewController: UITableViewController, UIAlertViewDelegate {
 		return 0
 	}
 
-	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		var cell = UITableViewCell()
 		var device: SyncDevice
 
-		switch indexPath.section {
+		switch (indexPath as NSIndexPath).section {
 		case 0:
-			device = nearbyDevices[indexPath.row]
+			device = nearbyDevices[(indexPath as NSIndexPath).row]
 			if device.linked {
-				let knownCell = tableView.dequeueReusableCellWithIdentifier(CellType.KnownCell.rawValue) as! KnownDeviceCell
+				let knownCell = tableView.dequeueReusableCell(withIdentifier: CellType.KnownCell.rawValue) as! KnownDeviceCell
 				knownCell.device = device
 				knownCell.delegate = self
 				cell = knownCell
 			} else {
-				let unknownCell = tableView.dequeueReusableCellWithIdentifier(CellType.UnknownCell.rawValue) as! UnknownDeviceCell
+				let unknownCell = tableView.dequeueReusableCell(withIdentifier: CellType.UnknownCell.rawValue) as! UnknownDeviceCell
 				unknownCell.device = device
 				unknownCell.delegate = self
 				cell = unknownCell
 			}
 
 		default:
-			device = offlineDevices[indexPath.row]
-			let offlineCell = tableView.dequeueReusableCellWithIdentifier(CellType.KnownCell.rawValue) as! KnownDeviceCell
+			device = offlineDevices[(indexPath as NSIndexPath).row]
+			let offlineCell = tableView.dequeueReusableCell(withIdentifier: CellType.KnownCell.rawValue) as! KnownDeviceCell
 			offlineCell.device = device
 			offlineCell.delegate = self
 			cell = offlineCell
@@ -110,51 +110,51 @@ class SyncViewController: UITableViewController, UIAlertViewDelegate {
 		return cell
 	}
 
-	override func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String? {
+	override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
 		return "Unlink"
 	}
 
-	override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-		if indexPath.section == 0 {
-			let device = nearbyDevices[indexPath.row]
+	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+		if (indexPath as NSIndexPath).section == 0 {
+			let device = nearbyDevices[(indexPath as NSIndexPath).row]
 			return device.linked
 		}
 
 		return true
 	}
 
-	override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-		if editingStyle == UITableViewCellEditingStyle.Delete {
+	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+		if editingStyle == UITableViewCellEditingStyle.delete {
 			let device: SyncDevice
-			if indexPath.section == 0 {
-				device = nearbyDevices[indexPath.row]
+			if (indexPath as NSIndexPath).section == 0 {
+				device = nearbyDevices[(indexPath as NSIndexPath).row]
 			} else {
-				device = offlineDevices[indexPath.row]
+				device = offlineDevices[(indexPath as NSIndexPath).row]
 			}
 
 			unlinkDevice(device)
 		}
 	}
 
-	@IBAction func doneTapped(sender: AnyObject) {
-		dismissViewControllerAnimated(true, completion: nil)
+	@IBAction func doneTapped(_ sender: AnyObject) {
+		dismiss(animated: true, completion: nil)
 	}
 }
 
 //MARK: - Sync Cell Delegate
 extension SyncViewController: SyncDeviceCellDelegate {
 
-	func linkTappedForDevice(device: SyncDevice) {
+	func linkTappedForDevice(_ device: SyncDevice) {
 		syncEngine?.linkDevice(device)
 	}
 
-	func unlinkDevice(device: SyncDevice) {
+	func unlinkDevice(_ device: SyncDevice) {
 		unlinkDevice = device
 		let alert = UIAlertView(title: "Unlink", message: "Unlink from \(device.name)?", delegate: self, cancelButtonTitle: "No", otherButtonTitles: "Unlink")
 		alert.show()
 	}
 
-	func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
+	func alertView(_ alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
 		tableView.setEditing(false, animated: true)
 
 		if let device = unlinkDevice {
@@ -165,14 +165,14 @@ extension SyncViewController: SyncDeviceCellDelegate {
 		}
 	}
 
-	func syncTappedForDevice(device: SyncDevice) {
+	func syncTappedForDevice(_ device: SyncDevice) {
 		syncEngine?.syncWithDevice(device)
 	}
 }
 
 //MARK: - Snyc Engine Delegate
 extension SyncViewController: SyncEngineDelegate {
-	func statusChanged(device: SyncDevice) {
+	func statusChanged(_ device: SyncDevice) {
 		if offlineDevices.filter({ $0.key == device.key }).count > 0 {
 			if let syncEngine = syncEngine {
 				nearbyDevices = syncEngine.nearbyDevices
@@ -183,7 +183,7 @@ extension SyncViewController: SyncEngineDelegate {
 		tableView.reloadData()
 	}
 
-	func syncDeviceFound(device: SyncDevice) {
+	func syncDeviceFound(_ device: SyncDevice) {
 		if let syncEngine = syncEngine {
 			nearbyDevices = syncEngine.nearbyDevices
 			offlineDevices = syncEngine.offlineDevices
@@ -192,7 +192,7 @@ extension SyncViewController: SyncEngineDelegate {
 		tableView.reloadData()
 	}
 
-	func syncDeviceLost(device: SyncDevice) {
+	func syncDeviceLost(_ device: SyncDevice) {
 		if let syncEngine = syncEngine {
 			nearbyDevices = syncEngine.nearbyDevices
 			offlineDevices = syncEngine.offlineDevices

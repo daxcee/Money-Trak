@@ -12,7 +12,7 @@ struct NumberTable {
 	var rows = 0
 	var columnAmounts = [[Int?]]()
 
-	mutating func setAmount(amount: Int, column: Int, row: Int) {
+	mutating func setAmount(_ amount: Int, column: Int, row: Int) {
 		verifySizeForColumn(column, row: row)
 
 		var rowAmounts = columnAmounts[column]
@@ -20,7 +20,7 @@ struct NumberTable {
 		columnAmounts[column] = rowAmounts
 	}
 
-	func amountAtColumn(column: Int, row: Int) -> Int? {
+	func amountAtColumn(_ column: Int, row: Int) -> Int? {
 		if columnAmounts.count >= column + 1 {
 			var rowAmounts = columnAmounts[column]
 
@@ -35,7 +35,7 @@ struct NumberTable {
 		return nil
 	}
 
-	mutating func verifySizeForColumn(column: Int, row: Int) {
+	mutating func verifySizeForColumn(_ column: Int, row: Int) {
 		while columnAmounts.count < column + 1 {
 			let rows = [Int?]()
 			columnAmounts.append(rows)
@@ -55,35 +55,35 @@ struct NumberTable {
 	}
 }
 
-func monthKeyFromDate(monthDate: NSDate) -> String {
-	let calendar = NSCalendar.currentCalendar()
-	let currentYear = calendar.components(NSCalendarUnit.Year, fromDate: monthDate).year
-	let currentMonth = calendar.components(NSCalendarUnit.Month, fromDate: monthDate).month
-	let monthKey = "\(currentYear)_\(currentMonth)"
+func monthKeyFromDate(_ monthDate: Date) -> String {
+	let calendar = NSCalendar.current
+	let year = calendar.component(.year, from: monthDate)
+	let month = calendar.component(.month, from: monthDate)
+	let monthKey = "\(year)_\(month)"
 
 	return monthKey
 }
 
-func monthStartFromDate(monthDate: NSDate) -> NSDate {
-	let calendar = NSCalendar.currentCalendar()
+func monthStartFromDate(_ monthDate: Date) -> Date {
+	let calendar = NSCalendar.current
 
-	var monthDate = NSDate().midnight()
-	let currentYear = calendar.components(NSCalendarUnit.Year, fromDate: monthDate).year
-	let currentMonth = calendar.components(NSCalendarUnit.Month, fromDate: monthDate).month
+	var monthDate = Date().midnight()
+	let year = calendar.component(.year, from: monthDate)
+	let month = calendar.component(.month, from: monthDate)
 
-	let components = NSDateComponents()
-	components.year = currentYear
-	components.month = currentMonth
+	var components = DateComponents()
+	components.year = year
+	components.month = month
 	components.day = 1
 
-	monthDate = calendar.dateFromComponents(components)!.midnight()
+	monthDate = calendar.date(from: components)!.midnight()
 
 	return monthDate
 }
 
 struct SummaryMatrix {
-	var monthStartDates = [NSDate]()
-	var monthEndDates = [NSDate]()
+	var monthStartDates = [Date]()
+	var monthEndDates = [Date]()
 	var monthNames = [String]()
 	var categoryNames = [String]()
 	var amounts = NumberTable()
@@ -91,8 +91,8 @@ struct SummaryMatrix {
 	var maxMonths = 3
 
 	class MonthSummary: ALBNoSQLDBObject {
-		var startDate = NSDate()
-		var endDate = NSDate()
+		var startDate = Date()
+		var endDate = Date()
 		var categories = [String]()
 		var amounts = [Int]()
 
@@ -124,10 +124,10 @@ struct SummaryMatrix {
 
 		override func dictionaryValue() -> [String: AnyObject] {
 			var dictValue = [String: AnyObject]()
-			dictValue["categories"] = categories
-			dictValue["amounts"] = amounts
-			dictValue["startDate"] = startDate.stringValue()
-			dictValue["endDate"] = endDate.stringValue()
+			dictValue["categories"] = categories as AnyObject
+			dictValue["amounts"] = amounts as AnyObject
+			dictValue["startDate"] = startDate.stringValue() as AnyObject
+			dictValue["endDate"] = endDate.stringValue() as AnyObject
 
 			return dictValue
 		}
@@ -138,7 +138,7 @@ struct SummaryMatrix {
 
 		let db = ALBNoSQLDB.sharedInstance
 		var sql = "select distinct name from categories c inner join transactions t on t.categoryKey = c.key where c.inSummary = '1' order by name"
-		if let rows = db.sqlSelect(sql) where rows.count > 0 {
+		if let rows = db.sqlSelect(sql), rows.count > 0 {
 			for row in rows {
 				categoryNames.append(row.values[0] as! String)
 			}
@@ -146,11 +146,11 @@ struct SummaryMatrix {
 			return
 		}
 
-		if let rows = db.sqlSelect("select min(date) from transactions") where rows.count > 0 {
+		if let rows = db.sqlSelect("select min(date) from transactions"), rows.count > 0 {
 			if let minTransactionDate = ALBNoSQLDB.dateValueForString(rows[0].values[0] as! String) {
 				let (finalDate, _) = gregorianMonthForDate(minTransactionDate.addDate(years: 0, months: -1, weeks: 0, days: 0))
 
-				var monthDate = monthStartFromDate(NSDate())
+				var monthDate = monthStartFromDate(Date())
 				var monthColumn = 0
 
 				repeat {
@@ -180,12 +180,12 @@ struct SummaryMatrix {
 						}
 
 						// save month to table
-						ALBNoSQLDB.setValue(table: kMonthlySummaryEntriesTable, key: monthKey, value: monthEntries.jsonValue(), autoDeleteAfter: nil)
+						let _ = ALBNoSQLDB.setValue(table: kMonthlySummaryEntriesTable, key: monthKey, value: monthEntries.jsonValue(), autoDeleteAfter: nil)
 					}
 
 					monthStartDates.append(monthEntries.startDate)
 					monthEndDates.append(monthEntries.endDate)
-					monthNames.append(monthFormatter.stringFromDate(monthDate))
+					monthNames.append(monthFormatter.string(from: monthDate))
 
 					for index in 0 ..< monthEntries.categories.count {
 						var amount = monthEntries.amounts[index]
@@ -225,7 +225,7 @@ struct SummaryMatrix {
 				// calculate percents
 				for column in 0 ..< monthNames.count {
 					let row = categoryNames.count - 1
-					if let amount = amounts.amountAtColumn(column, row: row) where amount != 0 {
+					if let amount = amounts.amountAtColumn(column, row: row), amount != 0 {
 						for row in 0 ..< categoryNames.count {
 							if let cellValue = amounts.amountAtColumn(column, row: row) {
 								let percent = Int(ceil(Double(cellValue) / Double(amount) * 100.0))
@@ -238,7 +238,7 @@ struct SummaryMatrix {
 		}
 	}
 
-	func indexOfCategory(category: String) -> Int? {
+	func indexOfCategory(_ category: String) -> Int? {
 		for index in 0 ..< categoryNames.count {
 			if categoryNames[index] == category {
 				return index
@@ -248,10 +248,10 @@ struct SummaryMatrix {
 		return nil
 	}
 
-	func sortByColumn(column: Int) {
+	func sortByColumn(_ column: Int) {
 	}
 
-	func transactionKeysForRow(row: Int) -> [String] {
+	func transactionKeysForRow(_ row: Int) -> [String] {
 		let db = ALBNoSQLDB.sharedInstance
 		let sql = "select t.key from transactions t inner join categories c on c.key = t.categoryKey and c.name = '\(categoryNames[row])'"
 
@@ -262,7 +262,7 @@ struct SummaryMatrix {
 		return []
 	}
 
-	func transactionKeysForColumn(column: Int, row: Int) -> [String] {
+	func transactionKeysForColumn(_ column: Int, row: Int) -> [String] {
 		let db = ALBNoSQLDB.sharedInstance
 
 		let sql = "select t.key from transactions t inner join categories c on c.key = t.categoryKey and c.name = '\(categoryNames[row])' where t.date >= '\(monthStartDates[column])' and t.date < '\(monthEndDates[column])'"

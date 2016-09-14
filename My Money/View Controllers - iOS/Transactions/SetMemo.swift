@@ -24,9 +24,9 @@ class SetMemoController: UIViewController {
 		memoField.becomeFirstResponder()
 	}
 	
-	@IBAction func saveTapped(sender: AnyObject) {
+	@IBAction func saveTapped(_ sender: AnyObject) {
 		transaction!.note = memoField.text
-		navigationController?.popViewControllerAnimated(true)
+		let _ = navigationController?.popViewController(animated: true)
 		delay(0.5, closure: {() -> () in
 				self.delegate!.memoSet()
 			})

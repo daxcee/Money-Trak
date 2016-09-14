@@ -8,18 +8,14 @@
 
 import Foundation
 
-func delay(seconds: Double, closure: () -> ()) {
-	dispatch_after(
-		dispatch_time(
-			DISPATCH_TIME_NOW,
-			Int64(seconds * Double(NSEC_PER_SEC))
-		),
-		dispatch_get_main_queue(), closure)
+func delay(_ seconds: Double, closure: @escaping () -> Void) {
+	DispatchQueue.main.asyncAfter(
+		deadline: DispatchTime.now() + Double(Int64(seconds * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
 }
 
 class CommonFunctions {
-	private var defaults = DefaultManager()
-	private var currentAccountKey: String?
+	fileprivate var defaults = DefaultManager()
+	fileprivate var currentAccountKey: String?
 
 	static let instance = CommonFunctions()
 
@@ -35,10 +31,10 @@ class CommonFunctions {
 				var defaultAccount = CommonFunctions.instance.defaults.stringForKey(.DefaultAccount)
 
 				if defaultAccount == nil || !ALBNoSQLDB.tableHasKey(table: kAccountsTable, key: defaultAccount!)! {
-					if let keys = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: nil) where keys.filter({ $0 == defaultAccount }).count == 0 {
+					if let keys = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: nil), keys.filter({ $0 == defaultAccount }).count == 0 {
 						// assign first in list
 						defaultAccount = keys[0]
-						CommonFunctions.instance.defaults.setObject(defaultAccount, forKey: .DefaultAccount)
+						CommonFunctions.instance.defaults.setObject(defaultAccount as AnyObject?, forKey: .DefaultAccount)
 					}
 				}
 
@@ -52,7 +48,7 @@ class CommonFunctions {
 			let cf = CommonFunctions.sharedInstance
 			if accountKey != cf.currentAccountKey {
 				cf.currentAccountKey = accountKey
-				CommonFunctions.instance.defaults.setObject(accountKey, forKey: .DefaultAccount)
+				CommonFunctions.instance.defaults.setObject(accountKey as AnyObject?, forKey: .DefaultAccount)
 			}
 		}
 	}

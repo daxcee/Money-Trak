@@ -31,7 +31,7 @@ struct CozyLoadingActivity {
 	private static var hidingInProgress = false
 
 	/// Disable UI stops users touch actions until CozyLoadingActivity is hidden. Return success status
-	static func show(text: String, sender: UIViewController, disableUI: Bool) -> Bool {
+	static func show(_ text: String, sender: UIViewController, disableUI: Bool) -> Bool {
 		guard instance == nil else {
 			print("CozyLoadingActivity: You still have an active activity, please stop that before creating a new one")
 			return false
@@ -41,16 +41,16 @@ struct CozyLoadingActivity {
 		return true
 	}
 
-	static func showWithDelay(text: String, sender: UIViewController, disableUI: Bool, seconds: Double) -> Bool {
+	static func showWithDelay(_ text: String, sender: UIViewController, disableUI: Bool, seconds: Double) -> Bool {
 		let showValue = show(text, sender: sender, disableUI: disableUI)
 		delay(seconds) { () -> () in
-			hide(success: true, animated: false)
+			let _ = hide(success: true, animated: false)
 		}
 		return showValue
 	}
 
 	/// Returns success status
-	static func hide(success success: Bool, animated: Bool) -> Bool {
+	static func hide(success: Bool, animated: Bool) -> Bool {
 		guard instance != nil else {
 			print("CozyLoadingActivity: You don't have an activity instance")
 			return false
@@ -61,8 +61,8 @@ struct CozyLoadingActivity {
 			return false
 		}
 
-		if !NSThread.currentThread().isMainThread {
-			dispatch_async(dispatch_get_main_queue()) {
+		if !Thread.current.isMainThread {
+			DispatchQueue.main.async {
 				instance?.hideLoadingActivity(success: success, animated: animated)
 			}
 		} else {
@@ -71,10 +71,10 @@ struct CozyLoadingActivity {
 		return true
 	}
 
-	private static func delay(seconds: Double, after: () -> ()) {
-		let queue = dispatch_get_main_queue()
-		let time = dispatch_time(DISPATCH_TIME_NOW, Int64(seconds * Double(NSEC_PER_SEC)))
-		dispatch_after(time, queue, after)
+	private static func delay(_ seconds: Double, after: @escaping () -> ()) {
+		let queue = DispatchQueue.main
+		let time = DispatchTime.now() + Double(Int64(seconds * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+		queue.asyncAfter(deadline: time, execute: after)
 	}
 
 	private class LoadingActivity: UIView {
@@ -94,7 +94,7 @@ struct CozyLoadingActivity {
 
 			let yPosition = frame.height / 2 - 20
 
-			activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
+			activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
 			activityView.frame = CGRect(x: 10, y: yPosition, width: 40, height: 40)
 			activityView.color = Settings.CLAActivityColor
 			activityView.startAnimating()
@@ -104,7 +104,7 @@ struct CozyLoadingActivity {
 			textLabel.font = UIFont(name: Settings.CLAFontName, size: 30)
 			textLabel.adjustsFontSizeToFitWidth = true
 			textLabel.minimumScaleFactor = 0.25
-			textLabel.textAlignment = NSTextAlignment.Center
+			textLabel.textAlignment = NSTextAlignment.center
 			textLabel.text = text
 
 			addSubview(activityView)
@@ -113,34 +113,34 @@ struct CozyLoadingActivity {
 			sender.view.addSubview(self)
 
 			if disableUI {
-				UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+				UIApplication.shared.beginIgnoringInteractionEvents()
 				UIDisabled = true
 			}
 		}
 
 		func createShadow() {
-			layer.shadowPath = createShadowPath().CGPath
+			layer.shadowPath = createShadowPath().cgPath
 			layer.masksToBounds = false
-			layer.shadowColor = UIColor.blackColor().CGColor
-			layer.shadowOffset = CGSizeMake(0, 0)
+			layer.shadowColor = UIColor.black.cgColor
+			layer.shadowOffset = CGSize(width: 0, height: 0)
 			layer.shadowRadius = 5
 			layer.shadowOpacity = 0.5
 		}
 
 		func createShadowPath() -> UIBezierPath {
 			let myBezier = UIBezierPath()
-			myBezier.moveToPoint(CGPoint(x: -3, y: -3))
-			myBezier.addLineToPoint(CGPoint(x: frame.width + 3, y: -3))
-			myBezier.addLineToPoint(CGPoint(x: frame.width + 3, y: frame.height + 3))
-			myBezier.addLineToPoint(CGPoint(x: -3, y: frame.height + 3))
-			myBezier.closePath()
+			myBezier.move(to: CGPoint(x: -3, y: -3))
+			myBezier.addLine(to: CGPoint(x: frame.width + 3, y: -3))
+			myBezier.addLine(to: CGPoint(x: frame.width + 3, y: frame.height + 3))
+			myBezier.addLine(to: CGPoint(x: -3, y: frame.height + 3))
+			myBezier.close()
 			return myBezier
 		}
 
-		func hideLoadingActivity(success success: Bool, animated: Bool) {
+		func hideLoadingActivity(success: Bool, animated: Bool) {
 			hidingInProgress = true
 			if UIDisabled {
-				UIApplication.sharedApplication().endIgnoringInteractionEvents()
+				UIApplication.shared.endIgnoringInteractionEvents()
 			}
 
 			var animationDuration: Double!
@@ -152,7 +152,7 @@ struct CozyLoadingActivity {
 
 			icon = UILabel(frame: CGRect(x: 10, y: frame.height / 2 - 20, width: 40, height: 40))
 			icon.font = UIFont(name: Settings.CLAFontName, size: 60)
-			icon.textAlignment = NSTextAlignment.Center
+			icon.textAlignment = NSTextAlignment.center
 
 			if animated {
 				textLabel.fadeTransition(animationDuration)
@@ -172,7 +172,7 @@ struct CozyLoadingActivity {
 			if animated {
 				icon.alpha = 0
 				activityView.stopAnimating()
-				UIView.animateWithDuration(animationDuration, animations: {
+				UIView.animate(withDuration: animationDuration, animations: {
 					self.icon.alpha = 1
 					}, completion: { (value: Bool) in
 					self.callSelectorAsync(#selector(self.removeFromSuperview), delay: animationDuration)
@@ -191,19 +191,19 @@ struct CozyLoadingActivity {
 
 private extension UIView {
 	/// Cozy extension: insert view.fadeTransition right before changing content
-	func fadeTransition(duration: CFTimeInterval) {
+	func fadeTransition(_ duration: CFTimeInterval) {
 		let animation: CATransition = CATransition()
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		animation.type = kCATransitionFade
 		animation.duration = duration
-		self.layer.addAnimation(animation, forKey: kCATransitionFade)
+		self.layer.add(animation, forKey: kCATransitionFade)
 	}
 }
 
 private extension NSObject {
 	/// Cozy extension
-	func callSelectorAsync(selector: Selector, delay: NSTimeInterval) {
-		let timer = NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: selector, userInfo: nil, repeats: false)
-		NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
+	func callSelectorAsync(_ selector: Selector, delay: TimeInterval) {
+		let timer = Timer.scheduledTimer(timeInterval: delay, target: self, selector: selector, userInfo: nil, repeats: false)
+		RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
 	}
 }

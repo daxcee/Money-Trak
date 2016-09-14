@@ -23,15 +23,15 @@ class UnknownDeviceCell: UITableViewCell {
 			_device = newDevice
 			deviceName.text = _device.name
 
-			linkButtonView.hidden = device.status != .idle
-			progressWheel.hidden = device.status == .idle
+			linkButtonView.isHidden = device.status != .idle
+			progressWheel.isHidden = device.status == .idle
 		}
 	}
 	var delegate: SyncDeviceCellDelegate?
 
 	private var _device = SyncDevice()
 
-	@IBAction func linkTapped(sender: AnyObject) {
+	@IBAction func linkTapped(_ sender: AnyObject) {
 		delegate?.linkTappedForDevice(_device)
 	}
 }
@@ -53,17 +53,17 @@ class KnownDeviceCell: UITableViewCell {
 
 			if device.status == .idle {
 				progressWheel.stopAnimating()
-				progressWheel.hidden = true
+				progressWheel.isHidden = true
 			} else {
-				progressWheel.hidden = false
+				progressWheel.isHidden = false
 				progressWheel.startAnimating()
 			}
 
 			switch device.status {
 			case .idle:
 				if let lastDate = device.lastSync {
-					if lastDate.midnight() == NSDate().midnight() {
-						statusLabel.text = lastDate.relativeTimeFrom(NSDate())
+					if lastDate.midnight() == Date().midnight() {
+						statusLabel.text = lastDate.relativeTimeFrom(Date())
 					} else {
 						statusLabel.text = lastDate.relativeDateString()
 					}

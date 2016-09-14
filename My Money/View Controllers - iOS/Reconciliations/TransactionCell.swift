@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class TransactionCell: UITableViewCell, Numbers, Reusable {
+class TransactionCell: UITableViewCell, UsesCurrency, Reusable {
 	@IBOutlet weak var transactionDate: UILabel!
 	@IBOutlet weak var transactionYear: UILabel!
 	@IBOutlet weak var amount: UILabel!
@@ -39,19 +39,19 @@ class TransactionCell: UITableViewCell, Numbers, Reusable {
 				}
 			}
 
-			reconciledBadge.hidden = !transaction.reconciled
+			reconciledBadge.isHidden = !transaction.reconciled
 
 			if recurringTransaction {
-				transactionDate.hidden = true
-				transactionYear.hidden = true
-				recurringBadge.hidden = true
+				transactionDate.isHidden = true
+				transactionYear.isHidden = true
+				recurringBadge.isHidden = true
 				dateConstraint.constant = -76
 			} else {
-				transactionDate.hidden = false
-				transactionYear.hidden = false
-				recurringBadge.hidden = transaction.recurringTransactionKey == ""
-				transactionDate.text = dayFormatter.stringFromDate(transaction.date)
-				transactionYear.text = yearFormatter.stringFromDate(transaction.date)
+				transactionDate.isHidden = false
+				transactionYear.isHidden = false
+				recurringBadge.isHidden = transaction.recurringTransactionKey == ""
+				transactionDate.text = dayFormatter.string(from: transaction.date)
+				transactionYear.text = yearFormatter.string(from: transaction.date)
 			}
 			amount.text = formatForAmount(transaction.amount, useThousandsSeparator: true)
 			if transaction.amount < 0 {
@@ -73,11 +73,11 @@ class TransactionCell: UITableViewCell, Numbers, Reusable {
 			let color: UIColor
 
 			if reconciled {
-				reconciledBadge.hidden = false
+				reconciledBadge.isHidden = false
 				color = UIColor(red: 0, green: 0, blue: 255, alpha: 0.15)
 			} else {
-				reconciledBadge.hidden = true
-				color = UIColor.whiteColor()
+				reconciledBadge.isHidden = true
+				color = UIColor.white
 			}
 
 			self.backgroundColor = color

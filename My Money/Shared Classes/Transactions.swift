@@ -20,7 +20,7 @@ class Transaction: ALBNoSQLDBObject {
 	var accountKey = CommonFunctions.currentAccountKey
 	var ccAccountKey: String?
 	var recurringTransactionKey = ""
-	var date = NSDate()
+	var date = Date()
 	var checkNumber: Int?
 	var locationKey: String?
 	var addressKey: String?
@@ -50,7 +50,7 @@ class Transaction: ALBNoSQLDBObject {
 				transaction.locationKey = CommonDB.locationForName("Paid with \(Account(key: accountKey)!.name)").key
 				transaction.date = date
 				transaction.categoryKey = defaultPrefix + DefaultCategory.Debt.rawValue
-				ALBNoSQLDB.setValue(table: kTransactionsTable, key: transaction.key, value: transaction.jsonValue())
+				let _ = ALBNoSQLDB.setValue(table: kTransactionsTable, key: transaction.key, value: transaction.jsonValue())
 				let ccAccount = Account(key: ccAccountKey!)!
 				ccAccount.balance += abs(amount)
 				ccAccount.save()
@@ -93,13 +93,13 @@ class Transaction: ALBNoSQLDBObject {
 		}
 
 		let monthKey = monthKeyFromDate(date)
-		ALBNoSQLDB.deleteForKey(table: kMonthlySummaryEntriesTable, key: monthKey)
+		let _ = ALBNoSQLDB.deleteForKey(table: kMonthlySummaryEntriesTable, key: monthKey)
 	}
 
 	func delete() {
 		deleteAmountFromAvailable(self)
 		deleteAmountFromBalances(self)
-		ALBNoSQLDB.deleteForKey(table: kTransactionsTable, key: key)
+		let _ = ALBNoSQLDB.deleteForKey(table: kTransactionsTable, key: key)
 	}
 
 	convenience init?(key: String) {
@@ -155,35 +155,35 @@ class Transaction: ALBNoSQLDBObject {
 
 	override func dictionaryValue() -> [String: AnyObject] {
 		var dictValue = [String: AnyObject]()
-		dictValue["accountKey"] = accountKey
-		dictValue["date"] = date.midnight().stringValue()
-		dictValue["amount"] = amount
-		dictValue["type"] = type.rawValue
-		dictValue["recurringTransactionKey"] = recurringTransactionKey
-		dictValue["reconciled"] = (reconciled ? "true" : "false")
+		dictValue["accountKey"] = accountKey as AnyObject
+		dictValue["date"] = date.midnight().stringValue() as AnyObject
+		dictValue["amount"] = amount as AnyObject
+		dictValue["type"] = type.rawValue as AnyObject
+		dictValue["recurringTransactionKey"] = recurringTransactionKey as AnyObject
+		dictValue["reconciled"] = (reconciled ? "true" : "false") as AnyObject
 
 		if locationKey != nil {
-			dictValue["locationKey"] = locationKey!
+			dictValue["locationKey"] = locationKey! as AnyObject
 		}
 
 		if categoryKey != nil {
-			dictValue["categoryKey"] = categoryKey!
+			dictValue["categoryKey"] = categoryKey! as AnyObject
 		}
 
 		if note != nil {
-			dictValue["note"] = note!
+			dictValue["note"] = note! as AnyObject
 		}
 
 		if checkNumber != nil {
-			dictValue["checkNumber"] = checkNumber!
+			dictValue["checkNumber"] = checkNumber! as AnyObject
 		}
 
 		if ccAccountKey != nil {
-			dictValue["ccAccountKey"] = ccAccountKey!
+			dictValue["ccAccountKey"] = ccAccountKey! as AnyObject
 		}
 
 		if addressKey != nil {
-			dictValue["addressKey"] = addressKey!
+			dictValue["addressKey"] = addressKey! as AnyObject
 		}
 
 		return dictValue
@@ -209,14 +209,14 @@ class Transaction: ALBNoSQLDBObject {
 		return cName
 	}
 
-	private func addAmountToAvailable() {
+	func addAmountToAvailable() {
 		let amountAvailable = defaults.integerForKey(.AmountAvailable) + amount
 		defaults.setInteger(amountAvailable, forKey: .AmountAvailable)
 
-		ALBNoSQLDB.setValue(table: kProcessedTransactionsTable, key: key, value: "{}", autoDeleteAfter: nil)
+		let _ = ALBNoSQLDB.setValue(table: kProcessedTransactionsTable, key: key, value: "{}", autoDeleteAfter: nil)
 	}
 
-	private func addAmountToBalances() {
+	func addAmountToBalances() {
 		let account = Account(key: accountKey)!
 		account.balance += amount
 		account.save()
@@ -224,14 +224,14 @@ class Transaction: ALBNoSQLDBObject {
 		// TODO: monthly summary balances
 	}
 
-	private func deleteAmountFromAvailable(transaction: Transaction) {
+	func deleteAmountFromAvailable(_ transaction: Transaction) {
 		let amountAvailable = defaults.integerForKey(.AmountAvailable) - transaction.amount
 		defaults.setInteger(amountAvailable, forKey: .AmountAvailable)
 
-		ALBNoSQLDB.deleteForKey(table: kProcessedTransactionsTable, key: key)
+		let _ = ALBNoSQLDB.deleteForKey(table: kProcessedTransactionsTable, key: key)
 	}
 
-	private func deleteAmountFromBalances(transaction: Transaction) {
+	func deleteAmountFromBalances(_ transaction: Transaction) {
 		let account = Account(key: accountKey)!
 		account.balance -= transaction.amount
 		account.save()
@@ -253,27 +253,27 @@ enum TransactionFrequency: Int {
 
 	func stringValue() -> String {
 		switch self {
-		case weekly:
+		case .weekly:
 			return "Weekly"
-		case biWeekly:
+		case .biWeekly:
 			return "Every 2 Weeks"
-		case monthly:
+		case .monthly:
 			return "Monthly"
-		case biMonthly:
+		case .biMonthly:
 			return "Every 2 Months"
-		case quarterly:
+		case .quarterly:
 			return "Every 3 Months"
-		case semiAnnually:
+		case .semiAnnually:
 			return "Every 6 Months"
-		case annually:
+		case .annually:
 			return "Annually"
 		}
 	}
 }
 
 class RecurringTransaction: Transaction {
-	var startDate = NSDate().addDate(years: 0, months: 0, weeks: 0, days: 1).midnight()
-	var endDate: NSDate?
+	var startDate = Date().addDate(years: 0, months: 0, weeks: 0, days: 1).midnight()
+	var endDate: Date?
 	var frequency = TransactionFrequency.monthly
 	var transactionCount = 12
 	var dbInstanceKey = ALBNoSQLDB.dbInstanceKey()! // only the device that last saved this will process this into upcoming transactions
@@ -330,13 +330,13 @@ class RecurringTransaction: Transaction {
 	override func dictionaryValue() -> [String: AnyObject] {
 		var dictValue = super.dictionaryValue()
 
-		dictValue["startDate"] = ALBNoSQLDB.stringValueForDate(startDate)
-		dictValue["frequency"] = frequency.rawValue
-		dictValue["dbInstanceKey"] = dbInstanceKey
-		dictValue["transactionCount"] = transactionCount
+		dictValue["startDate"] = ALBNoSQLDB.stringValueForDate(startDate) as AnyObject
+		dictValue["frequency"] = frequency.rawValue as AnyObject
+		dictValue["dbInstanceKey"] = dbInstanceKey as AnyObject
+		dictValue["transactionCount"] = transactionCount as AnyObject
 
 		if endDate != nil {
-			dictValue["endDate"] = ALBNoSQLDB.stringValueForDate(endDate!)
+			dictValue["endDate"] = ALBNoSQLDB.stringValueForDate(endDate!) as AnyObject
 		}
 
 		return dictValue
@@ -354,7 +354,7 @@ class RecurringTransaction: Transaction {
 	}
 
 	override func delete() {
-		ALBNoSQLDB.deleteForKey(table: kRecurringTransactionsTable, key: key)
+		let _ = ALBNoSQLDB.deleteForKey(table: kRecurringTransactionsTable, key: key)
 	}
 }
 
@@ -390,9 +390,9 @@ class UpcomingTransaction: Transaction {
 	override func dictionaryValue() -> [String: AnyObject] {
 		var dictValue = super.dictionaryValue()
 
-		dictValue["dbInstanceKey"] = dbInstanceKey
+		dictValue["dbInstanceKey"] = dbInstanceKey as AnyObject
 		if let alerts = alerts {
-			dictValue["alerts"] = alerts
+			dictValue["alerts"] = alerts as AnyObject
 		}
 
 		return dictValue
@@ -438,7 +438,7 @@ class UpcomingTransaction: Transaction {
 		if hasKey != nil && hasKey! {
 			deleteAmountFromAvailable(self)
 		}
-		ALBNoSQLDB.deleteForKey(table: kUpcomingTransactionsTable, key: key)
+		let _ = ALBNoSQLDB.deleteForKey(table: kUpcomingTransactionsTable, key: key)
 	}
 
 	func processAmountAvailable() {
@@ -456,27 +456,27 @@ class UpcomingTransaction: Transaction {
 		}
 
 		// For upcoming transactions, we don't add to what's available we only subtract
-		if amount < 0 && date.earlierDate(UpcomingTransaction.processDate(account)) == date {
+		if amount < 0 && date <= UpcomingTransaction.processDate(account) {
 			addAmountToAvailable()
 		}
 	}
 
 	struct AccountProcessDate {
-		static var accountProcessDate: [String: NSDate] = [String: NSDate]()
+		static var accountProcessDate: [String: Date] = [String: Date]()
 	}
 
-	class func processDate(account: Account) -> NSDate {
-		var processDate = NSDate().midnight().addDate(years: 0, months: 0, weeks: 0, days: account.updateUpcomingDays)
+	class func processDate(_ account: Account) -> Date {
+		var processDate = Date().midnight().addDate(years: 0, months: 0, weeks: 0, days: account.updateUpcomingDays)
 
 		if account.stopUpdatingAtDeposit {
-			let accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: account.key)
-			let depositCondition = DBCondition(set: 0, objectKey: "type", conditionOperator: .equal, value: "deposit")
-			let dateCondition = DBCondition(set: 0, objectKey: "date", conditionOperator: .lessThanOrEqual, value: processDate.stringValue())
+			let accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: account.key as AnyObject)
+			let depositCondition = DBCondition(set: 0, objectKey: "type", conditionOperator: .equal, value: "deposit" as AnyObject)
+			let dateCondition = DBCondition(set: 0, objectKey: "date", conditionOperator: .lessThanOrEqual, value: processDate.stringValue() as AnyObject)
 
 			let depositKeys = ALBNoSQLDB.keysInTableForConditions(kUpcomingTransactionsTable, sortOrder: "date", conditions: [accountCondition, depositCondition, dateCondition])
 			if depositKeys != nil && depositKeys!.count > 0 {
 				let deposit = UpcomingTransaction(key: depositKeys![0])!
-				if deposit.date.laterDate(processDate) == processDate {
+				if deposit.date < processDate {
 					processDate = deposit.date
 				}
 			}

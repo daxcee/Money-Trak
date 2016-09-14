@@ -11,38 +11,38 @@ enum DefaultKey: String {
 }
 
 class DefaultManager {
-	func boolForKey(key: DefaultKey) -> Bool {
-		return NSUserDefaults.standardUserDefaults().boolForKey(key.rawValue)
+	func boolForKey(_ key: DefaultKey) -> Bool {
+		return UserDefaults.standard.bool(forKey: key.rawValue)
 	}
 
-	func integerForKey(key: DefaultKey) -> Int {
-		return NSUserDefaults.standardUserDefaults().integerForKey(key.rawValue)
+	func integerForKey(_ key: DefaultKey) -> Int {
+		return UserDefaults.standard.integer(forKey: key.rawValue)
 	}
 
-	func objectForKey(key: DefaultKey) -> AnyObject? {
-		return NSUserDefaults.standardUserDefaults().objectForKey(key.rawValue)
+	func objectForKey(_ key: DefaultKey) -> Any? {
+		return UserDefaults.standard.object(forKey: key.rawValue)
 	}
 
-	func stringForKey(key: DefaultKey) -> String? {
-		return NSUserDefaults.standardUserDefaults().stringForKey(key.rawValue)
+	func stringForKey(_ key: DefaultKey) -> String? {
+		return UserDefaults.standard.string(forKey: key.rawValue)
 	}
 
-	func setBool(value: Bool, forKey: DefaultKey) {
-		NSUserDefaults.standardUserDefaults().setBool(value, forKey: forKey.rawValue)
+	func setBool(_ value: Bool, forKey: DefaultKey) {
+		UserDefaults.standard.set(value, forKey: forKey.rawValue)
 	}
 
-	func setInteger(value: Int, forKey: DefaultKey) {
-		NSUserDefaults.standardUserDefaults().setInteger(value, forKey: forKey.rawValue)
-		NSUserDefaults.resetStandardUserDefaults()
+	func setInteger(_ value: Int, forKey: DefaultKey) {
+		UserDefaults.standard.set(value, forKey: forKey.rawValue)
+		UserDefaults.resetStandardUserDefaults()
 	}
 
-	func setObject(value: AnyObject?, forKey: DefaultKey) {
-		NSUserDefaults.standardUserDefaults().setObject(value, forKey: forKey.rawValue)
-		NSUserDefaults.resetStandardUserDefaults()
+	func setObject(_ value: AnyObject?, forKey: DefaultKey) {
+		UserDefaults.standard.set(value, forKey: forKey.rawValue)
+		UserDefaults.resetStandardUserDefaults()
 	}
 
-	func removeObjectForKey(key: DefaultKey) {
-		NSUserDefaults.standardUserDefaults().removeObjectForKey(key.rawValue)
-		NSUserDefaults.resetStandardUserDefaults()
+	func removeObjectForKey(_ key: DefaultKey) {
+		UserDefaults.standard.removeObject(forKey: key.rawValue)
+		UserDefaults.resetStandardUserDefaults()
 	}
 }

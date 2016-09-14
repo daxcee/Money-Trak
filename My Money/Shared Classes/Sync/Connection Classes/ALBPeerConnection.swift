@@ -17,7 +17,7 @@ protocol ALBPeerConnectionDelegate {
 	 - parameter byRequest: Is true if the disconnect was by request.
 	 */
 	
-	func disconnected(connection: ALBPeerConnection, byRequest: Bool)
+	func disconnected(_ connection: ALBPeerConnection, byRequest: Bool)
 	
 	/**
 	 Called when text has been received from the remote.
@@ -25,7 +25,7 @@ protocol ALBPeerConnectionDelegate {
 	 - parameter connection: The connection that received the text.
 	 - parameter text: The text that was received.
 	 */
-	func textReceived(connection: ALBPeerConnection, text: String)
+	func textReceived(_ connection: ALBPeerConnection, text: String)
 	
 	/**
 	 Called when data has been received from the remote.
@@ -33,7 +33,7 @@ protocol ALBPeerConnectionDelegate {
 	 - parameter connection: The connection that received the data.
 	 - parameter data: The data that was received.
 	 */
-	func dataReceived(connection: ALBPeerConnection, data: NSData)
+	func dataReceived(_ connection: ALBPeerConnection, data: Data)
 	
 	/**
 	 Called when this connection has started to receive a resource from the remote.
@@ -44,7 +44,7 @@ protocol ALBPeerConnectionDelegate {
 	 - parameter resourceID: The unique identifier of the resource
 	 - parameter progress: An NSProgress object that is updated as the file is received. This cannot be canceled at this time.
 	 */
-	func startedReceivingResource(connection: ALBPeerConnection, atURL: NSURL, name: String, resourceID: String, progress: NSProgress)
+	func startedReceivingResource(_ connection: ALBPeerConnection, atURL: URL, name: String, resourceID: String, progress: Progress)
 	
 	/**
 	 Called when this connection has finished receiving a resource from the remote.
@@ -54,45 +54,45 @@ protocol ALBPeerConnectionDelegate {
 	 - parameter name: The given name of the resource.
 	 - parameter resourceID: The unique identifier of the resource
 	 */
-	func resourceReceived(connection: ALBPeerConnection, atURL: NSURL, name: String, resourceID: String)
+	func resourceReceived(_ connection: ALBPeerConnection, atURL: URL, name: String, resourceID: String)
 }
 
 
 
 
-let ALBPeerConnectionQueue = dispatch_queue_create("com.AaronLBratcher.ALBPeerConnectionQueue", nil)
-let ALBPeerPacketDelimiter = NSData(bytes: [0x0B, 0x1B, 0x1B] as [UInt8], length: 3) // VerticalTab Esc Esc
+let ALBPeerConnectionQueue = DispatchQueue(label: "com.AaronLBratcher.ALBPeerConnectionQueue")
+let ALBPeerPacketDelimiter = Data(bytes: UnsafePointer<UInt8>([0x0B, 0x1B, 0x1B] as [UInt8]), count: 3) // VerticalTab Esc Esc
 let ALBPeerMaxDataSize = 65536
-let ALBPeerWriteTimeout = NSTimeInterval(60)
+let ALBPeerWriteTimeout = TimeInterval(60)
 
 class ALBPeerConnection: NSObject, GCDAsyncSocketDelegate {
 	var delegate: ALBPeerConnectionDelegate? {
 		didSet {
-			_socket.readDataToData(ALBPeerPacketDelimiter, withTimeout: -1, tag: 0)
+			_socket.readData(to: ALBPeerPacketDelimiter, withTimeout: -1, tag: 0)
 		}
 	}
 	
-	var delegateQueue = dispatch_get_main_queue()
+	var delegateQueue = DispatchQueue.main
 	
 	var remotNode: ALBPeer
-	private var _socket: GCDAsyncSocket
-	private var _disconnecting = false
-	private var _pendingPackets = [Int: ALBPeerPacket]()
-	private var _lastTag = 0
-	private var _cachedData: NSMutableData?
-	private var _resourceFiles = [String: Resource]()
+	fileprivate var _socket: GCDAsyncSocket
+	fileprivate var _disconnecting = false
+	fileprivate var _pendingPackets = [Int: ALBPeerPacket]()
+	fileprivate var _lastTag = 0
+	fileprivate var _cachedData: Data?
+	fileprivate var _resourceFiles = [String: Resource]()
 	
 	class Resource {
-		var handle: NSFileHandle
+		var handle: FileHandle
 		var path: String
 		var name: String
-		var progress = NSProgress()
+		var progress = Progress()
 		
-		init(handle: NSFileHandle, path: String, name: String) {
+		init(handle: FileHandle, path: String, name: String) {
 			self.handle = handle
 			self.path = path
 			self.name = name
-			self.progress.cancellable = false
+			self.progress.isCancellable = false
 		}
 	}
 	
@@ -119,11 +119,11 @@ class ALBPeerConnection: NSObject, GCDAsyncSocketDelegate {
 
 	 - parameter text: The text to send.
 	 */
-	func sendText(text: String) {
+	func sendText(_ text: String) {
 		let packet = ALBPeerPacket(type: .text)
-		let data = text.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+		let data = text.data(using: String.Encoding.utf8, allowLossyConversion: false)
 		_pendingPackets[_lastTag] = packet
-		_socket.writeData(packet.packetDataUsingData(data), withTimeout: ALBPeerWriteTimeout, tag: _lastTag)
+		_socket.write(packet.packetDataUsingData(data), withTimeout: ALBPeerWriteTimeout, tag: _lastTag)
 		_lastTag += 1
 	}
 	
@@ -132,10 +132,10 @@ class ALBPeerConnection: NSObject, GCDAsyncSocketDelegate {
 
 	 - parameter data: The data to send.
 	 */
-	func sendData(data: NSData) {
+	func sendData(_ data: Data) {
 		let packet = ALBPeerPacket(type: .data)
 		_pendingPackets[_lastTag] = packet
-		_socket.writeData(packet.packetDataUsingData(data), withTimeout: ALBPeerWriteTimeout, tag: _lastTag)
+		_socket.write(packet.packetDataUsingData(data), withTimeout: ALBPeerWriteTimeout, tag: _lastTag)
 		_lastTag += 1
 	}
 	
@@ -149,18 +149,19 @@ class ALBPeerConnection: NSObject, GCDAsyncSocketDelegate {
 
 	 - returns: NSProgress This will be updated as the file is sent. Currently, a send cannot be canceled.
 	 */
-	func sendResourceAtURL(url: NSURL, name: String, resourceID: String, onCompletion: completionHandler) -> NSProgress {
-		let data = try! NSData(contentsOfURL: url, options: NSDataReadingOptions.MappedRead)
+	func sendResourceAtURL(_ url: URL, name: String, resourceID: String, onCompletion: @escaping completionHandler) -> Progress {
+		let data = try! Data(contentsOf: url, options: NSData.ReadingOptions.mappedRead)
 		var resource = ALBPeerResource(identity: resourceID, name: name, url: url, data: data)
 		resource.onCompletion = onCompletion
-		resource.progress = NSProgress(totalUnitCount: Int64(resource.length))
-		resource.progress?.cancellable = false
+		resource.progress = Progress(totalUnitCount: Int64(resource.length))
+		resource.progress?.isCancellable = false
 		
 		sendResourcePacket(resource)
 		return resource.progress!
 	}
 	
-	private func sendResourcePacket(var resource: ALBPeerResource) {
+	private func sendResourcePacket(_ resource: ALBPeerResource) {
+		var resource = resource
 		var packet = ALBPeerPacket(type: .resource)
 		
 		let dataSize = max(ALBPeerMaxDataSize, resource.length - resource.offset)
@@ -175,10 +176,10 @@ class ALBPeerConnection: NSObject, GCDAsyncSocketDelegate {
 		
 		packet.resource = resource
 		
-		let range = NSMakeRange(0, dataSize)
-		let subData = resource.mappedData!.subdataWithRange(range)
+		let range = Range(0..<resource.offset + dataSize)
+		let subData = resource.mappedData!.subdata(in: range)
 		_pendingPackets[_lastTag] = packet
-		_socket.writeData(packet.packetDataUsingData(subData), withTimeout: ALBPeerWriteTimeout, tag: _lastTag)
+		_socket.write(packet.packetDataUsingData(subData), withTimeout: ALBPeerWriteTimeout, tag: _lastTag)
 		_lastTag += 1
 	}
 	
@@ -186,9 +187,9 @@ class ALBPeerConnection: NSObject, GCDAsyncSocketDelegate {
 	/**
 	 This is for internal use only
 	 **/
-	func socket(sock: GCDAsyncSocket!, didWriteDataWithTag tag: Int) {
+	func socket(_ sock: GCDAsyncSocket, didWriteDataWithTag tag: Int) {
 		if let packet = _pendingPackets[tag] {
-			_pendingPackets.removeValueForKey(tag)
+			_pendingPackets.removeValue(forKey: tag)
 			
 			if _disconnecting && _pendingPackets.count == 0 && (packet.type == .data || packet.isFinal) {
 				_socket.disconnectAfterWriting()
@@ -200,8 +201,8 @@ class ALBPeerConnection: NSObject, GCDAsyncSocketDelegate {
 				if !packet.isFinal {
 					sendResourcePacket(packet.resource!)
 				} else {
-					if let resource = packet.resource, completionHandler = resource.onCompletion {
-						completionHandler(sent: true)
+					if let resource = packet.resource, let completionHandler = resource.onCompletion {
+						completionHandler(true)
 					}
 				}
 			}
@@ -211,17 +212,17 @@ class ALBPeerConnection: NSObject, GCDAsyncSocketDelegate {
 	/**
 	 This is for internal use only
 	 **/
-	func socket(sock: GCDAsyncSocket!, didReadData data: NSData!, withTag tag: Int) {
+	func socket(_ sock: GCDAsyncSocket, didRead data: Data, withTag tag: Int) {
 		if let packet = ALBPeerPacket(packetData: data) {
 			processPacket(packet)
 		} else {
 			// store data from this read and append to it with data from next read
 			if _cachedData == nil {
-				_cachedData = NSMutableData()
+				_cachedData = Data()
 			}
 			
-			_cachedData!.appendBytes(data.bytes, length: data.length)
-			if _cachedData!.length > ALBPeerMaxDataSize * 4 {
+			_cachedData!.append(data)
+			if _cachedData!.count > ALBPeerMaxDataSize * 4 {
 				_socket.disconnect()
 				return
 			}
@@ -231,32 +232,32 @@ class ALBPeerConnection: NSObject, GCDAsyncSocketDelegate {
 			}
 		}
 		
-		_socket.readDataToData(ALBPeerPacketDelimiter, withTimeout: -1, tag: 0)
+		_socket.readData(to: ALBPeerPacketDelimiter, withTimeout: -1, tag: 0)
 	}
 	
-	private func processPacket(packet: ALBPeerPacket) {
+	private func processPacket(_ packet: ALBPeerPacket) {
 		_cachedData = nil
 		
 		switch packet.type {
 		case .text:
-			dispatch_async(delegateQueue, {[unowned self]() -> Void in
+			delegateQueue.async(execute: {[unowned self]() -> Void in
 					if let delegate = self.delegate {
-						delegate.textReceived(self, text: NSString(data: packet.data!, encoding: NSUTF8StringEncoding) as! String)
+						delegate.textReceived(self, text: NSString(data: packet.data! as Data, encoding: String.Encoding.utf8.rawValue) as! String)
 					} else {
 						print("Connection delegate is not assigned")
 					}
 				})
 		case .data:
-			dispatch_async(delegateQueue, {[unowned self]() -> Void in
+			delegateQueue.async(execute: {[unowned self]() -> Void in
 					if let delegate = self.delegate {
-						delegate.dataReceived(self, data: packet.data!)
+						delegate.dataReceived(self, data: packet.data! as Data)
 					} else {
 						print("Connection delegate is not assigned")
 					}
 				})
 		case .resource:
-			if let resourceID = packet.resource?.identity, name = packet.resource?.name, resourceLength = packet.resource?.length, packetLength = packet.data?.length {
-				let handle: NSFileHandle
+			if let resourceID = packet.resource?.identity, let name = packet.resource?.name, let resourceLength = packet.resource?.length, let packetLength = packet.data?.count {
+				let handle: FileHandle
 				var resourcePath: String
 				var resource = _resourceFiles[packet.resource!.identity]
 				
@@ -265,12 +266,12 @@ class ALBPeerConnection: NSObject, GCDAsyncSocketDelegate {
 					resourcePath = resource.path
 				} else {
 					// create file
-					let searchPaths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+					let searchPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
 					let documentFolderPath = searchPaths[0]
 					resourcePath = "\(documentFolderPath)/\(name)"
 					var nameIndex = 1
-					while NSFileManager.defaultManager().fileExistsAtPath(resourcePath) {
-						let parts = resourcePath.componentsSeparatedByString(".")
+					while FileManager.default.fileExists(atPath: resourcePath) {
+						let parts = resourcePath.components(separatedBy: ".")
 						resourcePath = ""
 						if parts.count > 1 {
 							let partCount = parts.count - 1
@@ -286,10 +287,10 @@ class ALBPeerConnection: NSObject, GCDAsyncSocketDelegate {
 						nameIndex = nameIndex + 1
 					}
 					
-					NSFileManager.defaultManager().createFileAtPath(resourcePath, contents: nil, attributes: nil)
-					if let fileHandle = NSFileHandle(forWritingAtPath: resourcePath) {
+					FileManager.default.createFile(atPath: resourcePath, contents: nil, attributes: nil)
+					if let fileHandle = FileHandle(forWritingAtPath: resourcePath) {
 						resource = Resource(handle: fileHandle, path: resourcePath, name: name)
-						var progress = NSProgress(totalUnitCount: Int64(resourceLength))
+						let progress = Progress(totalUnitCount: Int64(resourceLength))
 						resource?.progress = progress
 						_resourceFiles[resourceID] = resource
 						handle = fileHandle
@@ -298,9 +299,9 @@ class ALBPeerConnection: NSObject, GCDAsyncSocketDelegate {
 						return
 					}
 					
-					dispatch_async(delegateQueue, {[unowned self]() -> Void in
+					delegateQueue.async(execute: {[unowned self]() -> Void in
 							if let delegate = self.delegate {
-								delegate.startedReceivingResource(self, atURL: NSURL(fileURLWithPath: resourcePath), name: packet.resource!.name, resourceID: resourceID, progress: resource!.progress)
+								delegate.startedReceivingResource(self, atURL: URL(fileURLWithPath: resourcePath), name: packet.resource!.name, resourceID: resourceID, progress: resource!.progress)
 							} else {
 								print("Connection delegate is not assigned")
 							}
@@ -311,15 +312,15 @@ class ALBPeerConnection: NSObject, GCDAsyncSocketDelegate {
 					progress.completedUnitCount = progress.completedUnitCount + packetLength
 				}
 				
-				handle.writeData(packet.data!)
+				handle.write(packet.data! as Data)
 				
 				if packet.isFinal {
 					handle.closeFile()
 					let resource = _resourceFiles[resourceID]!
-					_resourceFiles.removeValueForKey(resourceID)
-					dispatch_async(delegateQueue, {[unowned self]() -> Void in
+					_resourceFiles.removeValue(forKey: resourceID)
+					delegateQueue.async(execute: {[unowned self]() -> Void in
 							if let delegate = self.delegate {
-								delegate.resourceReceived(self, atURL: NSURL(fileURLWithPath: resourcePath), name: resource.name, resourceID: resourceID)
+								delegate.resourceReceived(self, atURL: URL(fileURLWithPath: resourcePath), name: resource.name, resourceID: resourceID)
 							} else {
 								print("Connection delegate is not assigned")
 							}
@@ -330,8 +331,8 @@ class ALBPeerConnection: NSObject, GCDAsyncSocketDelegate {
 				return
 			}
 		case .resourceError:
-			if let resource = packet.resource, completionHandler = resource.onCompletion {
-				completionHandler(sent: false)
+			if let resource = packet.resource, let completionHandler = resource.onCompletion {
+				completionHandler(false)
 			}
 		default:
 			// other cases handled elsewhere
@@ -339,19 +340,19 @@ class ALBPeerConnection: NSObject, GCDAsyncSocketDelegate {
 		}
 	}
 	
-	private func resourceCopyError(resourceID: String, name: String) {
+	private func resourceCopyError(_ resourceID: String, name: String) {
 		let resource = ALBPeerResource(identity: resourceID, name: name)
 		var packet = ALBPeerPacket(type: .resourceError)
 		packet.resource = resource
 		
-		_socket.writeData(packet.packetDataUsingData(nil), withTimeout: ALBPeerWriteTimeout, tag: 0)
+		_socket.write(packet.packetDataUsingData(nil), withTimeout: ALBPeerWriteTimeout, tag: 0)
 	}
 	
 	/**
 	 This is for internal use only
 	 **/
-	func socketDidDisconnect(sock: GCDAsyncSocket!, withError err: NSError!) {
-		dispatch_async(delegateQueue, {[unowned self]() -> Void in
+	func socketDidDisconnect(_ sock: GCDAsyncSocket, withError err: Error?) {
+		delegateQueue.async(execute: {[unowned self]() -> Void in
 				if let delegate = self.delegate {
 					delegate.disconnected(self, byRequest: self._disconnecting)
 				} else {

@@ -11,16 +11,16 @@ import Foundation
 class ALBPeer {
 	var name: String
 	var peerID: String
-	var service: NSNetService?
+	var service: NetService?
 	
-	func dataValue() -> NSData {
-		let dict: [String: AnyObject] = ["name": name, "peerID": peerID]
-		let dictData = NSKeyedArchiver.archivedDataWithRootObject(dict)
+	func dataValue() -> Data {
+		let dict: [String: AnyObject] = ["name": name as AnyObject, "peerID": peerID as AnyObject]
+		let dictData = NSKeyedArchiver.archivedData(withRootObject: dict)
 		return dictData
 	}
 	
-	init?(dataValue: NSData) {
-		if let dataDict = NSKeyedUnarchiver.unarchiveObjectWithData(dataValue) as? [String: AnyObject] {
+	init?(dataValue: Data) {
+		if let dataDict = NSKeyedUnarchiver.unarchiveObject(with: dataValue) as? [String: AnyObject] {
 			name = dataDict["name"] as! String
 			peerID = dataDict["peerID"] as! String
 		} else {

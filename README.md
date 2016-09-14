@@ -6,6 +6,7 @@ Money Trak is an app available for free on the App Store that has been open sour
 ## Goals
 - Add MacOS Target
 - Add Watch Target
+- Add TV Target
 - Add Unit and UI Testing
 - Add Localization
 

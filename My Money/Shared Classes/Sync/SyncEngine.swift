@@ -46,7 +46,6 @@ class SyncDevice: ALBNoSQLDBObject {
 		if let value = ALBNoSQLDB.dictValueForKey(table: kDevicesTable, key: key) {
 			self.init(keyValue: key, dictValue: value)
 		} else {
-			self.init()
 			return nil
 		}
 	}

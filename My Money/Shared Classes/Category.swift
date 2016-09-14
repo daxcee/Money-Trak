@@ -23,7 +23,6 @@ class Category: ALBNoSQLDBObject {
 		if let value = ALBNoSQLDB.dictValueForKey(table: kCategoryTable, key: key) {
 			self.init(keyValue: key, dictValue: value)
 		} else {
-			self.init()
 			return nil
 		}
 	}

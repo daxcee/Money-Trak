@@ -106,7 +106,6 @@ class Transaction: ALBNoSQLDBObject {
 		if let value = ALBNoSQLDB.dictValueForKey(table: kTransactionsTable, key: key) {
 			self.init(keyValue: key, dictValue: value)
 		} else {
-			self.init()
 			return nil
 		}
 	}
@@ -307,7 +306,6 @@ class RecurringTransaction: Transaction {
 		if let value = ALBNoSQLDB.dictValueForKey(table: kRecurringTransactionsTable, key: key) {
 			self.init(keyValue: key, dictValue: value)
 		} else {
-			self.init()
 			return nil
 		}
 	}
@@ -373,7 +371,6 @@ class UpcomingTransaction: Transaction {
 		if let value = ALBNoSQLDB.dictValueForKey(table: kUpcomingTransactionsTable, key: key) {
 			self.init(keyValue: key, dictValue: value)
 		} else {
-			self.init()
 			return nil
 		}
 	}

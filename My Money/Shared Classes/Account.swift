@@ -52,7 +52,6 @@ class Account:ALBNoSQLDBObject {
 		if let value = ALBNoSQLDB.dictValueForKey(table: kAccountsTable, key: key) {
 			self.init(keyValue: key,dictValue: value)
 		} else {
-			self.init()
 			return nil
 		}
     }

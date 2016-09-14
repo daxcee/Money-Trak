@@ -106,7 +106,6 @@ struct SummaryMatrix {
 			if let value = ALBNoSQLDB.dictValueForKey(table: kMonthlySummaryEntriesTable, key: key) {
 				self.init(keyValue: key, dictValue: value)
 			} else {
-				self.init()
 				return nil
 			}
 		}

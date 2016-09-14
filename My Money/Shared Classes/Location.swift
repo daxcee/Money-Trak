@@ -22,7 +22,6 @@ class Location:ALBNoSQLDBObject {
 		if let value = ALBNoSQLDB.dictValueForKey(table: kLocationsTable, key: key) {
 			self.init(keyValue: key,dictValue: value)
 		} else {
-			self.init()
 			return nil
 		}
     }
@@ -63,7 +62,6 @@ class LocationAddress:ALBNoSQLDBObject {
 		if let value = ALBNoSQLDB.dictValueForKey(table: kLocationAddressesTable, key: key) {
 			self.init(keyValue:key, dictValue:value)
 		} else {
-			self.init()
 			return nil
 		}
     }

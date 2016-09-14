@@ -36,7 +36,6 @@ class Reconciliation: ALBNoSQLDBObject {
 		if let value = ALBNoSQLDB.dictValueForKey(table: kReconcilationsTable, key: key) {
 			self.init(keyValue: key, dictValue: value)
 		} else {
-			self.init()
 			return nil
 		}
 	}

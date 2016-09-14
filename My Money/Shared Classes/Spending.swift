@@ -25,7 +25,6 @@ class Budget: ALBNoSQLDBObject {
 		if let value = ALBNoSQLDB.dictValueForKey(table: kBudgetsTable, key: key) {
 			self.init(keyValue: key, dictValue: value)
 		} else {
-			self.init()
 			return nil
 		}
 	}
@@ -68,7 +67,6 @@ class BudgetEntry: ALBNoSQLDBObject {
 		if let value = ALBNoSQLDB.dictValueForKey(table: kBudgetEntriesTable, key: key) {
 			self.init(keyValue: key, dictValue: value)
 		} else {
-			self.init()
 			return nil
 		}
 	}
@@ -113,7 +111,6 @@ class MonthlySummaryEntry: ALBNoSQLDBObject {
 		if let value = ALBNoSQLDB.dictValueForKey(table: kMonthlySummaryEntriesTable, key: key) {
 			self.init(keyValue: key, dictValue: value)
 		} else {
-			self.init()
 			return nil
 		}
 	}

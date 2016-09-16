@@ -23,7 +23,6 @@
 		890CD3D31C94EB8400E3C870 /* DefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890CD3D21C94EB8400E3C870 /* DefaultManager.swift */; };
 		890CD3D51C94EBFF00E3C870 /* UIImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890CD3D41C94EBFF00E3C870 /* UIImageTests.swift */; };
 		890CD3D61C94EC9000E3C870 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890CD3CE1C94EB7200E3C870 /* UIImage.swift */; };
-		890D08701A38D4740010875D /* Reconciliation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890D086F1A38D4740010875D /* Reconciliation.swift */; };
 		8916B9671B0FB0110026CD5D /* DeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8916B9661B0FB0110026CD5D /* DeviceCell.swift */; };
 		892A932F19E0241A0049CDDB /* EditTransactionControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A932D19E0241A0049CDDB /* EditTransactionControllers.swift */; };
 		892A933019E0241A0049CDDB /* TransactionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892A932E19E0241A0049CDDB /* TransactionsController.swift */; };
@@ -32,7 +31,6 @@
 		89343D851A1D2C70005D1530 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89343D841A1D2C70005D1530 /* AccountView.swift */; };
 		893A1F971A54678F006224F8 /* ALBTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A1F961A54678F006224F8 /* ALBTableView.swift */; };
 		894B8FE919B0B03200C4D28C /* CommonDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8943EA9E19AA4D7200C4C73B /* CommonDB.swift */; };
-		894CCD9719A6C73500D79BFA /* Spending.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894CCD9619A6C73500D79BFA /* Spending.swift */; };
 		8950D99219AA7CE4000F3F57 /* CommonFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8950D99119AA7CE4000F3F57 /* CommonFunctions.swift */; };
 		895B98AE1A38B95B0048A61E /* EditHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 895B98AD1A38B95B0048A61E /* EditHeader.swift */; };
 		895F3B5F1A386CD00008A44F /* EditReconciliation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 895F3B5E1A386CD00008A44F /* EditReconciliation.swift */; };
@@ -44,6 +42,10 @@
 		89752AE81D8B582E00E3C870 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89752AE41D8B582E00E3C870 /* Transaction.swift */; };
 		89752AEA1D8B585900E3C870 /* RecurringTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89752AE91D8B585900E3C870 /* RecurringTransaction.swift */; };
 		89752AEC1D8B588D00E3C870 /* UpcomingTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89752AEB1D8B588D00E3C870 /* UpcomingTransaction.swift */; };
+		89752AEE1D8C082B00E3C870 /* Reconciliation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89752AED1D8C082B00E3C870 /* Reconciliation.swift */; };
+		89752AF01D8C083F00E3C870 /* Budget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89752AEF1D8C083F00E3C870 /* Budget.swift */; };
+		89752AF21D8C085600E3C870 /* BudgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89752AF11D8C085600E3C870 /* BudgetEntry.swift */; };
+		89752AF41D8C087400E3C870 /* MonthlySummaryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89752AF31D8C087400E3C870 /* MonthlySummaryEntry.swift */; };
 		897848CB1A0BF7B600949395 /* SelectAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897848CA1A0BF7B600949395 /* SelectAccount.swift */; };
 		898007751ADC1BEC000B37BC /* SyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898007741ADC1BEC000B37BC /* SyncViewController.swift */; };
 		8987FBE41CD4C46F00E3C870 /* TransactionAccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8987FBE31CD4C46F00E3C870 /* TransactionAccountCell.swift */; };
@@ -134,7 +136,6 @@
 		890CD3D01C94EB8000E3C870 /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		890CD3D21C94EB8400E3C870 /* DefaultManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultManager.swift; sourceTree = "<group>"; };
 		890CD3D41C94EBFF00E3C870 /* UIImageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageTests.swift; sourceTree = "<group>"; };
-		890D086F1A38D4740010875D /* Reconciliation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Reconciliation.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		89166F9C19979728007B1694 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		89166F9D19979728007B1694 /* FramedTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FramedTextView.h; sourceTree = "<group>"; };
 		89166FA819979728007B1694 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -148,7 +149,6 @@
 		893A1F961A54678F006224F8 /* ALBTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ALBTableView.swift; sourceTree = "<group>"; };
 		8943EA9E19AA4D7200C4C73B /* CommonDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CommonDB.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		894CCD8819A57D1F00D79BFA /* My Money-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "My Money-Bridging-Header.h"; sourceTree = "<group>"; };
-		894CCD9619A6C73500D79BFA /* Spending.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Spending.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		8950D99119AA7CE4000F3F57 /* CommonFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonFunctions.swift; sourceTree = "<group>"; };
 		895B98AD1A38B95B0048A61E /* EditHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHeader.swift; sourceTree = "<group>"; };
 		895F3B5E1A386CD00008A44F /* EditReconciliation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditReconciliation.swift; sourceTree = "<group>"; };
@@ -160,6 +160,10 @@
 		89752AE41D8B582E00E3C870 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		89752AE91D8B585900E3C870 /* RecurringTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecurringTransaction.swift; sourceTree = "<group>"; };
 		89752AEB1D8B588D00E3C870 /* UpcomingTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpcomingTransaction.swift; sourceTree = "<group>"; };
+		89752AED1D8C082B00E3C870 /* Reconciliation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reconciliation.swift; sourceTree = "<group>"; };
+		89752AEF1D8C083F00E3C870 /* Budget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Budget.swift; sourceTree = "<group>"; };
+		89752AF11D8C085600E3C870 /* BudgetEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BudgetEntry.swift; sourceTree = "<group>"; };
+		89752AF31D8C087400E3C870 /* MonthlySummaryEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonthlySummaryEntry.swift; sourceTree = "<group>"; };
 		897848CA1A0BF7B600949395 /* SelectAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SelectAccount.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		898007741ADC1BEC000B37BC /* SyncViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SyncViewController.swift; path = "My Money/View Controllers - iOS/Sync/SyncViewController.swift"; sourceTree = SOURCE_ROOT; };
 		8987FBE31CD4C46F00E3C870 /* TransactionAccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionAccountCell.swift; sourceTree = "<group>"; };
@@ -337,11 +341,9 @@
 				8982852F1C26DACA00E3C870 /* Traits */,
 				89A443251AEBC02600946BDE /* Sync */,
 				89752AE01D8B582E00E3C870 /* Basic Models */,
-				894CCD9619A6C73500D79BFA /* Spending.swift */,
 				890B74FC1BD280D80035A37C /* ALBNoSQLDB.swift */,
 				8943EA9E19AA4D7200C4C73B /* CommonDB.swift */,
 				8950D99119AA7CE4000F3F57 /* CommonFunctions.swift */,
-				890D086F1A38D4740010875D /* Reconciliation.swift */,
 				896E70F91B3302AE003B97EF /* Summary.swift */,
 				8996CF011BD27D8100FAC390 /* Reachability.swift */,
 				890CD3D01C94EB8000E3C870 /* NotificationManager.swift */,
@@ -358,8 +360,12 @@
 				89752AE21D8B582E00E3C870 /* Category.swift */,
 				89752AE31D8B582E00E3C870 /* Location.swift */,
 				89752AE41D8B582E00E3C870 /* Transaction.swift */,
+				89752AED1D8C082B00E3C870 /* Reconciliation.swift */,
 				89752AE91D8B585900E3C870 /* RecurringTransaction.swift */,
 				89752AEB1D8B588D00E3C870 /* UpcomingTransaction.swift */,
+				89752AEF1D8C083F00E3C870 /* Budget.swift */,
+				89752AF11D8C085600E3C870 /* BudgetEntry.swift */,
+				89752AF31D8C087400E3C870 /* MonthlySummaryEntry.swift */,
 			);
 			path = "Basic Models";
 			sourceTree = "<group>";
@@ -709,6 +715,7 @@
 				8916B9671B0FB0110026CD5D /* DeviceCell.swift in Sources */,
 				89A02F591B985B310088601D /* ALBPeerConnection.swift in Sources */,
 				89BC3CCC19E080AB003B2A75 /* SelectLocation.swift in Sources */,
+				89752AF41D8C087400E3C870 /* MonthlySummaryEntry.swift in Sources */,
 				89E218001A42FDC500F79443 /* Reconciliations.swift in Sources */,
 				898007751ADC1BEC000B37BC /* SyncViewController.swift in Sources */,
 				89B90F021CA6BC2E00E3C870 /* NSDateExtensions.swift in Sources */,
@@ -726,14 +733,12 @@
 				8996CF021BD27D8100FAC390 /* Reachability.swift in Sources */,
 				892A933019E0241A0049CDDB /* TransactionsController.swift in Sources */,
 				8987FBE41CD4C46F00E3C870 /* TransactionAccountCell.swift in Sources */,
-				890D08701A38D4740010875D /* Reconciliation.swift in Sources */,
 				895F3B5F1A386CD00008A44F /* EditReconciliation.swift in Sources */,
 				89CBC1751A12396A00E88A29 /* Setup.swift in Sources */,
 				89BC3CC819E08026003B2A75 /* SetAlert.swift in Sources */,
 				89F1C4D91A263F8100DC4BCD /* OSSpecific - iOS.swift in Sources */,
 				89752AEC1D8B588D00E3C870 /* UpcomingTransaction.swift in Sources */,
 				890CD3CF1C94EB7200E3C870 /* UIImage.swift in Sources */,
-				894CCD9719A6C73500D79BFA /* Spending.swift in Sources */,
 				89A443421AEBC02600946BDE /* ioapi.c in Sources */,
 				89C511B11B62671C0067CC72 /* UIImage+ImageEffects.m in Sources */,
 				89752AE71D8B582E00E3C870 /* Location.swift in Sources */,
@@ -745,9 +750,11 @@
 				8998916B1CC2882A00E3C870 /* ClearAllCell.swift in Sources */,
 				895B98AE1A38B95B0048A61E /* EditHeader.swift in Sources */,
 				89752AE61D8B582E00E3C870 /* Category.swift in Sources */,
+				89752AF01D8C083F00E3C870 /* Budget.swift in Sources */,
 				8974B47F1A1642BD00D92411 /* Frequency.swift in Sources */,
 				89D5213B1A1A730B004AFB42 /* CurrentLocation.m in Sources */,
 				89752AE51D8B582E00E3C870 /* Account.swift in Sources */,
+				89752AF21D8C085600E3C870 /* BudgetEntry.swift in Sources */,
 				890B74FD1BD280D80035A37C /* ALBNoSQLDB.swift in Sources */,
 				89BF2B9E1A4F53BE002A6959 /* MonthlySummary.swift in Sources */,
 				890CD3D11C94EB8000E3C870 /* NotificationManager.swift in Sources */,
@@ -766,6 +773,7 @@
 				89752AEA1D8B585900E3C870 /* RecurringTransaction.swift in Sources */,
 				89BC3CCA19E08067003B2A75 /* SelectCategory.swift in Sources */,
 				89752AE81D8B582E00E3C870 /* Transaction.swift in Sources */,
+				89752AEE1D8C082B00E3C870 /* Reconciliation.swift in Sources */,
 				89BC3CD019E1F26F003B2A75 /* Accounts.swift in Sources */,
 				89E2025C19E94C60008A4685 /* InitialController.swift in Sources */,
 				893A1F971A54678F006224F8 /* ALBTableView.swift in Sources */,

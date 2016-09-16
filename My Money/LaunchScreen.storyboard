@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ZbF-gH-IO5">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A319" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ZbF-gH-IO5">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--My Money-->
@@ -16,20 +17,18 @@
                         <viewControllerLayoutGuide type="bottom" id="Grw-SH-1h6"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="AZQ-YG-wC6">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wCQ-6I-w7u">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="64"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wCQ-6I-w7u">
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading…" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0LG-cv-so0">
-                                        <rect key="frame" x="248" y="25" width="96" height="27"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="1" green="0.85490196080000003" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.99578440189361572" green="0.81638503074645996" blue="0.84013980627059937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="EVK-EC-p3w"/>
                                     <constraint firstAttribute="centerX" secondItem="0LG-cv-so0" secondAttribute="centerX" id="Xlq-DZ-6JY"/>
@@ -37,24 +36,22 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IZf-Rz-ozs" userLabel="Add Transaction">
-                                <rect key="frame" x="277" y="77" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Rra-sS-ZWx"/>
                                     <constraint firstAttribute="width" constant="44" id="XlQ-cj-dWp"/>
                                 </constraints>
                                 <state key="normal" image="AddTransaction">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ey0-7c-UGE" userLabel="Upcoming Transactions">
-                                <rect key="frame" x="271" y="151" width="56" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="3hB-Ft-mp7"/>
                                     <constraint firstAttribute="width" constant="88" id="Xx7-ye-dXw"/>
                                     <constraint firstAttribute="width" secondItem="ey0-7c-UGE" secondAttribute="height" multiplier="1:1" id="ZwO-Ce-wFR"/>
                                 </constraints>
                                 <state key="normal" image="Upcoming">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -65,14 +62,13 @@
                                 </variation>
                             </button>
                             <button opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VBu-T7-HKI" userLabel="Transactions">
-                                <rect key="frame" x="165" y="151" width="56" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="BD3-Dp-qmV"/>
                                     <constraint firstAttribute="height" constant="60" id="EM4-2d-VGo"/>
                                     <constraint firstAttribute="width" secondItem="VBu-T7-HKI" secondAttribute="height" multiplier="15:22" id="YXQ-3F-fpR"/>
                                 </constraints>
                                 <state key="normal" image="Transactions">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -83,14 +79,13 @@
                                 </variation>
                             </button>
                             <button opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I7Z-Ix-Qpu" userLabel="Recurring Transactions">
-                                <rect key="frame" x="377" y="151" width="56" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="I7Z-Ix-Qpu" secondAttribute="height" multiplier="1:1" id="CAc-fL-pBj"/>
                                     <constraint firstAttribute="width" constant="88" id="PzH-o6-Lrg"/>
                                     <constraint firstAttribute="height" constant="60" id="f5z-rq-m59"/>
                                 </constraints>
                                 <state key="normal" image="Recurring">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -101,31 +96,27 @@
                                 </variation>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bmy-iX-lkV">
-                                <rect key="frame" x="290" y="468" width="20" height="20"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="R2q-zv-0L7"/>
                                     <constraint firstAttribute="height" constant="20" id="yID-vP-L7r"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2fe-AW-vby" userLabel="Sync">
-                                <rect key="frame" x="216" y="456" width="44" height="44"/>
                                 <state key="normal" image="Sync">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rff-mq-hlo" userLabel="Settings">
-                                <rect key="frame" x="340" y="461" width="35" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="35" id="QFI-5b-Uml"/>
                                     <constraint firstAttribute="height" constant="35" id="pra-Xo-BDo"/>
                                 </constraints>
                                 <state key="normal" image="Settings">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vXq-6t-oNt" userLabel="Reconciliations">
-                                <rect key="frame" x="165" y="241" width="57" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="2O1-e0-GzF"/>
                                     <constraint firstAttribute="width" secondItem="vXq-6t-oNt" secondAttribute="height" multiplier="19:20" id="SgX-AN-RtA"/>
@@ -134,7 +125,7 @@
                                     <constraint firstAttribute="width" constant="60" id="uNv-qX-zfy"/>
                                 </constraints>
                                 <state key="normal" image="Reconcile">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -145,13 +136,12 @@
                                 </variation>
                             </button>
                             <button opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h6a-hK-pS0" userLabel="Spending Summary">
-                                <rect key="frame" x="269" y="241" width="60" height="60"/>
                                 <state key="normal" image="MonthlySummary">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="0.95999999999999996" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.95999997854232788" green="0.95999997854232788" blue="0.95999997854232788" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="bmy-iX-lkV" firstAttribute="leading" secondItem="h6a-hK-pS0" secondAttribute="trailing" constant="15" id="3Ig-KL-6kz"/>
                             <constraint firstItem="bmy-iX-lkV" firstAttribute="top" secondItem="h6a-hK-pS0" secondAttribute="top" id="7go-He-9ff"/>
@@ -190,13 +180,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rSg-Qy-JUp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1257" y="-1486"/>
+            <point key="canvasLocation" x="1256.8" y="-1486.5067466266867"/>
         </scene>
     </scenes>
     <resources>
         <image name="AddTransaction" width="44" height="44"/>
         <image name="MonthlySummary" width="60" height="60"/>
-        <image name="Reconcile" width="57" height="60"/>
+        <image name="Reconcile" width="56" height="60"/>
         <image name="Recurring" width="56" height="60"/>
         <image name="Settings" width="44" height="44"/>
         <image name="Sync" width="44" height="44"/>

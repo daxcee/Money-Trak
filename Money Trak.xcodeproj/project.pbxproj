@@ -136,10 +136,6 @@
 		890CD3D01C94EB8000E3C870 /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		890CD3D21C94EB8400E3C870 /* DefaultManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultManager.swift; sourceTree = "<group>"; };
 		890CD3D41C94EBFF00E3C870 /* UIImageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageTests.swift; sourceTree = "<group>"; };
-		89166F9C19979728007B1694 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		89166F9D19979728007B1694 /* FramedTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FramedTextView.h; sourceTree = "<group>"; };
-		89166FA819979728007B1694 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		89166FA919979728007B1694 /* FramedTextViewTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FramedTextViewTests.m; sourceTree = "<group>"; };
 		8916B9661B0FB0110026CD5D /* DeviceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceCell.swift; path = "My Money/View Controllers - iOS/Sync/DeviceCell.swift"; sourceTree = SOURCE_ROOT; };
 		892A932D19E0241A0049CDDB /* EditTransactionControllers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = EditTransactionControllers.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		892A932E19E0241A0049CDDB /* TransactionsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TransactionsController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -280,40 +276,6 @@
 				89F1C4D81A263F8100DC4BCD /* OSSpecific - iOS.swift */,
 			);
 			path = "Misc Classes";
-			sourceTree = "<group>";
-		};
-		89166F9A19979728007B1694 /* FramedTextView */ = {
-			isa = PBXGroup;
-			children = (
-				89166F9D19979728007B1694 /* FramedTextView.h */,
-				89166F9B19979728007B1694 /* Supporting Files */,
-			);
-			path = FramedTextView;
-			sourceTree = "<group>";
-		};
-		89166F9B19979728007B1694 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				89166F9C19979728007B1694 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		89166FA619979728007B1694 /* FramedTextViewTests */ = {
-			isa = PBXGroup;
-			children = (
-				89166FA919979728007B1694 /* FramedTextViewTests.m */,
-				89166FA719979728007B1694 /* Supporting Files */,
-			);
-			path = FramedTextViewTests;
-			sourceTree = "<group>";
-		};
-		89166FA719979728007B1694 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				89166FA819979728007B1694 /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		892A932C19E0241A0049CDDB /* Transactions */ = {
@@ -494,8 +456,6 @@
 			children = (
 				894CCD8819A57D1F00D79BFA /* My Money-Bridging-Header.h */,
 				89C39257199462E10020B6DC /* My Money */,
-				89166F9A19979728007B1694 /* FramedTextView */,
-				89166FA619979728007B1694 /* FramedTextViewTests */,
 				89C39256199462E10020B6DC /* Products */,
 				894CCD6719A56C6300D79BFA /* Shared Classes */,
 				B392D623F90D1DB206374BC2 /* Frameworks */,

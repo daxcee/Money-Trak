@@ -1,5 +1,5 @@
 # Money-Trak
-How does the perfect Swift app look?
+How does the perfect Swift 3 app look?
 
 Money Trak is an app available for free on the App Store that has been open sourced. It is meant to be an example of a program with modern programming techniques. Contribute to this project to help define what a modern Swift program should look like.
 

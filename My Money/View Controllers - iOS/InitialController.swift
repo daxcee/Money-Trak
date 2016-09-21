@@ -85,7 +85,7 @@ class InitialController: UIViewController, UsesCurrency {
 		return false
 	}
 	
-	func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier != nil, let segueName = Segue(rawValue: segue.identifier!) {
 			switch segueName {
 			case .Transactions:

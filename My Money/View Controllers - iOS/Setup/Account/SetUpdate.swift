@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import TableViewHelper
 
 protocol UpdateAllDelegate {
 	func updateAllTransactions(_ updateAll: Bool)
@@ -16,26 +17,26 @@ protocol UpdateAllDelegate {
 class SetUpdateController: UIViewController, UITableViewDelegate, UITableViewDataSource, UpdateAllDelegate {
 	@IBOutlet weak var tableView: UITableView!
 	
-	var helper: TableViewHelper?
 	var delegate: UpdateDelegate?
 	var account: Account?
+	fileprivate var _helper: TableViewHelper!
 	
 	override func viewDidLoad() {
-		helper = TableViewHelper(tableView: tableView!)
-		helper!.addCell(0, cell: tableView.dequeueReusableCell(withIdentifier: "All")!, name: "All")
-		helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "StopOnDeposit")!, name: "StopOnDeposit")
-		helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "UpcomingDays")!, name: "UpcomingDays")
+		_helper = TableViewHelper(tableView: tableView!)
+		_helper.addCell(0, cell: tableView.dequeueReusableCell(withIdentifier: "All")!, name: "All")
+		_helper.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "StopOnDeposit")!, name: "StopOnDeposit")
+		_helper.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "UpcomingDays")!, name: "UpcomingDays")
 		
-		let cell = helper!.visibleCellsWithName("All") [0] as! UpdateAllCell
+		let cell = _helper.visibleCellsWithName("All") [0] as! UpdateAllCell
 		cell.updateSwitch.isOn = account!.updateTotalAll
 		cell.delegate = self
 		
-		let dayCell = helper!.visibleCellsWithName("UpcomingDays") [0] as! UpcomingDaysCell
+		let dayCell = _helper.visibleCellsWithName("UpcomingDays") [0] as! UpcomingDaysCell
 		dayCell.account = account
 		dayCell.slider.value = Float(account!.updateUpcomingDays)
 		dayCell.days.text = "\(account!.updateUpcomingDays)"
 		
-		let stopCell = helper!.visibleCellsWithName("StopOnDeposit") [0] as! StopOnDepositCell
+		let stopCell = _helper.visibleCellsWithName("StopOnDeposit") [0] as! StopOnDepositCell
 		stopCell.account = account
 		stopCell.stopSwitch.isOn = account!.stopUpdatingAtDeposit
 		
@@ -48,11 +49,11 @@ class SetUpdateController: UIViewController, UITableViewDelegate, UITableViewDat
 	}
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
-		return helper!.numberOfSections()
+		return _helper.numberOfSections()
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return helper!.numberOfRowsInSection(section)
+		return _helper.numberOfRowsInSection(section)
 	}
 	
 	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -73,7 +74,7 @@ class SetUpdateController: UIViewController, UITableViewDelegate, UITableViewDat
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = helper!.cellForRowAtIndexPath(indexPath)
+		let cell = _helper.cellForRowAtIndexPath(indexPath)
 		
 		
 		return cell
@@ -84,9 +85,9 @@ class SetUpdateController: UIViewController, UITableViewDelegate, UITableViewDat
 		account!.updateTotalAll = updateAll
 		
 		if updateAll {
-			helper!.showCell("UpcomingDays")
+			_helper.showCell("UpcomingDays")
 		} else {
-			helper!.hideCell("UpcomingDays")
+			_helper.hideCell("UpcomingDays")
 		}
 	}
 }

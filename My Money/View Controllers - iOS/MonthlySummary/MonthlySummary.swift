@@ -84,7 +84,7 @@ class MonthlySummaryController: UIViewController, UsesCurrency {
 		tableView.registerRowHeaderNib(rowHeader)
 	}
 
-	func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		let segueName = Segues(rawValue: segue.identifier!)!
 
 		switch segueName {

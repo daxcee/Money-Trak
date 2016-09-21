@@ -78,7 +78,7 @@ class EditAccountController: UITableViewController, AccountTypeDelegate, UpdateD
 		totalCredit.text = (_account!.maxBalance / 100).description
 	}
 
-	func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier != nil, let segueName = Segues(rawValue: segue.identifier!) {
 			switch segueName {
 

@@ -1,0 +1,692 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		00D8DAFBB939E454EB1676DDD25C6A8B /* Pods-Money TrakTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A02693812D62B67A9767D2A3850C0719 /* Pods-Money TrakTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		026D5BC309FBC3E471E8AD12898F5EE7 /* Pods-Money Trak-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 247552E48DC4B622498D50C16B966EC6 /* Pods-Money Trak-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		22230FEAF2D1B08CD3341B9BF6B57ACB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
+		2ADE12DAD01B9602942CFF4A603BC2F5 /* TableViewHelper-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 54DD0798CBF25F8206C6FED8652B2ECB /* TableViewHelper-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4442D8EF037032C9BA4B06A4BEE2E4ED /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
+		5B049B697487365DACEE3A14546376D0 /* Pods-Money Trak-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B36E16ECC3001838E443B3E8083C882 /* Pods-Money Trak-dummy.m */; };
+		5CC5EFBB34C1AC36A552CC073941F95D /* TableViewHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = D73D0B1A0FC658A2D0B4647D1A2F6369 /* TableViewHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5D0AC824F032FCA4430D0B07110DFB11 /* Pods-Money TrakTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 47133A9ADF0E4244E847A3F65FBA6C15 /* Pods-Money TrakTests-dummy.m */; };
+		76777D5570A726C5E2801302AF29ABB5 /* TableViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113783710C03A03E159BC22A4C90542C /* TableViewHelper.swift */; };
+		A63C512E640DB1A6BFD3391B613B7E59 /* TableViewHelper-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 72F5DBC2BA0108AC04A82B3540B92885 /* TableViewHelper-dummy.m */; };
+		C7CE28F770ED1B74D36D487710F7DD27 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9ACF780C69C5041D4D49B02B84EF5AE3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F95BBDD6775C4F8D9D27BA885F12B510;
+			remoteInfo = TableViewHelper;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		113783710C03A03E159BC22A4C90542C /* TableViewHelper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TableViewHelper.swift; path = TableViewHelper/TableViewHelper/TableViewHelper.swift; sourceTree = "<group>"; };
+		202214729D7509B1A8557816088A274F /* TableViewHelper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TableViewHelper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		247552E48DC4B622498D50C16B966EC6 /* Pods-Money Trak-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Money Trak-umbrella.h"; sourceTree = "<group>"; };
+		2F71544B13AD7ED94EFBC6DE38F21108 /* Pods-Money TrakTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Money TrakTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		2FC9700E7583F895AC2758261E41C397 /* Pods-Money TrakTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Money TrakTests.modulemap"; sourceTree = "<group>"; };
+		3132B0BE7A89976D9866FB26F14C62CB /* Pods-Money TrakTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Money TrakTests.release.xcconfig"; sourceTree = "<group>"; };
+		3305ACBE3DC52858FEE32F0C1D273AD8 /* Pods-Money TrakTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Money TrakTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		3B36E16ECC3001838E443B3E8083C882 /* Pods-Money Trak-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Money Trak-dummy.m"; sourceTree = "<group>"; };
+		47133A9ADF0E4244E847A3F65FBA6C15 /* Pods-Money TrakTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Money TrakTests-dummy.m"; sourceTree = "<group>"; };
+		4FA4D86CC625DE3134EB0670C54D3D8B /* TableViewHelper.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TableViewHelper.xcconfig; sourceTree = "<group>"; };
+		54DD0798CBF25F8206C6FED8652B2ECB /* TableViewHelper-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TableViewHelper-umbrella.h"; sourceTree = "<group>"; };
+		582D17490750B5702171A5D76917136F /* Pods-Money Trak-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Money Trak-resources.sh"; sourceTree = "<group>"; };
+		58F12A1981EE91CC1EE592E9C4EDE0DC /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5A592E253B8955595494A544A9619D9A /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		632C13152D7D0ED7F55B32F755A58D3B /* Pods-Money Trak.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Money Trak.modulemap"; sourceTree = "<group>"; };
+		6A763F94E638F9DD3AA9210765963872 /* Pods-Money Trak-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Money Trak-frameworks.sh"; sourceTree = "<group>"; };
+		6EA48762438509D13A085DDC048B365D /* Pods-Money Trak-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Money Trak-acknowledgements.plist"; sourceTree = "<group>"; };
+		72F5DBC2BA0108AC04A82B3540B92885 /* TableViewHelper-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "TableViewHelper-dummy.m"; sourceTree = "<group>"; };
+		7A43C4B59640990C43EF620C021B9536 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		96F02FFA55D2A1F78EB16AF6F29F09F1 /* Pods-Money TrakTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Money TrakTests-resources.sh"; sourceTree = "<group>"; };
+		9AB1D0ECE6FCA71DB90330A97D1D5322 /* TableViewHelper.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = TableViewHelper.modulemap; sourceTree = "<group>"; };
+		A02693812D62B67A9767D2A3850C0719 /* Pods-Money TrakTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Money TrakTests-umbrella.h"; sourceTree = "<group>"; };
+		A6A813AB7C7943C377706431832348B0 /* Pods-Money Trak.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Money Trak.debug.xcconfig"; sourceTree = "<group>"; };
+		B07A8074317D33F44536BCD208DAB975 /* Pods-Money Trak.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Money Trak.release.xcconfig"; sourceTree = "<group>"; };
+		CE89EE607E960E7B3C115602B754CE16 /* Pods-Money Trak-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Money Trak-acknowledgements.markdown"; sourceTree = "<group>"; };
+		CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		D441C0541B646173730DC95958F7EE81 /* Pods-Money TrakTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Money TrakTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D73D0B1A0FC658A2D0B4647D1A2F6369 /* TableViewHelper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TableViewHelper.h; path = TableViewHelper/TableViewHelper/TableViewHelper.h; sourceTree = "<group>"; };
+		D9F9DDB70902D339843F7554B525FCD7 /* Pods-Money TrakTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Money TrakTests-frameworks.sh"; sourceTree = "<group>"; };
+		DE8469AC9A4D00C966ED99D22AF008F0 /* Pods_Money_Trak.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Money_Trak.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2713C944C3693673EDF4A4B9E4D8520 /* Pods_Money_TrakTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Money_TrakTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F760C8E703117CDD3A6163DB71D464F6 /* TableViewHelper-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TableViewHelper-prefix.pch"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0082BDE830E07D5923783A3CA7CB7737 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7CE28F770ED1B74D36D487710F7DD27 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C86876C2897133BD03A97171496C8ACD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22230FEAF2D1B08CD3341B9BF6B57ACB /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D50C65BBAA664087F55947A086A670B5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4442D8EF037032C9BA4B06A4BEE2E4ED /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		094DE42D14F943FE5C437335AC2DE074 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				994E1473647AB40EFBD526B85731F43F /* Pods-Money Trak */,
+				5F2C4E01783DDD874356EF1D519D95DA /* Pods-Money TrakTests */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		3DCAB2B7CDE207B3958B6CB957FCC758 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		412859803AF85ED6CFA79F650B763D77 /* TableViewHelper */ = {
+			isa = PBXGroup;
+			children = (
+				D73D0B1A0FC658A2D0B4647D1A2F6369 /* TableViewHelper.h */,
+				113783710C03A03E159BC22A4C90542C /* TableViewHelper.swift */,
+				5A1C8A4A3C2984F98734DC01D266C0C0 /* Support Files */,
+			);
+			path = TableViewHelper;
+			sourceTree = "<group>";
+		};
+		44E0ADA6C0984F688D4419735EFDFD0B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DE8469AC9A4D00C966ED99D22AF008F0 /* Pods_Money_Trak.framework */,
+				E2713C944C3693673EDF4A4B9E4D8520 /* Pods_Money_TrakTests.framework */,
+				202214729D7509B1A8557816088A274F /* TableViewHelper.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5A1C8A4A3C2984F98734DC01D266C0C0 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				58F12A1981EE91CC1EE592E9C4EDE0DC /* Info.plist */,
+				9AB1D0ECE6FCA71DB90330A97D1D5322 /* TableViewHelper.modulemap */,
+				4FA4D86CC625DE3134EB0670C54D3D8B /* TableViewHelper.xcconfig */,
+				72F5DBC2BA0108AC04A82B3540B92885 /* TableViewHelper-dummy.m */,
+				F760C8E703117CDD3A6163DB71D464F6 /* TableViewHelper-prefix.pch */,
+				54DD0798CBF25F8206C6FED8652B2ECB /* TableViewHelper-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/TableViewHelper";
+			sourceTree = "<group>";
+		};
+		5F2C4E01783DDD874356EF1D519D95DA /* Pods-Money TrakTests */ = {
+			isa = PBXGroup;
+			children = (
+				5A592E253B8955595494A544A9619D9A /* Info.plist */,
+				2FC9700E7583F895AC2758261E41C397 /* Pods-Money TrakTests.modulemap */,
+				3305ACBE3DC52858FEE32F0C1D273AD8 /* Pods-Money TrakTests-acknowledgements.markdown */,
+				2F71544B13AD7ED94EFBC6DE38F21108 /* Pods-Money TrakTests-acknowledgements.plist */,
+				47133A9ADF0E4244E847A3F65FBA6C15 /* Pods-Money TrakTests-dummy.m */,
+				D9F9DDB70902D339843F7554B525FCD7 /* Pods-Money TrakTests-frameworks.sh */,
+				96F02FFA55D2A1F78EB16AF6F29F09F1 /* Pods-Money TrakTests-resources.sh */,
+				A02693812D62B67A9767D2A3850C0719 /* Pods-Money TrakTests-umbrella.h */,
+				D441C0541B646173730DC95958F7EE81 /* Pods-Money TrakTests.debug.xcconfig */,
+				3132B0BE7A89976D9866FB26F14C62CB /* Pods-Money TrakTests.release.xcconfig */,
+			);
+			name = "Pods-Money TrakTests";
+			path = "Target Support Files/Pods-Money TrakTests";
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
+				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
+				FDF259CE78389A2AC6C3A88668696C60 /* Pods */,
+				44E0ADA6C0984F688D4419735EFDFD0B /* Products */,
+				094DE42D14F943FE5C437335AC2DE074 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		994E1473647AB40EFBD526B85731F43F /* Pods-Money Trak */ = {
+			isa = PBXGroup;
+			children = (
+				7A43C4B59640990C43EF620C021B9536 /* Info.plist */,
+				632C13152D7D0ED7F55B32F755A58D3B /* Pods-Money Trak.modulemap */,
+				CE89EE607E960E7B3C115602B754CE16 /* Pods-Money Trak-acknowledgements.markdown */,
+				6EA48762438509D13A085DDC048B365D /* Pods-Money Trak-acknowledgements.plist */,
+				3B36E16ECC3001838E443B3E8083C882 /* Pods-Money Trak-dummy.m */,
+				6A763F94E638F9DD3AA9210765963872 /* Pods-Money Trak-frameworks.sh */,
+				582D17490750B5702171A5D76917136F /* Pods-Money Trak-resources.sh */,
+				247552E48DC4B622498D50C16B966EC6 /* Pods-Money Trak-umbrella.h */,
+				A6A813AB7C7943C377706431832348B0 /* Pods-Money Trak.debug.xcconfig */,
+				B07A8074317D33F44536BCD208DAB975 /* Pods-Money Trak.release.xcconfig */,
+			);
+			name = "Pods-Money Trak";
+			path = "Target Support Files/Pods-Money Trak";
+			sourceTree = "<group>";
+		};
+		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3DCAB2B7CDE207B3958B6CB957FCC758 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FDF259CE78389A2AC6C3A88668696C60 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				412859803AF85ED6CFA79F650B763D77 /* TableViewHelper */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		24D24765602AC1A12833B809DE5BEB8A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00D8DAFBB939E454EB1676DDD25C6A8B /* Pods-Money TrakTests-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE1EB68AD0FEA7BE5D0F33E1E9F8E351 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2ADE12DAD01B9602942CFF4A603BC2F5 /* TableViewHelper-umbrella.h in Headers */,
+				5CC5EFBB34C1AC36A552CC073941F95D /* TableViewHelper.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF0D8C655AE47155F7424CBB101D7985 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				026D5BC309FBC3E471E8AD12898F5EE7 /* Pods-Money Trak-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		91DF9B4CC377C3DDF597377420293175 /* Pods-Money TrakTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CCD60CF848F450A429D2D9EB7EBD87DE /* Build configuration list for PBXNativeTarget "Pods-Money TrakTests" */;
+			buildPhases = (
+				036E29B468EA3AA156F3EC1AAE6D8F71 /* Sources */,
+				C86876C2897133BD03A97171496C8ACD /* Frameworks */,
+				24D24765602AC1A12833B809DE5BEB8A /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-Money TrakTests";
+			productName = "Pods-Money TrakTests";
+			productReference = E2713C944C3693673EDF4A4B9E4D8520 /* Pods_Money_TrakTests.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		BD15E2DAAA6B3492D06EF79F2E296F6D /* Pods-Money Trak */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EF9BA48FA3444BB6FE2DB5CD62AE730D /* Build configuration list for PBXNativeTarget "Pods-Money Trak" */;
+			buildPhases = (
+				39119766F31F658E0ACCE7E71CBFFA66 /* Sources */,
+				D50C65BBAA664087F55947A086A670B5 /* Frameworks */,
+				CF0D8C655AE47155F7424CBB101D7985 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FB967556F6FAA5E315AAB52A8AAE7FE8 /* PBXTargetDependency */,
+			);
+			name = "Pods-Money Trak";
+			productName = "Pods-Money Trak";
+			productReference = DE8469AC9A4D00C966ED99D22AF008F0 /* Pods_Money_Trak.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		F95BBDD6775C4F8D9D27BA885F12B510 /* TableViewHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8A59462E02C08BD2F265850702000B8 /* Build configuration list for PBXNativeTarget "TableViewHelper" */;
+			buildPhases = (
+				B194197C0667AE5860886A248396C721 /* Sources */,
+				0082BDE830E07D5923783A3CA7CB7737 /* Frameworks */,
+				AE1EB68AD0FEA7BE5D0F33E1E9F8E351 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TableViewHelper;
+			productName = TableViewHelper;
+			productReference = 202214729D7509B1A8557816088A274F /* TableViewHelper.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0700;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = 44E0ADA6C0984F688D4419735EFDFD0B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BD15E2DAAA6B3492D06EF79F2E296F6D /* Pods-Money Trak */,
+				91DF9B4CC377C3DDF597377420293175 /* Pods-Money TrakTests */,
+				F95BBDD6775C4F8D9D27BA885F12B510 /* TableViewHelper */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		036E29B468EA3AA156F3EC1AAE6D8F71 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D0AC824F032FCA4430D0B07110DFB11 /* Pods-Money TrakTests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39119766F31F658E0ACCE7E71CBFFA66 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B049B697487365DACEE3A14546376D0 /* Pods-Money Trak-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B194197C0667AE5860886A248396C721 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A63C512E640DB1A6BFD3391B613B7E59 /* TableViewHelper-dummy.m in Sources */,
+				76777D5570A726C5E2801302AF29ABB5 /* TableViewHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FB967556F6FAA5E315AAB52A8AAE7FE8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TableViewHelper;
+			target = F95BBDD6775C4F8D9D27BA885F12B510 /* TableViewHelper */;
+			targetProxy = 9ACF780C69C5041D4D49B02B84EF5AE3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0F6D7D99AC844D018026F2EAC951B4A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B07A8074317D33F44536BCD208DAB975 /* Pods-Money Trak.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-Money Trak/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Money Trak/Pods-Money Trak.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_Money_Trak;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		1F32688DFD15764314B68A221490AB9F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4FA4D86CC625DE3134EB0670C54D3D8B /* TableViewHelper.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/TableViewHelper/TableViewHelper-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/TableViewHelper/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/TableViewHelper/TableViewHelper.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = TableViewHelper;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		59B042A655B7C20CBAB90E385BF4E4C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		953401EF61B78ED529002608B96D4D8F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4FA4D86CC625DE3134EB0670C54D3D8B /* TableViewHelper.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/TableViewHelper/TableViewHelper-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/TableViewHelper/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/TableViewHelper/TableViewHelper.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = TableViewHelper;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		AEFA3E6666F8152F42B37274C39B2D29 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D441C0541B646173730DC95958F7EE81 /* Pods-Money TrakTests.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-Money TrakTests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Money TrakTests/Pods-Money TrakTests.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_Money_TrakTests;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		B7324857C38B065FEB1EEE3105C2367A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DC7C41D4FAE1025923F14DBF27D242C9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A6A813AB7C7943C377706431832348B0 /* Pods-Money Trak.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-Money Trak/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Money Trak/Pods-Money Trak.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_Money_Trak;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		ED2D3B364CC4612D095CC282988040EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3132B0BE7A89976D9866FB26F14C62CB /* Pods-Money TrakTests.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-Money TrakTests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Money TrakTests/Pods-Money TrakTests.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_Money_TrakTests;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				59B042A655B7C20CBAB90E385BF4E4C7 /* Debug */,
+				B7324857C38B065FEB1EEE3105C2367A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CCD60CF848F450A429D2D9EB7EBD87DE /* Build configuration list for PBXNativeTarget "Pods-Money TrakTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AEFA3E6666F8152F42B37274C39B2D29 /* Debug */,
+				ED2D3B364CC4612D095CC282988040EA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D8A59462E02C08BD2F265850702000B8 /* Build configuration list for PBXNativeTarget "TableViewHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				953401EF61B78ED529002608B96D4D8F /* Debug */,
+				1F32688DFD15764314B68A221490AB9F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EF9BA48FA3444BB6FE2DB5CD62AE730D /* Build configuration list for PBXNativeTarget "Pods-Money Trak" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DC7C41D4FAE1025923F14DBF27D242C9 /* Debug */,
+				0F6D7D99AC844D018026F2EAC951B4A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}

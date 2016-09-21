@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import TableViewHelper
 
 protocol AlertDelegate {
 	func alertSet()
@@ -17,17 +18,17 @@ class AlertController: UIViewController, UITableViewDelegate, UITableViewDataSou
 	@IBOutlet weak var tableView: UITableView!
 	
 	var transaction = UpcomingTransaction()
-	var helper: TableViewHelper?
 	var delegate: AlertDelegate?
+	fileprivate var _helper: TableViewHelper!
 	
 	override func viewDidLoad() {
-		helper = TableViewHelper(tableView: tableView!)
-		helper!.addCell(0, cell: tableView.dequeueReusableCell(withIdentifier: "None")!, name: "None")
-		helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "1d")!, name: "1d")
-		helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "2d")!, name: "2d")
-		helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "1w")!, name: "1w")
-		helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "2w")!, name: "2w")
-		helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "1m")!, name: "1m")
+		_helper = TableViewHelper(tableView: tableView!)
+		_helper.addCell(0, cell: tableView.dequeueReusableCell(withIdentifier: "None")!, name: "None")
+		_helper.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "1d")!, name: "1d")
+		_helper.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "2d")!, name: "2d")
+		_helper.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "1w")!, name: "1w")
+		_helper.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "2w")!, name: "2w")
+		_helper.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: "1m")!, name: "1m")
 	}
 	
 	override func viewDidDisappear(_ animated: Bool) {
@@ -45,8 +46,8 @@ class AlertController: UIViewController, UITableViewDelegate, UITableViewDataSou
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let name = helper!.cellNameAtIndexPath(indexPath)!
-		let cell = helper!.cellForRowAtIndexPath(indexPath)
+		let name = _helper.cellNameAtIndexPath(indexPath)!
+		let cell = _helper.cellForRowAtIndexPath(indexPath)
 		var checkmark = false
 		switch name {
 		case "None":

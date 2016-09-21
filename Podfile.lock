@@ -1,0 +1,12 @@
+PODS:
+  - TableViewHelper (2.0)
+
+DEPENDENCIES:
+  - TableViewHelper (~> 2.0)
+
+SPEC CHECKSUMS:
+  TableViewHelper: 9d1cd80c04e7043ce222756fd75a80e102131260
+
+PODFILE CHECKSUM: fbf4141efaef2994eaf894a536123a3b403aef0b
+
+COCOAPODS: 1.1.0.rc.2

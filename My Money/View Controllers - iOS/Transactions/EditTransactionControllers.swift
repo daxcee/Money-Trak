@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import TableViewHelper
 
 protocol EditTransactionProtocol {
 	func transactionAdded(_ transaction: Transaction)
@@ -25,7 +26,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	var delegate: EditTransactionProtocol?
 	var transaction = Transaction()
 
-	private var _helper: TableViewHelper?
+	private var _helper: TableViewHelper!
 	private var _accountView: AccountView?
 	private var _numCCAccounts = CommonDB.numCCAccounts()
 	private var _account = Account(key: CommonFunctions.currentAccountKey)!
@@ -77,25 +78,25 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	override func viewDidLoad() {
 		_helper = TableViewHelper(tableView: self.tableView)
 
-		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.TransactionType.rawValue)!, name: CellNames.TransactionType.rawValue)
-		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Amount.rawValue)!, name: CellNames.Amount.rawValue)
-		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.CCAccount.rawValue)!, name: CellNames.CCAccount.rawValue)
-		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Date.rawValue)!, name: CellNames.Date.rawValue)
-		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.DatePicker.rawValue)!, name: CellNames.DatePicker.rawValue)
-		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Location.rawValue)!, name: CellNames.Location.rawValue)
-		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Category.rawValue)!, name: CellNames.Category.rawValue)
-		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.CheckNumber.rawValue)!, name: CellNames.CheckNumber.rawValue)
-		_helper!.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Notes.rawValue)!, name: CellNames.Notes.rawValue)
-		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Alert.rawValue)!, name: CellNames.Alert.rawValue)
+		_helper.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.TransactionType.rawValue)!, name: CellNames.TransactionType.rawValue)
+		_helper.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Amount.rawValue)!, name: CellNames.Amount.rawValue)
+		_helper.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.CCAccount.rawValue)!, name: CellNames.CCAccount.rawValue)
+		_helper.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Date.rawValue)!, name: CellNames.Date.rawValue)
+		_helper.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.DatePicker.rawValue)!, name: CellNames.DatePicker.rawValue)
+		_helper.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Location.rawValue)!, name: CellNames.Location.rawValue)
+		_helper.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Category.rawValue)!, name: CellNames.Category.rawValue)
+		_helper.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.CheckNumber.rawValue)!, name: CellNames.CheckNumber.rawValue)
+		_helper.addCell(1, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Notes.rawValue)!, name: CellNames.Notes.rawValue)
+		_helper.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Alert.rawValue)!, name: CellNames.Alert.rawValue)
 
-		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Frequency.rawValue)!, name: CellNames.Frequency.rawValue)
-		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.FrequencyPicker.rawValue)!, name: CellNames.FrequencyPicker.rawValue)
-		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.StartDate.rawValue)!, name: CellNames.StartDate.rawValue)
-		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.StartDatePicker.rawValue)!, name: CellNames.StartDatePicker.rawValue)
-		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.UseEndDate.rawValue)!, name: CellNames.UseEndDate.rawValue)
-		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.EndDate.rawValue)!, name: CellNames.EndDate.rawValue)
-		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.EndDatePicker.rawValue)!, name: CellNames.EndDatePicker.rawValue)
-		_helper!.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.TransactionCount.rawValue)!, name: CellNames.TransactionCount.rawValue)
+		_helper.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.Frequency.rawValue)!, name: CellNames.Frequency.rawValue)
+		_helper.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.FrequencyPicker.rawValue)!, name: CellNames.FrequencyPicker.rawValue)
+		_helper.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.StartDate.rawValue)!, name: CellNames.StartDate.rawValue)
+		_helper.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.StartDatePicker.rawValue)!, name: CellNames.StartDatePicker.rawValue)
+		_helper.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.UseEndDate.rawValue)!, name: CellNames.UseEndDate.rawValue)
+		_helper.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.EndDate.rawValue)!, name: CellNames.EndDate.rawValue)
+		_helper.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.EndDatePicker.rawValue)!, name: CellNames.EndDatePicker.rawValue)
+		_helper.addCell(2, cell: tableView.dequeueReusableCell(withIdentifier: CellNames.TransactionCount.rawValue)!, name: CellNames.TransactionCount.rawValue)
 
 		_keyboardToolbar.barStyle = UIBarStyle.blackTranslucent
 		_keyboardToolbar.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: 34)
@@ -130,7 +131,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 			}
 		}
 
-		let transactionType = _helper!.cellForRowAtIndexPath(_helper!.indexPathForCellNamed(CellNames.TransactionType.rawValue)!).viewWithTag(1)! as! UISegmentedControl
+		let transactionType = _helper.cellForRowAtIndexPath(_helper.indexPathForCellNamed(CellNames.TransactionType.rawValue)!).viewWithTag(1)! as! UISegmentedControl
 
 		switch transaction.type {
 		case .purchase:
@@ -143,7 +144,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 
 		typeChanged()
 
-		let datePickerCell = _helper!.visibleCellsWithName("DatePicker")[0]
+		let datePickerCell = _helper.visibleCellsWithName("DatePicker")[0]
 		let datePicker = datePickerCell.viewWithTag(1) as! UIDatePicker
 		datePicker.date = transaction.date
 		datePicker.addTarget(self, action: #selector(dateChanged), for: UIControlEvents.valueChanged)
@@ -167,15 +168,15 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		}
 
 		if !upcomingTransaction {
-			_helper!.hideCell("Alert")
+			_helper.hideCell("Alert")
 		}
 
 		if !recurringTransaction {
-			_helper!.hideCell("Frequency")
+			_helper.hideCell("Frequency")
 		}
 
 		if recurringTransaction {
-			_helper!.hideCell("Date")
+			_helper.hideCell("Date")
 			let recurringCondition = DBCondition(set: 0, objectKey: "recurringTransactionKey", conditionOperator: .equal, value: transaction.recurringTransactionKey as AnyObject)
 			let keys = ALBNoSQLDB.keysInTableForConditions(kTransactionsTable, sortOrder: "date desc", conditions: [recurringCondition])
 			if keys != nil && keys!.count > 0 {
@@ -201,23 +202,23 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 
 			if let recurring = transaction as? RecurringTransaction {
 				if recurring.endDate == nil {
-					_helper!.hideCell("EndDate")
+					_helper.hideCell("EndDate")
 				} else {
-					_helper!.hideCell("TransactionCount")
+					_helper.hideCell("TransactionCount")
 				}
 			}
 		} else {
-			_helper!.hideCell("StartDate")
-			_helper!.hideCell("UseEndDate")
-			_helper!.hideCell("EndDate")
-			_helper!.hideCell("TransactionCount")
-			_helper!.hideCell("Frequency")
+			_helper.hideCell("StartDate")
+			_helper.hideCell("UseEndDate")
+			_helper.hideCell("EndDate")
+			_helper.hideCell("TransactionCount")
+			_helper.hideCell("Frequency")
 		}
 
 		hidePickers()
 
 		if _account.type == .creditCard {
-			_helper!.hideCell("CCAccount")
+			_helper.hideCell("CCAccount")
 		}
 
 		if transaction.isNew && !recurringTransaction && !upcomingTransaction {
@@ -257,7 +258,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		NotificationCenter.default.removeObserver(self)
 	}
 
-	func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		view.endEditing(true)
 		if segue.identifier != nil, let segueName = Segues(rawValue: segue.identifier!) {
 			switch segueName {
@@ -380,16 +381,16 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	}
 
 	func hidePickerNamed(_ pickerName: String, parentName: String) {
-		_helper!.hideCell(pickerName)
-		let cells = _helper!.visibleCellsWithName(parentName)
+		_helper.hideCell(pickerName)
+		let cells = _helper.visibleCellsWithName(parentName)
 		if cells.count > 0 {
 			cells[0].detailTextLabel?.textColor = UIColor(white: 0.56, alpha: 1)
 		}
 	}
 
 	func showPickerNamed(_ pickerName: String, parentName: String) {
-		_helper!.showCell(pickerName)
-		let cells = _helper!.visibleCellsWithName(parentName)
+		_helper.showCell(pickerName)
+		let cells = _helper.visibleCellsWithName(parentName)
 		if cells.count > 0 {
 			cells[0].detailTextLabel?.textColor = UIColor.red
 		}
@@ -413,11 +414,11 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	}
 
 	func numberOfSections(in tableView: UITableView) -> Int {
-		return _helper!.numberOfSections()
+		return _helper.numberOfSections()
 	}
 
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return _helper!.numberOfRowsInSection(section)
+		return _helper.numberOfRowsInSection(section)
 	}
 
 	func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -429,7 +430,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	}
 
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		let cellName = _helper!.cellNameAtIndexPath(indexPath)
+		let cellName = _helper.cellNameAtIndexPath(indexPath)
 
 		if cellName == "DatePicker" || cellName == "StartDatePicker" || cellName == "EndDatePicker" || cellName == "FrequencyPicker" {
 			return 163
@@ -439,8 +440,8 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = _helper!.cellForRowAtIndexPath(indexPath)
-		if let name = _helper!.cellNameAtIndexPath(indexPath), let cellName = CellNames(rawValue: name) {
+		let cell = _helper.cellForRowAtIndexPath(indexPath)
+		if let name = _helper.cellNameAtIndexPath(indexPath), let cellName = CellNames(rawValue: name) {
 			switch cellName {
 			case .CCAccount:
 				cell.detailTextLabel?.text = Account(key: transaction.ccAccountKey!)!.name
@@ -598,12 +599,12 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		view.endEditing(true)
 		_lastSelection = indexPath
-		let showingDate = _helper!.visibleCellsWithName("DatePicker").count > 0
-		let showingStartDate = _helper!.visibleCellsWithName("StartDatePicker").count > 0
-		let showingEndDate = _helper!.visibleCellsWithName("EndDatePicker").count > 0
-		let showingFrequency = _helper!.visibleCellsWithName("FrequencyPicker").count > 0
+		let showingDate = _helper.visibleCellsWithName("DatePicker").count > 0
+		let showingStartDate = _helper.visibleCellsWithName("StartDatePicker").count > 0
+		let showingEndDate = _helper.visibleCellsWithName("EndDatePicker").count > 0
+		let showingFrequency = _helper.visibleCellsWithName("FrequencyPicker").count > 0
 
-		if let name = _helper!.cellNameAtIndexPath(indexPath) {
+		if let name = _helper.cellNameAtIndexPath(indexPath) {
 			hidePickers()
 
 			switch name {
@@ -617,7 +618,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 				if !showingDate {
 					showPickerNamed("DatePicker", parentName: "Date")
 					if let maxDate = maxDate {
-						let datePickerCell = _helper!.visibleCellsWithName(CellNames.DatePicker.rawValue)[0]
+						let datePickerCell = _helper.visibleCellsWithName(CellNames.DatePicker.rawValue)[0]
 						let datePicker = datePickerCell.viewWithTag(1) as! UIDatePicker
 						datePicker.maximumDate = maxDate
 					}
@@ -659,37 +660,37 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	// MARK: - User Actions
 	func startDateChanged() {
 		if let recurring = transaction as? RecurringTransaction {
-			let cell = _helper!.visibleCellsWithName(CellNames.StartDatePicker.rawValue)[0]
+			let cell = _helper.visibleCellsWithName(CellNames.StartDatePicker.rawValue)[0]
 			let picker = cell.viewWithTag(1) as! UIDatePicker
 
 			recurring.startDate = picker.date.midnight()
-			self.tableView.reloadRows(at: [_helper!.indexPathForCellNamed(CellNames.StartDate.rawValue)!], with: .none)
+			self.tableView.reloadRows(at: [_helper.indexPathForCellNamed(CellNames.StartDate.rawValue)!], with: .none)
 		}
 	}
 
 	func endDateChanged() {
 		if let recurring = transaction as? RecurringTransaction {
-			let cell = _helper!.visibleCellsWithName("EndDatePicker")[0]
+			let cell = _helper.visibleCellsWithName("EndDatePicker")[0]
 			let picker = cell.viewWithTag(1) as! UIDatePicker
 
 			recurring.endDate = picker.date.midnight()
-			self.tableView.reloadRows(at: [_helper!.indexPathForCellNamed(CellNames.EndDate.rawValue)!], with: .none)
+			self.tableView.reloadRows(at: [_helper.indexPathForCellNamed(CellNames.EndDate.rawValue)!], with: .none)
 		}
 	}
 
 	func useEndDateChanged() {
 		hidePickers()
 		if let recurring = transaction as? RecurringTransaction {
-			let cell = _helper!.visibleCellsWithName("UseEndDate")[0]
+			let cell = _helper.visibleCellsWithName("UseEndDate")[0]
 			let useEndDate = cell.viewWithTag(1)! as! UISwitch
 			if useEndDate.isOn {
 				recurring.endDate = Date().addDate(years: 0, months: 12, weeks: 0, days: 0).midnight()
-				_helper!.showCell("EndDate")
-				_helper!.hideCell("TransactionCount")
+				_helper.showCell("EndDate")
+				_helper.hideCell("TransactionCount")
 			} else {
 				recurring.endDate = nil
-				_helper!.hideCell("EndDate")
-				_helper!.showCell("TransactionCount")
+				_helper.hideCell("EndDate")
+				_helper.showCell("TransactionCount")
 			}
 		}
 	}
@@ -704,7 +705,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	}
 
 	@IBAction func saveTapped(_ sender: AnyObject) {
-		let amountCell = _helper!.visibleCellsWithName("Amount")[0]
+		let amountCell = _helper.visibleCellsWithName("Amount")[0]
 		let amountField = amountCell.viewWithTag(1)! as! AmountField
 		var amountValue = amountField.amount()
 
@@ -715,11 +716,11 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 
 		view.endEditing(true)
 
-		let transactionTypeCell = _helper!.visibleCellsWithName("TransactionType")[0]
+		let transactionTypeCell = _helper.visibleCellsWithName("TransactionType")[0]
 		let transactionType = transactionTypeCell.viewWithTag(1)! as! UISegmentedControl
 
-		if _helper!.visibleCellsWithName("CheckNumber").count > 0 {
-			let checkCell = _helper!.visibleCellsWithName("CheckNumber")[0]
+		if _helper.visibleCellsWithName("CheckNumber").count > 0 {
+			let checkCell = _helper.visibleCellsWithName("CheckNumber")[0]
 			let checkNumber = checkCell.viewWithTag(1)! as! UITextField
 			if checkNumber.text != "" {
 				transaction.checkNumber = Int(checkNumber.text!)
@@ -768,44 +769,44 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 
 	func typeChanged() {
 		view.endEditing(true)
-		let transactionTypeCell = _helper!.visibleCellsWithName("TransactionType")[0]
+		let transactionTypeCell = _helper.visibleCellsWithName("TransactionType")[0]
 		let transactionType = transactionTypeCell.viewWithTag(1)! as! UISegmentedControl
 
 		if _account.type == .checking {
 			let showingCheckNumber = (transactionType.selectedSegmentIndex != 1)
 			if showingCheckNumber && !upcomingTransaction && !recurringTransaction {
-				_helper!.showCell(CellNames.CheckNumber.rawValue)
+				_helper.showCell(CellNames.CheckNumber.rawValue)
 			} else {
-				_helper!.hideCell(CellNames.CheckNumber.rawValue)
+				_helper.hideCell(CellNames.CheckNumber.rawValue)
 			}
 		} else {
-			_helper!.hideCell(CellNames.CheckNumber.rawValue)
+			_helper.hideCell(CellNames.CheckNumber.rawValue)
 		}
 
 		if _account.type != .creditCard {
 			let showingCCAccount = (transactionType.selectedSegmentIndex == 2)
 			if showingCCAccount {
-				_helper!.hideCell(CellNames.Location.rawValue)
-				_helper!.hideCell(CellNames.Category.rawValue)
+				_helper.hideCell(CellNames.Location.rawValue)
+				_helper.hideCell(CellNames.Category.rawValue)
 				transaction.ccAccountKey = CommonDB.firstCCAccount().key
 				if transaction.amount == 0 {
 					let ccAccount = Account(key: transaction.ccAccountKey!)!
 					transaction.amount = abs(ccAccount.balance)
 					transaction.categoryKey = defaultPrefix + DefaultCategory.Debt.rawValue
-					if let path = self._helper!.indexPathForCellNamed(CellNames.Amount.rawValue) {
+					if let path = self._helper.indexPathForCellNamed(CellNames.Amount.rawValue) {
 						self.tableView.reloadRows(at: [path], with: .none)
 					}
-					if let path = self._helper!.indexPathForCellNamed(CellNames.Category.rawValue) {
+					if let path = self._helper.indexPathForCellNamed(CellNames.Category.rawValue) {
 						self.tableView.reloadRows(at: [path], with: .none)
 						self.tableView.reloadRows(at: [path], with: .none)
 					}
 				}
 
-				_helper!.showCell(CellNames.CCAccount.rawValue)
+				_helper.showCell(CellNames.CCAccount.rawValue)
 			} else {
-				_helper!.showCell(CellNames.Category.rawValue)
-				_helper!.showCell(CellNames.Location.rawValue)
-				_helper!.hideCell(CellNames.CCAccount.rawValue)
+				_helper.showCell(CellNames.Category.rawValue)
+				_helper.showCell(CellNames.Location.rawValue)
+				_helper.hideCell(CellNames.CCAccount.rawValue)
 			}
 
 			switch transactionType.selectedSegmentIndex {
@@ -820,11 +821,11 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	}
 
 	func dateChanged() {
-		let datePickerCell = _helper!.visibleCellsWithName(CellNames.DatePicker.rawValue)[0]
+		let datePickerCell = _helper.visibleCellsWithName(CellNames.DatePicker.rawValue)[0]
 		let datePicker = datePickerCell.viewWithTag(1) as! UIDatePicker
 
 		transaction.date = datePicker.date
-		if let path = _helper!.indexPathForCellNamed(CellNames.Date.rawValue) {
+		if let path = _helper.indexPathForCellNamed(CellNames.Date.rawValue) {
 			tableView.reloadRows(at: [path], with: .none)
 		}
 	}
@@ -836,19 +837,19 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		transaction.accountKey = account.key
 		_accountView?.account = account
 
-		if let path = _helper!.indexPathForCellNamed(CellNames.TransactionType.rawValue) {
+		if let path = _helper.indexPathForCellNamed(CellNames.TransactionType.rawValue) {
 			tableView.reloadRows(at: [path], with: .none)
 		}
 	}
 
 	func ccAccountSet(_ account: Account) {
 		transaction.ccAccountKey = account.key
-		let cell = _helper!.visibleCellsWithName(CellNames.CCAccount.rawValue)[0]
+		let cell = _helper.visibleCellsWithName(CellNames.CCAccount.rawValue)[0]
 		cell.detailTextLabel?.text = account.name
 
 		if transaction.amount == 0 {
 			transaction.amount = abs(account.balance)
-			if let path = _helper!.indexPathForCellNamed(CellNames.Amount.rawValue) {
+			if let path = _helper.indexPathForCellNamed(CellNames.Amount.rawValue) {
 				tableView.reloadRows(at: [path], with: .none)
 			}
 		}
@@ -857,7 +858,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	func locationSet(_ location: Location) {
 		transaction.locationKey = location.key
 
-		if let path = _helper!.indexPathForCellNamed("Location") {
+		if let path = _helper.indexPathForCellNamed("Location") {
 			tableView.reloadRows(at: [path], with: .none)
 			tableView.reloadRows(at: [path], with: .none)
 		}
@@ -865,7 +866,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		if location.categoryKey != nil {
 			transaction.categoryKey = location.categoryKey
 			categorySet(Category(key: location.categoryKey!)!)
-			if let categoryPath = _helper!.indexPathForCellNamed("Category") {
+			if let categoryPath = _helper.indexPathForCellNamed("Category") {
 				tableView.reloadRows(at: [categoryPath], with: .none)
 				tableView.reloadRows(at: [categoryPath], with: .none)
 			}
@@ -875,7 +876,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	func categorySet(_ category: Category) {
 		transaction.categoryKey = category.key
 
-		if let path = _helper!.indexPathForCellNamed("Category") {
+		if let path = _helper.indexPathForCellNamed("Category") {
 			tableView.reloadRows(at: [path], with: .none)
 			tableView.reloadRows(at: [path], with: .none)
 		}
@@ -883,14 +884,14 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 
 	func alertSet() {
 		if transaction is UpcomingTransaction {
-			if let path = _helper!.indexPathForCellNamed("Alert") {
+			if let path = _helper.indexPathForCellNamed("Alert") {
 				tableView.reloadRows(at: [path], with: .none)
 			}
 		}
 	}
 
 	func memoSet() {
-		if let path = _helper!.indexPathForCellNamed("Notes") {
+		if let path = _helper.indexPathForCellNamed("Notes") {
 			tableView.reloadRows(at: [path], with: .none)
 			tableView.reloadRows(at: [path], with: .none)
 		}
@@ -912,7 +913,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
 		if let recurring = transaction as? RecurringTransaction {
 			recurring.frequency = TransactionFrequency(rawValue: row)!
-			self.tableView.reloadRows(at: [_helper!.indexPathForCellNamed("Frequency")!], with: .none)
+			self.tableView.reloadRows(at: [_helper.indexPathForCellNamed("Frequency")!], with: .none)
 		}
 	}
 }

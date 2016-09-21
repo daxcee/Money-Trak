@@ -94,7 +94,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 		searchbar.inputAccessoryView = _keyboardToolbar
 	}
 
-	func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier != nil, let segueName = Segues(rawValue: segue.identifier!) {
 			switch segueName {
 			case .ShowHeader:

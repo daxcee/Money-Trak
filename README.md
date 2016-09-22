@@ -10,6 +10,7 @@ Money Trak is an app available for free on the App Store that has been open sour
 - Add TV Target
 - Add Siri interaction
 - Add Unit and UI Testing
+- Add Accessibility compliance
 - Add Localization
 - Replace GCDAsyncSocket with socket class written in Swift
 

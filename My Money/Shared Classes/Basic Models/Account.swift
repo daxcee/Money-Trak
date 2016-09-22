@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ALBNoSQLDB
 
 enum AccountType:String {
     case checking = "Checking"

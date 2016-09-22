@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ALBNoSQLDB
 
 class Budget: ALBNoSQLDBObject {
 	var name = ""

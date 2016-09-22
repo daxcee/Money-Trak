@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ALBNoSQLDB
 
 class Reconciliation: ALBNoSQLDBObject {
 	var accountKey = CommonFunctions.currentAccountKey

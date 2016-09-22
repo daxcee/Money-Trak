@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ALBNoSQLDB
 
 struct NumberTable {
 	var rows = 0

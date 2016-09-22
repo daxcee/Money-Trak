@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ALBNoSQLDB
 
 // table constants
 let kAccountsTable = "Accounts"

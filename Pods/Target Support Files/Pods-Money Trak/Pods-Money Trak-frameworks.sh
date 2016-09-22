@@ -84,8 +84,10 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "$BUILT_PRODUCTS_DIR/ALBNoSQLDB/ALBNoSQLDB.framework"
   install_framework "$BUILT_PRODUCTS_DIR/TableViewHelper/TableViewHelper.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "$BUILT_PRODUCTS_DIR/ALBNoSQLDB/ALBNoSQLDB.framework"
   install_framework "$BUILT_PRODUCTS_DIR/TableViewHelper/TableViewHelper.framework"
 fi

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ALBNoSQLDB
 
 enum TransactionType: String {
 	case purchase = "purchase"

@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import ALBNoSQLDB
 
 protocol ReconciliationHeaderDelegate {
 	func reconciliationHeaderChanged()

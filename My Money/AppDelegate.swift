@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import StoreKit
+import ALBNoSQLDB
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

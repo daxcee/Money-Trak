@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import TableViewHelper
+import ALBNoSQLDB
 
 protocol EditTransactionProtocol {
 	func transactionAdded(_ transaction: Transaction)

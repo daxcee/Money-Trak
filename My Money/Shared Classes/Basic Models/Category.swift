@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ALBNoSQLDB
 
 class Category: ALBNoSQLDBObject {
 	var accountKey = ""

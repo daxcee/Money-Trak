@@ -12,8 +12,6 @@
 		8909E1921B514133002F511E /* ColumnHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8909E18F1B514133002F511E /* ColumnHeader.xib */; };
 		8909E1931B514133002F511E /* DataCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8909E1901B514133002F511E /* DataCell.xib */; };
 		8909E1941B514133002F511E /* RowHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8909E1911B514133002F511E /* RowHeader.xib */; };
-		890B74FD1BD280D80035A37C /* ALBNoSQLDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890B74FC1BD280D80035A37C /* ALBNoSQLDB.swift */; };
-		890B75001BD287300035A37C /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 890B74FE1BD286C50035A37C /* libsqlite3.tbd */; };
 		890B75081BD28A730035A37C /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 890B75071BD28A730035A37C /* libz.tbd */; };
 		890CD3BD1C94A7AC00E3C870 /* NumbersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890CD3BC1C94A7AC00E3C870 /* NumbersTests.swift */; };
 		890CD3C81C94A84700E3C870 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 890B74FE1BD286C50035A37C /* libsqlite3.tbd */; };
@@ -129,7 +127,6 @@
 		8909E18F1B514133002F511E /* ColumnHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ColumnHeader.xib; sourceTree = "<group>"; };
 		8909E1901B514133002F511E /* DataCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DataCell.xib; sourceTree = "<group>"; };
 		8909E1911B514133002F511E /* RowHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RowHeader.xib; sourceTree = "<group>"; };
-		890B74FC1BD280D80035A37C /* ALBNoSQLDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ALBNoSQLDB.swift; sourceTree = "<group>"; };
 		890B74FE1BD286C50035A37C /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		890B75071BD28A730035A37C /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		890CD3BA1C94A7AC00E3C870 /* Money TrakTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Money TrakTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -245,7 +242,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				890B75081BD28A730035A37C /* libz.tbd in Frameworks */,
-				890B75001BD287300035A37C /* libsqlite3.tbd in Frameworks */,
 				6C3E32C2F8D789BEBDC8402D /* Pods_Money_Trak.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -321,7 +317,6 @@
 				8982852F1C26DACA00E3C870 /* Traits */,
 				89A443251AEBC02600946BDE /* Sync */,
 				89752AE01D8B582E00E3C870 /* Basic Models */,
-				890B74FC1BD280D80035A37C /* ALBNoSQLDB.swift */,
 				8943EA9E19AA4D7200C4C73B /* CommonDB.swift */,
 				8950D99119AA7CE4000F3F57 /* CommonFunctions.swift */,
 				896E70F91B3302AE003B97EF /* Summary.swift */,
@@ -834,7 +829,6 @@
 				89D5213B1A1A730B004AFB42 /* CurrentLocation.m in Sources */,
 				89752AE51D8B582E00E3C870 /* Account.swift in Sources */,
 				89752AF21D8C085600E3C870 /* BudgetEntry.swift in Sources */,
-				890B74FD1BD280D80035A37C /* ALBNoSQLDB.swift in Sources */,
 				89BF2B9E1A4F53BE002A6959 /* MonthlySummary.swift in Sources */,
 				890CD3D11C94EB8000E3C870 /* NotificationManager.swift in Sources */,
 				89A02F5A1B985B310088601D /* ALBPeerPacket.swift in Sources */,

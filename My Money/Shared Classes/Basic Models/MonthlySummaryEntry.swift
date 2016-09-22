@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ALBNoSQLDB
 
 class MonthlySummaryEntry: ALBNoSQLDBObject {
 	var name = ""

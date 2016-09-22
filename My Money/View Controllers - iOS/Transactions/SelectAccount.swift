@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import ALBNoSQLDB
 
 protocol AccountDelegate {
 	func accountSet(_ account: Account)

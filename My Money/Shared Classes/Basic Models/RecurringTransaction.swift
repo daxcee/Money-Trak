@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ALBNoSQLDB
 
 enum TransactionFrequency: Int {
 	case weekly = 0

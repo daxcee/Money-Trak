@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import ALBNoSQLDB
 
 class EditAccountController: UITableViewController, AccountTypeDelegate, UpdateDelegate, UsesCurrency {
 	@IBOutlet weak var typeCell: UITableViewCell!

@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import ALBNoSQLDB
 
 let _searchQueue = DispatchQueue(label: "com.AaronLBratcher.MyMoneySearch")
 

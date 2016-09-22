@@ -3,7 +3,6 @@
 //
 
 #include <stdio.h>
-#import <sqlite3.h>
 #import "CurrentLocation.h"
 #import "GCDAsyncSocket.h"
 #import "SSZipArchive.h"

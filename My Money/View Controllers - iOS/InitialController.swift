@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import iAd
+import ALBNoSQLDB
 
 class InitialController: UIViewController, UsesCurrency {
 	@IBOutlet weak var totalAvailableView: UIView!

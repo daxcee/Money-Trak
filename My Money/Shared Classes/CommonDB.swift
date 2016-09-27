@@ -45,54 +45,54 @@ enum TransactionFilter {
 }
 
 enum DefaultCategory: String {
-	case AutoMaintenance = "Auto Maintenance"
-	case AutoTransportation = "Auto/Transportation"
-	case Clothing = "Clothing"
-	case Debt = "Debt"
-	case Education = "Education/Day Care"
-	case EatingOut = "Eating Out"
-	case Entertainment = "Entertainment"
-	case Food = "Food"
-	case Gas = "Gas"
-	case HealthBeauty = "Health/Beauty"
-	case HomeFurnishings = "Home Furnishings"
-	case HomeMaintenance = "Home Maintenance"
-	case Insurance = "Insurance"
-	case Interest
-	case MedicalDental = "Medical/Dental"
-	case Miscellaneous = "Miscellaneous"
-	case Payroll = "Payroll"
-	case RentMortgage = "Rent/Mortgage"
-	case SavingsInvestment = "Saving/Investment"
-	case Taxes = "Taxes"
-	case TithingCharity = "Tithing/Charity"
-	case Utilities = "Utilities"
-	case Vacation = "Vacation"
+	case autoMaintenance = "Auto Maintenance"
+	case autoTransportation = "Auto/Transportation"
+	case clothing = "Clothing"
+	case debt = "Debt"
+	case education = "Education/Day Care"
+	case eatingOut = "Eating Out"
+	case entertainment = "Entertainment"
+	case food = "Food"
+	case gas = "Gas"
+	case healthBeauty = "Health/Beauty"
+	case homeFurnishings = "Home Furnishings"
+	case homeMaintenance = "Home Maintenance"
+	case insurance = "Insurance"
+	case interest
+	case medicalDental = "Medical/Dental"
+	case miscellaneous = "Miscellaneous"
+	case payroll = "Payroll"
+	case rentMortgage = "Rent/Mortgage"
+	case savingsInvestment = "Saving/Investment"
+	case taxes = "Taxes"
+	case tithingCharity = "Tithing/Charity"
+	case utilities = "Utilities"
+	case vacation = "Vacation"
 
 	static func allCategories() -> [DefaultCategory] {
-		return [.AutoMaintenance
-			, .AutoTransportation
-			, .Clothing
-			, .Debt
-			, .Education
-			, .EatingOut
-			, .Entertainment
-			, .Food
-			, .Gas
-			, .HealthBeauty
-			, .HomeFurnishings
-			, .HomeMaintenance
-			, .Insurance
-			, .Interest
-			, .MedicalDental
-			, .Miscellaneous
-			, .Payroll
-			, .RentMortgage
-			, .SavingsInvestment
-			, .Taxes
-			, .TithingCharity
-			, .Utilities
-			, .Vacation
+		return [.autoMaintenance
+			, .autoTransportation
+			, .clothing
+			, .debt
+			, .education
+			, .eatingOut
+			, .entertainment
+			, .food
+			, .gas
+			, .healthBeauty
+			, .homeFurnishings
+			, .homeMaintenance
+			, .insurance
+			, .interest
+			, .medicalDental
+			, .miscellaneous
+			, .payroll
+			, .rentMortgage
+			, .savingsInvestment
+			, .taxes
+			, .tithingCharity
+			, .utilities
+			, .vacation
 		]
 	}
 }
@@ -153,7 +153,7 @@ class CommonDB: UsesCurrency {
 		let newCategory = Category()
 		newCategory.key = categoryKey
 		newCategory.name = category.rawValue
-		if category == .Payroll {
+		if category == .payroll {
 			newCategory.inSummary = false
 		}
 
@@ -200,7 +200,7 @@ class CommonDB: UsesCurrency {
 				}
 			}
 
-			CommonDB.instance.defaults.setInteger(amountAvailable, forKey: .AmountAvailable)
+			CommonDB.instance.defaults.setInteger(amountAvailable, forKey: .amountAvailable)
 			NotificationCenter.default.post(name: Notification.Name(rawValue: kUpdateTotalAvailableNotification), object: nil)
 		}
 	}
@@ -211,7 +211,7 @@ class CommonDB: UsesCurrency {
 
 		if !force {
 			// only do this twice a day
-			if let processDate = CommonDB.instance.defaults.objectForKey(.UpcomingTransactionScan) as? Date {
+			if let processDate = CommonDB.instance.defaults.objectForKey(.upcomingTransactionScan) as? Date {
 				let checkDate = processDate.addTime(hours: 12, minutes: 0, seconds: 0)
 				if (checkDate as NSDate).earlierDate(now) == now {
 					return
@@ -296,7 +296,7 @@ class CommonDB: UsesCurrency {
 				return
 			}
 
-			CommonDB.instance.defaults.setObject(now.midnight() as AnyObject?, forKey: .UpcomingTransactionScan)
+			CommonDB.instance.defaults.setObject(now.midnight() as AnyObject?, forKey: .upcomingTransactionScan)
 
 			NotificationCenter.default.post(name: Notification.Name(rawValue: kUpdateTotalAvailableNotification), object: nil)
 		}
@@ -308,7 +308,7 @@ class CommonDB: UsesCurrency {
 		let now = Date()
 
 		if accountKey == nil {
-			let processDate: Date? = CommonDB.instance.defaults.objectForKey(.UpcomingBalanceScan) as? Date
+			let processDate: Date? = CommonDB.instance.defaults.objectForKey(.upcomingBalanceScan) as? Date
 			if processDate != nil {
 				let checkDate = processDate!.addTime(hours: 24, minutes: 0, seconds: 0)
 				if (checkDate as NSDate).earlierDate(now) == now {
@@ -317,7 +317,7 @@ class CommonDB: UsesCurrency {
 			}
 		}
 
-		CommonDB.instance.defaults.setObject(now as AnyObject?, forKey: .UpcomingBalanceScan)
+		CommonDB.instance.defaults.setObject(now as AnyObject?, forKey: .upcomingBalanceScan)
 
 		let keys = upcomingTransactionKeys(.all(""))
 		var accountKeys = [String]()
@@ -353,7 +353,7 @@ class CommonDB: UsesCurrency {
 			}
 		}
 
-		let alertDate = CommonDB.instance.defaults.objectForKey(.UpcomingTransactionsWarning) as? Date
+		let alertDate = CommonDB.instance.defaults.objectForKey(.upcomingTransactionsWarning) as? Date
 
 		if showAlert {
 			if alertDate != nil {
@@ -364,13 +364,13 @@ class CommonDB: UsesCurrency {
 				}
 			}
 
-			CommonDB.instance.defaults.setObject(now as AnyObject?, forKey: .UpcomingTransactionsWarning)
+			CommonDB.instance.defaults.setObject(now as AnyObject?, forKey: .upcomingTransactionsWarning)
 
 			DispatchQueue.main.async(execute: { () -> Void in
 				NotificationCenter.default.post(name: Notification.Name(rawValue: kNegativeBalanceWarning), object: nil)
 			})
 		} else {
-			CommonDB.instance.defaults.removeObjectForKey(.UpcomingTransactionsWarning)
+			CommonDB.instance.defaults.removeObjectForKey(.upcomingTransactionsWarning)
 
 			if alertDate != nil {
 				// alert was previously shown and now we're okay
@@ -632,7 +632,7 @@ class CommonDB: UsesCurrency {
 		}
 
 		// reset processDate cache
-		CommonDB.instance.defaults.setObject(Date().addDate(years: 0, months: 0, weeks: 0, days: -2) as AnyObject?, forKey: .LastCheckDate)
+		CommonDB.instance.defaults.setObject(Date().addDate(years: 0, months: 0, weeks: 0, days: -2) as AnyObject?, forKey: .lastCheckDate)
 
 		if let accountKeys = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: nil) {
 			for accountKey in accountKeys {
@@ -681,7 +681,7 @@ class CommonDB: UsesCurrency {
 			}
 		}
 
-		CommonDB.instance.defaults.setInteger(amountAvailable, forKey: .AmountAvailable)
+		CommonDB.instance.defaults.setInteger(amountAvailable, forKey: .amountAvailable)
 
 		NotificationCenter.default.post(name: Notification.Name(rawValue: kUpdateTotalAvailableNotification), object: nil)
 	}

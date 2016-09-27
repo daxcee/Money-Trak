@@ -33,8 +33,8 @@ class EditAccountController: UITableViewController, AccountTypeDelegate, UpdateD
 	private var _newAccount = false
 
 	enum Segues: String {
-		case SetType = "SetType"
-		case SetUpdateTotal = "SetUpdateTotal"
+		case setType
+		case setUpdateTotal
 	}
 
 	required init(coder aDecoder: NSCoder) {
@@ -83,11 +83,11 @@ class EditAccountController: UITableViewController, AccountTypeDelegate, UpdateD
 		if segue.identifier != nil, let segueName = Segues(rawValue: segue.identifier!) {
 			switch segueName {
 
-			case .SetType:
+			case .setType:
 				let controller = segue.destination as! AccountTypeController
 				controller.delegate = self
 
-			case .SetUpdateTotal:
+			case .setUpdateTotal:
 				let controller = segue.destination as! SetUpdateController
 				controller.delegate = self
 				controller.account = _account!

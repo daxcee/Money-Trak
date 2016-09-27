@@ -1,13 +1,13 @@
 import Foundation
 
 enum DefaultKey: String {
-	case AmountAvailable = "amountAvailable"
-	case DefaultAccount = "Default Account"
-	case CheckPasscode = "passcodeChecked"
-	case LastCheckDate = "lastProcessDate"
-	case UpcomingBalanceScan
-	case UpcomingTransactionScan
-	case UpcomingTransactionsWarning = "upcomingTransactionsWarning"
+	case amountAvailable = "amountAvailable"
+	case defaultAccount = "Default Account"
+	case checkPasscode = "passcodeChecked"
+	case lastCheckDate = "lastProcessDate"
+	case upcomingBalanceScan
+	case upcomingTransactionScan
+	case upcomingTransactionsWarning = "upcomingTransactionsWarning"
 }
 
 class DefaultManager {

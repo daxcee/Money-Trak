@@ -1,9 +1,9 @@
 import Foundation
 
 enum NotificationName: String {
-	case SessionRefreshed
-	case PushNotificationPerformAction
-	case PushNotificationPresentPushAlert
+	case sessionRefreshed
+	case pushNotificationPerformAction
+	case pushNotificationPresentPushAlert
 }
 
 class NotificationManager {

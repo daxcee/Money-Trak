@@ -43,9 +43,9 @@ protocol ALBTableViewDelegate {
 }
 
 enum ALBTableViewCellType: String {
-	case DataCell
-	case ColumnHeader
-	case RowHeader
+	case dataCell
+	case columnHeader
+	case rowHeader
 }
 
 // MARK: - ALBTableView Class
@@ -148,29 +148,29 @@ final class ALBTableView: UIView {
 
 	// MARK: - Register Cell NIBs
 	func registerDataCellNib(_ nib: UINib) {
-		collectionView.register(nib, forCellWithReuseIdentifier: ALBTableViewCellType.DataCell.rawValue)
+		collectionView.register(nib, forCellWithReuseIdentifier: ALBTableViewCellType.dataCell.rawValue)
 	}
 
 	func registerColumnHeaderNib(_ nib: UINib) {
-		collectionView.register(nib, forSupplementaryViewOfKind: ALBTableViewCellType.ColumnHeader.rawValue, withReuseIdentifier: ALBTableViewCellType.ColumnHeader.rawValue)
+		collectionView.register(nib, forSupplementaryViewOfKind: ALBTableViewCellType.columnHeader.rawValue, withReuseIdentifier: ALBTableViewCellType.columnHeader.rawValue)
 	}
 
 	func registerRowHeaderNib(_ nib: UINib) {
-		collectionView.register(nib, forSupplementaryViewOfKind: ALBTableViewCellType.RowHeader.rawValue, withReuseIdentifier: ALBTableViewCellType.RowHeader.rawValue)
+		collectionView.register(nib, forSupplementaryViewOfKind: ALBTableViewCellType.rowHeader.rawValue, withReuseIdentifier: ALBTableViewCellType.rowHeader.rawValue)
 	}
 
 	// MARK: - Dequeue Cells
 	func dequeDataCellForColumn(_ column: Int, row: Int) -> UICollectionViewCell {
 		let indexPath = IndexPath(row: row, section: column)
 
-		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ALBTableViewCellType.DataCell.rawValue, for: indexPath)
+		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ALBTableViewCellType.dataCell.rawValue, for: indexPath)
 		return cell
 	}
 
 	func dequeueColumnHeaderForColumn(_ column: Int) -> UICollectionViewCell {
 		let indexPath = IndexPath(row: 0, section: column)
 
-		let cell = collectionView.dequeueReusableSupplementaryView(ofKind: ALBTableViewCellType.ColumnHeader.rawValue, withReuseIdentifier: ALBTableViewCellType.ColumnHeader.rawValue, for: indexPath) as! UICollectionViewCell
+		let cell = collectionView.dequeueReusableSupplementaryView(ofKind: ALBTableViewCellType.columnHeader.rawValue, withReuseIdentifier: ALBTableViewCellType.columnHeader.rawValue, for: indexPath) as! UICollectionViewCell
 
 		return cell
 	}
@@ -178,7 +178,7 @@ final class ALBTableView: UIView {
 	func dequeueRowHeaderForRow(_ row: Int) -> UICollectionViewCell {
 		let indexPath = IndexPath(row: row, section: 0)
 
-		let cell = collectionView.dequeueReusableSupplementaryView(ofKind: ALBTableViewCellType.RowHeader.rawValue, withReuseIdentifier: ALBTableViewCellType.RowHeader.rawValue, for: indexPath) as! UICollectionViewCell
+		let cell = collectionView.dequeueReusableSupplementaryView(ofKind: ALBTableViewCellType.rowHeader.rawValue, withReuseIdentifier: ALBTableViewCellType.rowHeader.rawValue, for: indexPath) as! UICollectionViewCell
 
 		return cell
 	}
@@ -218,13 +218,13 @@ extension ALBTableView: UICollectionViewDataSource {
 
 			let headerType = ALBTableViewCellType(rawValue: kind)!
 			switch headerType {
-			case .ColumnHeader:
+			case .columnHeader:
 				cell = dataSource.columnHeaderCell(self, column: (indexPath as NSIndexPath).section)
 
-			case .RowHeader:
+			case .rowHeader:
 				cell = dataSource.rowHeaderCell(self, row: (indexPath as NSIndexPath).row)
 
-			case .DataCell:
+			case .dataCell:
 				cell = UICollectionViewCell()
 			}
 
@@ -306,7 +306,7 @@ final class ALBTableViewLayout: UICollectionViewLayout {
 
 			if tableView.hasColumnHeaders && tableView.hasRowHeaders {
 				let indexPath = IndexPath(row: 0, section: -1)
-				if let columnHeaderAttributes = layoutAttributesForSupplementaryView(ofKind: ALBTableViewCellType.ColumnHeader.rawValue, at: indexPath) {
+				if let columnHeaderAttributes = layoutAttributesForSupplementaryView(ofKind: ALBTableViewCellType.columnHeader.rawValue, at: indexPath) {
 					attributes.append(columnHeaderAttributes)
 				}
 
@@ -331,13 +331,13 @@ final class ALBTableViewLayout: UICollectionViewLayout {
 						attributes.append(layoutAttributes)
 
 						if tableView.hasColumnHeaders {
-							if let columnHeaderAttributes = layoutAttributesForSupplementaryView(ofKind: ALBTableViewCellType.ColumnHeader.rawValue, at: indexPath) {
+							if let columnHeaderAttributes = layoutAttributesForSupplementaryView(ofKind: ALBTableViewCellType.columnHeader.rawValue, at: indexPath) {
 								attributes.append(columnHeaderAttributes)
 							}
 						}
 
 						if tableView.hasRowHeaders {
-							if let rowHeaderAttributes = layoutAttributesForSupplementaryView(ofKind: ALBTableViewCellType.RowHeader.rawValue, at: indexPath) {
+							if let rowHeaderAttributes = layoutAttributesForSupplementaryView(ofKind: ALBTableViewCellType.rowHeader.rawValue, at: indexPath) {
 								attributes.append(rowHeaderAttributes)
 							}
 						}
@@ -388,15 +388,15 @@ final class ALBTableViewLayout: UICollectionViewLayout {
 			} else {
 				let headerType = ALBTableViewCellType(rawValue: elementKind)!
 				switch headerType {
-				case .ColumnHeader:
+				case .columnHeader:
 					let x = ((indexPath as NSIndexPath).section == 0 && !tableView.hasRowHeaders ? 0 : rowHeaderWidth) + (column * columnWidth) + (showGrid ? 1.0 * column: 0)
 					frame = CGRect(x: x, y: self.collectionView!.contentOffset.y, width: ((indexPath as NSIndexPath).section == 0 && tableView.hasRowHeaders ? rowHeaderWidth : columnWidth), height: columnHeaderHeight)
 
-				case .RowHeader:
+				case .rowHeader:
 					let y = ((indexPath as NSIndexPath).row == 0 && !tableView.hasColumnHeaders ? 0 : columnHeaderHeight) + (row * rowHeight) + (showGrid ? 1.0 * row: 0)
 					frame = CGRect(x: self.collectionView!.contentOffset.x, y: y, width: rowHeaderWidth, height: rowHeight)
 
-				case .DataCell:
+				case .dataCell:
 					frame = CGRect(x: 0, y: 0, width: 0, height: 0)
 				}
 

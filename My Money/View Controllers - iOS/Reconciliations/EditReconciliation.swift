@@ -38,9 +38,9 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 	fileprivate let _keyboardToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 100, height: 34))
 
 	enum Segues: String {
-		case ShowHeader = "ShowHeader"
-		case EditTransaction = "EditTransaction"
-		case AddTransaction = "AddTransaction"
+		case showHeader
+		case editTransaction
+		case addTransaction
 	}
 
 	// MARK: - View
@@ -49,7 +49,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 		super.viewDidLoad()
 
 		if reconciliation.isNew {
-			performSegue(withIdentifier: Segues.ShowHeader.rawValue, sender: nil)
+			performSegue(withIdentifier: Segues.showHeader.rawValue, sender: nil)
 			if let lastReconciliation = CommonDB.lastReconciliationForAccount(reconciliation.accountKey, ignoreUnreconciled: true) {
 				reconciliation.beginningBalance = lastReconciliation.endingBalance
 			} else {
@@ -97,12 +97,12 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier != nil, let segueName = Segues(rawValue: segue.identifier!) {
 			switch segueName {
-			case .ShowHeader:
+			case .showHeader:
 				let controller = segue.destination as! EditReconciliationHeaderController
 				controller.reconciliation = reconciliation
 				controller.delegate = self
 
-			case .EditTransaction:
+			case .editTransaction:
 				let navController = segue.destination as! UINavigationController
 				let controller = navController.viewControllers[0] as! EditEntryController
 				controller.delegate = self
@@ -113,7 +113,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 				controller.transaction = Transaction(key: key)!
 				controller.title = "Edit Transaction"
 
-			case .AddTransaction:
+			case .addTransaction:
 				let navController = segue.destination as! UINavigationController
 				let controller = navController.viewControllers[0] as! EditEntryController
 				controller.delegate = self
@@ -221,7 +221,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 	// MARK: - User Actions
 
 	@IBAction func headerTapped(_ sender: AnyObject) {
-		performSegue(withIdentifier: Segues.ShowHeader.rawValue, sender: nil)
+		performSegue(withIdentifier: Segues.showHeader.rawValue, sender: nil)
 	}
 
 	@IBAction func cancelTapped(_ sender: AnyObject) {
@@ -283,7 +283,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 	}
 
 	func addTransaction() {
-		performSegue(withIdentifier: Segues.AddTransaction.rawValue, sender: nil)
+		performSegue(withIdentifier: Segues.addTransaction.rawValue, sender: nil)
 	}
 
 	func transactionAdded(_ transaction: Transaction) {
@@ -401,7 +401,7 @@ extension EditReconciliationController: UITableViewDataSource, UITableViewDelega
 
 	func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
 		_lastSelection = indexPath
-		performSegue(withIdentifier: Segues.EditTransaction.rawValue, sender: indexPath)
+		performSegue(withIdentifier: Segues.editTransaction.rawValue, sender: indexPath)
 	}
 }
 

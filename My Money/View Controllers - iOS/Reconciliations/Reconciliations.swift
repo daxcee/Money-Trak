@@ -16,9 +16,9 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 	private var accountView: AccountView?
 
 	enum Segue: String {
-		case ViewReconciliation = "ViewReconciliation"
-		case AddReconciliation = "AddReconciliation"
-		case SetAccount = "SetAccount"
+		case viewReconciliation
+		case addReconciliation
+		case setAccount
 	}
 
 	override func viewDidLoad() {
@@ -38,17 +38,17 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier != nil, let segueName = Segue(rawValue: segue.identifier!) {
 			switch segueName {
-			case .ViewReconciliation:
+			case .viewReconciliation:
 				let controller = segue.destination as! EditReconciliationController
 				controller.reconciliation = Reconciliation(key: sender as! String)!
 				controller.delegate = self
 
-			case .AddReconciliation:
+			case .addReconciliation:
 				let navController = segue.destination as! UINavigationController
 				let controller = navController.viewControllers[0] as! EditReconciliationController
 				controller.delegate = self
 
-			case .SetAccount:
+			case .setAccount:
 				let navController = segue.destination as! UINavigationController
 				let controller = navController.viewControllers[0] as! SelectAccountController
 				controller.currentAccountKey = currentAccountKey
@@ -86,7 +86,7 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 	}
 
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		performSegue(withIdentifier: Segue.ViewReconciliation.rawValue, sender: reconciliationKeys[(indexPath as NSIndexPath).row])
+		performSegue(withIdentifier: Segue.viewReconciliation.rawValue, sender: reconciliationKeys[(indexPath as NSIndexPath).row])
 	}
 
 	// MARK: - User Actions
@@ -105,7 +105,7 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 			}
 		}
 
-		performSegue(withIdentifier: Segue.AddReconciliation.rawValue, sender: self)
+		performSegue(withIdentifier: Segue.addReconciliation.rawValue, sender: self)
 	}
 
 // MARK: - Delegate Calls
@@ -131,7 +131,7 @@ class ReconciliationsController: UITableViewController, EditReconciliationProtoc
 	}
 
 	func accountCellTapped() {
-		performSegue(withIdentifier: Segue.SetAccount.rawValue, sender: nil)
+		performSegue(withIdentifier: Segue.setAccount.rawValue, sender: nil)
 	}
 
 	func accountSet(_ account: Account) {

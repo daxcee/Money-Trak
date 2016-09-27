@@ -10,9 +10,9 @@ import Foundation
 import ALBNoSQLDB
 
 enum TransactionType: String {
-	case purchase = "purchase"
-	case deposit = "deposit"
-	case ccPayment = "payment"
+	case purchase
+	case deposit
+	case ccPayment
 }
 
 // MARK: - Log Entry
@@ -50,7 +50,7 @@ class Transaction: ALBNoSQLDBObject {
 				transaction.type = TransactionType.deposit
 				transaction.locationKey = CommonDB.locationForName("Paid with \(Account(key: accountKey)!.name)").key
 				transaction.date = date
-				transaction.categoryKey = defaultPrefix + DefaultCategory.Debt.rawValue
+				transaction.categoryKey = defaultPrefix + DefaultCategory.debt.rawValue
 				let _ = ALBNoSQLDB.setValue(table: kTransactionsTable, key: transaction.key, value: transaction.jsonValue())
 				let ccAccount = Account(key: ccAccountKey!)!
 				ccAccount.balance += abs(amount)
@@ -210,8 +210,8 @@ class Transaction: ALBNoSQLDBObject {
 	}
 
 	func addAmountToAvailable() {
-		let amountAvailable = defaults.integerForKey(.AmountAvailable) + amount
-		defaults.setInteger(amountAvailable, forKey: .AmountAvailable)
+		let amountAvailable = defaults.integerForKey(.amountAvailable) + amount
+		defaults.setInteger(amountAvailable, forKey: .amountAvailable)
 
 		let _ = ALBNoSQLDB.setValue(table: kProcessedTransactionsTable, key: key, value: "{}", autoDeleteAfter: nil)
 	}
@@ -225,8 +225,8 @@ class Transaction: ALBNoSQLDBObject {
 	}
 
 	func deleteAmountFromAvailable(_ transaction: Transaction) {
-		let amountAvailable = defaults.integerForKey(.AmountAvailable) - transaction.amount
-		defaults.setInteger(amountAvailable, forKey: .AmountAvailable)
+		let amountAvailable = defaults.integerForKey(.amountAvailable) - transaction.amount
+		defaults.setInteger(amountAvailable, forKey: .amountAvailable)
 
 		let _ = ALBNoSQLDB.deleteForKey(table: kProcessedTransactionsTable, key: key)
 	}

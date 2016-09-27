@@ -27,8 +27,8 @@ class AccountsController: UITableViewController, EditAccountDelegate {
 	var accountKeys = [String]()
 
 	enum Segues: String {
-		case AddAccount
-		case EditAccount
+		case addAccount
+		case editAccount
 	}
 
 	override func viewDidLoad() {
@@ -42,12 +42,12 @@ class AccountsController: UITableViewController, EditAccountDelegate {
 		guard let identifier = segue.identifier, let segueName =  Segues(rawValue: identifier) else { return }
 		
 			switch segueName {
-			case .AddAccount:
+			case .addAccount:
 				let navController = segue.destination as! UINavigationController
 				let controller = navController.viewControllers[0] as! EditAccountController
 				controller.delegate = self
 
-			case .EditAccount:
+			case .editAccount:
 				let controller = segue.destination as! EditAccountController
 				controller.delegate = self
 				let indexPath = self.tableView.indexPathForSelectedRow
@@ -173,7 +173,7 @@ class AccountsController: UITableViewController, EditAccountDelegate {
 	}
 
 	@IBAction func addTapped(_ sender: AnyObject) {
-		performSegue(withIdentifier: Segues.AddAccount.rawValue, sender: nil)
+		performSegue(withIdentifier: Segues.addAccount.rawValue, sender: nil)
 	}
 }
 

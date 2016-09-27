@@ -20,9 +20,9 @@ class SyncViewController: UITableViewController, UIAlertViewDelegate {
 	var offlineDevices = [SyncDevice]()
 
 	enum CellType: String {
-		case UnknownCell
-		case KnownCell
-		case EnableSyncCell
+		case unknownCell
+		case knownCell
+		case enableSyncCell
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -88,12 +88,12 @@ class SyncViewController: UITableViewController, UIAlertViewDelegate {
 		case 0:
 			device = nearbyDevices[(indexPath as NSIndexPath).row]
 			if device.linked {
-				let knownCell = tableView.dequeueReusableCell(withIdentifier: CellType.KnownCell.rawValue) as! KnownDeviceCell
+				let knownCell = tableView.dequeueReusableCell(withIdentifier: CellType.knownCell.rawValue) as! KnownDeviceCell
 				knownCell.device = device
 				knownCell.delegate = self
 				cell = knownCell
 			} else {
-				let unknownCell = tableView.dequeueReusableCell(withIdentifier: CellType.UnknownCell.rawValue) as! UnknownDeviceCell
+				let unknownCell = tableView.dequeueReusableCell(withIdentifier: CellType.unknownCell.rawValue) as! UnknownDeviceCell
 				unknownCell.device = device
 				unknownCell.delegate = self
 				cell = unknownCell
@@ -101,7 +101,7 @@ class SyncViewController: UITableViewController, UIAlertViewDelegate {
 
 		default:
 			device = offlineDevices[(indexPath as NSIndexPath).row]
-			let offlineCell = tableView.dequeueReusableCell(withIdentifier: CellType.KnownCell.rawValue) as! KnownDeviceCell
+			let offlineCell = tableView.dequeueReusableCell(withIdentifier: CellType.knownCell.rawValue) as! KnownDeviceCell
 			offlineCell.device = device
 			offlineCell.delegate = self
 			cell = offlineCell

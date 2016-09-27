@@ -21,11 +21,11 @@ class InitialController: UIViewController, UsesCurrency {
 	private var _userInteractingWithAd = false
 
 	enum Segue: String {
-		case Transactions
-		case Upcoming
-		case Recurring
-		case AddTransaction
-		case Sync
+		case transactions
+		case upcoming
+		case recurring
+		case addTransaction
+		case sync
 	}
 
 	override func viewDidLoad() {
@@ -48,9 +48,9 @@ class InitialController: UIViewController, UsesCurrency {
 	}
 
 	override func viewDidAppear(_ animated: Bool) {
-		let checkedForPasscode = defaults.boolForKey(.CheckPasscode)
+		let checkedForPasscode = defaults.boolForKey(.checkPasscode)
 		if !checkedForPasscode {
-			defaults.setBool(true, forKey: .CheckPasscode)
+			defaults.setBool(true, forKey: .checkPasscode)
 			if !deviceHasPasscode() {
 				let alert = UIAlertController(title: "No Passcode", message: "For the safety of the data in this app, this device should have a passcode set.", preferredStyle: .alert)
 				let openSettings = { (action: UIAlertAction!) -> Void in
@@ -88,30 +88,30 @@ class InitialController: UIViewController, UsesCurrency {
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier != nil, let segueName = Segue(rawValue: segue.identifier!) {
 			switch segueName {
-			case .Transactions:
+			case .transactions:
 				let navController = segue.destination as! UINavigationController
 				let controller = navController.viewControllers[0] as! TransactionsController
 				controller.upcomingTransactions = false
 				controller.recurringTransactions = false
 
-			case .Upcoming:
+			case .upcoming:
 				let navController = segue.destination as! UINavigationController
 				let controller = navController.viewControllers[0] as! TransactionsController
 				controller.upcomingTransactions = true
 				controller.recurringTransactions = false
 
-			case .Recurring:
+			case .recurring:
 				let navController = segue.destination as! UINavigationController
 				let controller = navController.viewControllers[0] as! TransactionsController
 				controller.upcomingTransactions = false
 				controller.recurringTransactions = true
 
-			case .AddTransaction:
+			case .addTransaction:
 				let navController = segue.destination as! UINavigationController
 				let controller = navController.viewControllers[0] as! EditEntryController
 				controller.title = "Add Transaction"
 
-			case .Sync:
+			case .sync:
 				let controller = segue.destination.childViewControllers[0] as! SyncViewController
 				controller.title = "Sync"
 			}
@@ -120,7 +120,7 @@ class InitialController: UIViewController, UsesCurrency {
 
 	// MARK: - User actions
 	@IBAction func syncTapped(_ sender: AnyObject) {
-		performSegue(withIdentifier: Segue.Sync.rawValue, sender: nil)
+		performSegue(withIdentifier: Segue.sync.rawValue, sender: nil)
 	}
 
 	// MARK: - other methods
@@ -128,7 +128,7 @@ class InitialController: UIViewController, UsesCurrency {
 		let greenColor = UIColor(red: 0.93333333333333, green: 1, blue: 0.94117647058824, alpha: 1)
 		let yellowColor = UIColor(red: 1, green: 0.98823529411765, blue: 0.91764705882353, alpha: 1)
 		let redColor = UIColor(red: 1, green: 0.85490196078431, blue: 0.87058823529412, alpha: 1)
-		let alertDate = defaults.objectForKey(.UpcomingTransactionsWarning) as? Date
+		let alertDate = defaults.objectForKey(.upcomingTransactionsWarning) as? Date
 
 		let amountAvailable = CommonFunctions.totalAmountAvailable()
 		self.totalAvailable.text = "Total Available: \(intFormatForAmount(amountAvailable))"

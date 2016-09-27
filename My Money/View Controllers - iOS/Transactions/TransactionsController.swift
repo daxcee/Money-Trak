@@ -35,9 +35,9 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 	fileprivate var _sum: Int?
 
 	enum Segue: String {
-		case SetAccount
-		case AddTransaction
-		case EditTransaction
+		case setAccount
+		case addTransaction
+		case editTransaction
 	}
 
 	override func viewDidLoad() {
@@ -118,16 +118,13 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 		if segue.identifier != nil, let segueName = Segue(rawValue: segue.identifier!) {
 			switch segueName {
 
-			case .SetAccount:
+			case .setAccount:
 				let navController = segue.destination as! UINavigationController
 				let controller = navController.viewControllers[0] as! SelectAccountController
 				controller.currentAccountKey = _currentAccountKey
 				controller.accountDelegate = self
 
-			case .AddTransaction:
-				fallthrough
-
-			case .EditTransaction:
+			case .addTransaction, .editTransaction:
 				let controller: EditEntryController
 
 				if let navController = segue.destination as? UINavigationController {
@@ -140,7 +137,7 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 				controller.upcomingTransaction = upcomingTransactions
 				controller.recurringTransaction = recurringTransactions
 
-				if segueName == .EditTransaction {
+				if segueName == .editTransaction {
 					let indexPath = sender as! IndexPath
 					let key = transactionKeys[(indexPath as NSIndexPath).row]
 					if upcomingTransactions {
@@ -190,11 +187,11 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 	// MARK: - Other
 
 	func accountCellTapped() {
-		performSegue(withIdentifier: Segue.SetAccount.rawValue, sender: nil)
+		performSegue(withIdentifier: Segue.setAccount.rawValue, sender: nil)
 	}
 
 	@IBAction func addTapped(_ sender: AnyObject) {
-		performSegue(withIdentifier: Segue.AddTransaction.rawValue, sender: nil)
+		performSegue(withIdentifier: Segue.addTransaction.rawValue, sender: nil)
 	}
 
 	func accountSet(_ account: Account) {
@@ -341,7 +338,7 @@ extension TransactionsController {
 
 	override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
 		_lastSelection = indexPath
-		performSegue(withIdentifier: Segue.EditTransaction.rawValue, sender: indexPath)
+		performSegue(withIdentifier: Segue.editTransaction.rawValue, sender: indexPath)
 	}
 
 	override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {

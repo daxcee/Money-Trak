@@ -21,7 +21,7 @@ class CommonFunctions {
 	static let instance = CommonFunctions()
 
 	class func totalAmountAvailable() -> Int {
-		let amountAvailable = CommonFunctions.instance.defaults.integerForKey(.AmountAvailable)
+		let amountAvailable = CommonFunctions.instance.defaults.integerForKey(.amountAvailable)
 		return amountAvailable
 	}
 
@@ -29,13 +29,13 @@ class CommonFunctions {
 		get {
 			let commonFunctions = CommonFunctions.sharedInstance
 			if commonFunctions.currentAccountKey == nil {
-				var defaultAccount = CommonFunctions.instance.defaults.stringForKey(.DefaultAccount)
+				var defaultAccount = CommonFunctions.instance.defaults.stringForKey(.defaultAccount)
 
 				if defaultAccount == nil || !ALBNoSQLDB.tableHasKey(table: kAccountsTable, key: defaultAccount!)! {
 					if let keys = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: nil), keys.filter({ $0 == defaultAccount }).count == 0 {
 						// assign first in list
 						defaultAccount = keys[0]
-						CommonFunctions.instance.defaults.setObject(defaultAccount as AnyObject?, forKey: .DefaultAccount)
+						CommonFunctions.instance.defaults.setObject(defaultAccount as AnyObject?, forKey: .defaultAccount)
 					}
 				}
 
@@ -49,7 +49,7 @@ class CommonFunctions {
 			let cf = CommonFunctions.sharedInstance
 			if accountKey != cf.currentAccountKey {
 				cf.currentAccountKey = accountKey
-				CommonFunctions.instance.defaults.setObject(accountKey as AnyObject?, forKey: .DefaultAccount)
+				CommonFunctions.instance.defaults.setObject(accountKey as AnyObject?, forKey: .defaultAccount)
 			}
 		}
 	}

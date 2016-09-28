@@ -47,7 +47,7 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 				accountView.delegate = self
 				updateAccountInfo()
 
-				if let searchbar = searchbar, let keys = ALBNoSQLDB.keysInTable(kReconcilationsTable, sortOrder: nil) , keys.count > 0 {
+				if let searchbar = searchbar, let keys = ALBNoSQLDB.keysInTable(kReconcilationsTable, sortOrder: nil), keys.count > 0 {
 					searchbar.showsScopeBar = true
 					searchbar.scopeButtonTitles = ["All", "Outstanding", "Cleared"]
 					searchbar.backgroundColor = UIColor.white
@@ -319,8 +319,7 @@ extension TransactionsController {
 					SweetAlert().showAlert("Delete Recurring?", subTitle: "\(keys!.count) pending transactions will be deleted.", style: AlertStyle.warning, buttonTitle: "Cancel", buttonColor: UIColorFromRGB(0x909090), otherButtonTitle: "Delete", otherButtonColor: UIColorFromRGB(0xDD6B55)) { (isOtherButton) -> Void in
 						if isOtherButton == true {
 							self.tableView.setEditing(false, animated: true)
-						}
-						else {
+						} else {
 							for key in keys! {
 								let upcoming = UpcomingTransaction(key: key)!
 								upcoming.delete()
@@ -411,7 +410,7 @@ extension TransactionsController: UISearchBarDelegate {
 				self.performSearch(text, selectedScope: selectedScope)
 			}
 			self._searching = false
-		})
+		                   })
 	}
 
 	func performSearch(_ text: String, selectedScope: Int) {

@@ -26,7 +26,7 @@ protocol UpdateDelegate {
 class AccountsController: UITableViewController, EditAccountDelegate {
 	var accountKeys = [String]()
 
-	enum Segues: String {
+	enum Segue: String {
 		case addAccount
 		case editAccount
 	}
@@ -39,7 +39,7 @@ class AccountsController: UITableViewController, EditAccountDelegate {
 	}
 
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		guard let identifier = segue.identifier, let segueName =  Segues(rawValue: identifier) else { return }
+		guard let identifier = segue.identifier, let segueName =  Segue(rawValue: identifier) else { return }
 		
 			switch segueName {
 			case .addAccount:
@@ -173,7 +173,7 @@ class AccountsController: UITableViewController, EditAccountDelegate {
 	}
 
 	@IBAction func addTapped(_ sender: AnyObject) {
-		performSegue(withIdentifier: Segues.addAccount.rawValue, sender: nil)
+		performSegue(withIdentifier: Segue.addAccount.rawValue, sender: nil)
 	}
 }
 

@@ -37,7 +37,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 
 	fileprivate let _keyboardToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 100, height: 34))
 
-	enum Segues: String {
+	enum Segue: String {
 		case showHeader
 		case editTransaction
 		case addTransaction
@@ -49,7 +49,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 		super.viewDidLoad()
 
 		if reconciliation.isNew {
-			performSegue(withIdentifier: Segues.showHeader.rawValue, sender: nil)
+			performSegue(withIdentifier: Segue.showHeader.rawValue, sender: nil)
 			if let lastReconciliation = CommonDB.lastReconciliationForAccount(reconciliation.accountKey, ignoreUnreconciled: true) {
 				reconciliation.beginningBalance = lastReconciliation.endingBalance
 			} else {
@@ -95,7 +95,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 	}
 
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if segue.identifier != nil, let segueName = Segues(rawValue: segue.identifier!) {
+		if segue.identifier != nil, let segueName = Segue(rawValue: segue.identifier!) {
 			switch segueName {
 			case .showHeader:
 				let controller = segue.destination as! EditReconciliationHeaderController
@@ -221,7 +221,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 	// MARK: - User Actions
 
 	@IBAction func headerTapped(_ sender: AnyObject) {
-		performSegue(withIdentifier: Segues.showHeader.rawValue, sender: nil)
+		performSegue(withIdentifier: Segue.showHeader.rawValue, sender: nil)
 	}
 
 	@IBAction func cancelTapped(_ sender: AnyObject) {
@@ -283,7 +283,7 @@ class EditReconciliationController: UIViewController, ReconciliationHeaderDelega
 	}
 
 	func addTransaction() {
-		performSegue(withIdentifier: Segues.addTransaction.rawValue, sender: nil)
+		performSegue(withIdentifier: Segue.addTransaction.rawValue, sender: nil)
 	}
 
 	func transactionAdded(_ transaction: Transaction) {
@@ -401,7 +401,7 @@ extension EditReconciliationController: UITableViewDataSource, UITableViewDelega
 
 	func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
 		_lastSelection = indexPath
-		performSegue(withIdentifier: Segues.editTransaction.rawValue, sender: indexPath)
+		performSegue(withIdentifier: Segue.editTransaction.rawValue, sender: indexPath)
 	}
 }
 

@@ -22,7 +22,7 @@ class MonthlySummaryController: UIViewController, UsesCurrency {
 	let kData = "DataCell"
 	var transactionKeys = [String]()
 
-	enum Segues: String {
+	enum Segue: String {
 		case showTransactions
 	}
 
@@ -85,7 +85,7 @@ class MonthlySummaryController: UIViewController, UsesCurrency {
 	}
 
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		let segueName = Segues(rawValue: segue.identifier!)!
+		let segueName = Segue(rawValue: segue.identifier!)!
 
 		switch segueName {
 		case .showTransactions:
@@ -112,7 +112,7 @@ extension MonthlySummaryController: ALBTableViewDelegate {
 	func didSelectRow(_ tableView: ALBTableView, row: Int) {
 		if let summary = summary {
 			transactionKeys = summary.transactionKeysForRow(row)
-			performSegue(withIdentifier: Segues.showTransactions.rawValue, sender: nil)
+			performSegue(withIdentifier: Segue.showTransactions.rawValue, sender: nil)
 		}
 	}
 
@@ -122,7 +122,7 @@ extension MonthlySummaryController: ALBTableViewDelegate {
 	func didSelectCell(_ tableView: ALBTableView, column: Int, row: Int) {
 		if let summary = summary {
 			transactionKeys = summary.transactionKeysForColumn(column, row: row)
-			performSegue(withIdentifier: Segues.showTransactions.rawValue, sender: nil)
+			performSegue(withIdentifier: Segue.showTransactions.rawValue, sender: nil)
 		}
 	}
 

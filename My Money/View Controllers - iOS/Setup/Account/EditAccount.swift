@@ -32,7 +32,7 @@ class EditAccountController: UITableViewController, AccountTypeDelegate, UpdateD
 	private var _account: Account?
 	private var _newAccount = false
 
-	enum Segues: String {
+	enum Segue: String {
 		case setType
 		case setUpdateTotal
 	}
@@ -80,7 +80,7 @@ class EditAccountController: UITableViewController, AccountTypeDelegate, UpdateD
 	}
 
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if segue.identifier != nil, let segueName = Segues(rawValue: segue.identifier!) {
+		if segue.identifier != nil, let segueName = Segue(rawValue: segue.identifier!) {
 			switch segueName {
 
 			case .setType:

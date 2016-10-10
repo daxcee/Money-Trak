@@ -104,11 +104,11 @@ final class ALBTableView: UIView {
 
 		addSubview(collectionView)
 
-		let viewsDictionary = ["collectionView": collectionView]
+		let viewsDictionary: [String: UIView] = ["collectionView": collectionView]
 
-		let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[collectionView]-0-|", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDictionary)
+		let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[collectionView]-0-|", options: NSLayoutFormatOptions.directionLeftToRight, metrics: nil, views: viewsDictionary)
 
-		let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[collectionView]-0-|", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDictionary)
+		let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[collectionView]-0-|", options: NSLayoutFormatOptions.directionLeftToRight, metrics: nil, views: viewsDictionary)
 
 		addConstraints(hConstraints)
 		addConstraints(vConstraints)

@@ -40,8 +40,8 @@ class MonthlySummaryController: UIViewController, UsesCurrency {
 				}
 
 				self.addTableView()
-			})
-		})
+			                         })
+		                   })
 	}
 
 	override func viewDidDisappear(_ animated: Bool) {
@@ -55,11 +55,10 @@ class MonthlySummaryController: UIViewController, UsesCurrency {
 
 		view.addSubview(self.tableView)
 
-		let views = ["tableView": tableView]
-		let metrics = ["margin": NSNumber(value: 0.0)]
+		let views: [String: UIView] = ["tableView": tableView]
 
-		let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-margin-[tableView]-margin-|", options: NSLayoutFormatOptions(), metrics: metrics, views: views)
-		let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-margin-[tableView]-margin-|", options: NSLayoutFormatOptions(), metrics: metrics, views: views)
+		let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-[tableView]-|", options: .directionLeadingToTrailing, metrics: nil, views: views)
+		let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-[tableView]-|", options: .directionLeadingToTrailing, metrics: nil, views: views)
 
 		view.addConstraints(hConstraints)
 		view.addConstraints(vConstraints)
@@ -207,7 +206,7 @@ extension MonthlySummaryController: ALBTableViewDataSource {
 			}
 			if let percentLabel = cell.viewWithTag(2) as? UILabel {
 				if let percent = summary.percents.amountAtColumn(column, row: row) {
-					percentLabel.text = "\(intFormatForAmount(percent*100))%"
+					percentLabel.text = "\(intFormatForAmount(percent * 100))%"
 				} else {
 					percentLabel.text = ""
 				}

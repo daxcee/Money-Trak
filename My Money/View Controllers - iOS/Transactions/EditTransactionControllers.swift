@@ -157,7 +157,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 
 		if let accountView = Bundle.main.loadNibNamed("AccountView", owner: self, options: nil)?[0] as? AccountView {
 			self._accountView = accountView
-			if let keys = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: nil) {
+			if let keys = ALBNoSQLDB.keysInTable(Table.accounts, sortOrder: nil) {
 				if keys.count == 1 || !showAccountSelector {
 					accountView.allowTap(false)
 					accountView.delegate = nil
@@ -180,7 +180,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 		if recurringTransaction {
 			_helper.hideCell(CellName.date.rawValue)
 			let recurringCondition = DBCondition(set: 0, objectKey: "recurringTransactionKey", conditionOperator: .equal, value: transaction.recurringTransactionKey as AnyObject)
-			let keys = ALBNoSQLDB.keysInTableForConditions(kTransactionsTable, sortOrder: "date desc", conditions: [recurringCondition])
+			let keys = ALBNoSQLDB.keysInTableForConditions(Table.transactions, sortOrder: "date desc", conditions: [recurringCondition])
 			if keys != nil && keys!.count > 0 {
 				let lastTransaction = Transaction(key: keys![0])!
 				var amount = 0
@@ -193,7 +193,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 			}
 
 			if !transaction.isNew {
-				let keys = ALBNoSQLDB.keysInTableForConditions(kUpcomingTransactionsTable, sortOrder: "date", conditions: [recurringCondition])
+				let keys = ALBNoSQLDB.keysInTableForConditions(Table.upcomingTransactions, sortOrder: "date", conditions: [recurringCondition])
 				if keys != nil && keys!.count > 0 {
 					let firstTransaction = UpcomingTransaction(key: keys![0])!
 					if let recurring = transaction as? RecurringTransaction {

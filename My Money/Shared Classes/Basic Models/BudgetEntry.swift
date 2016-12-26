@@ -16,13 +16,13 @@ class BudgetEntry: ALBNoSQLDBObject {
 	var amount = 0
 	
 	func save() {
-		if !ALBNoSQLDB.setValue(table: kBudgetEntriesTable, key: key, value: jsonValue()) {
+		if !ALBNoSQLDB.setValue(table: Table.budgetEntries, key: key, value: jsonValue()) {
 			// TODO: handle error
 		}
 	}
 	
 	convenience init?(key: String) {
-		if let value = ALBNoSQLDB.dictValueForKey(table: kBudgetEntriesTable, key: key) {
+		if let value = ALBNoSQLDB.dictValueForKey(table: Table.budgetEntries, key: key) {
 			self.init(keyValue: key, dictValue: value)
 		} else {
 			return nil

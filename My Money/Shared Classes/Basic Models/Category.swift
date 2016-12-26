@@ -15,13 +15,13 @@ class Category: ALBNoSQLDBObject {
 	var inSummary = true
 	
 	func save() {
-		if !ALBNoSQLDB.setValue(table: kCategoryTable, key: key, value: jsonValue()) {
+		if !ALBNoSQLDB.setValue(table: Table.categories, key: key, value: jsonValue()) {
 			// TODO: handle error
 		}
 	}
 	
 	convenience init?(key: String) {
-		if let value = ALBNoSQLDB.dictValueForKey(table: kCategoryTable, key: key) {
+		if let value = ALBNoSQLDB.dictValueForKey(table: Table.categories, key: key) {
 			self.init(keyValue: key, dictValue: value)
 		} else {
 			return nil

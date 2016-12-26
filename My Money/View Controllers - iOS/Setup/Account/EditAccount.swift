@@ -64,7 +64,7 @@ class EditAccountController: UITableViewController, AccountTypeDelegate, UpdateD
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
-		let keys = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: nil)
+		let keys = ALBNoSQLDB.keysInTable(Table.accounts, sortOrder: nil)
 		if keys != nil && keys?.count == 0 {
 			navigationItem.leftBarButtonItem = nil
 			// TODO: Show alert?

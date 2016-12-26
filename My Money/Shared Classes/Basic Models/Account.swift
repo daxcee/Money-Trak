@@ -40,7 +40,7 @@ class Account:ALBNoSQLDBObject {
             updateUpcomingDays = 0
         }
 
-        if !ALBNoSQLDB.setValue(table: kAccountsTable, key: key, value: jsonValue()) {
+        if !ALBNoSQLDB.setValue(table: Table.accounts, key: key, value: jsonValue()) {
             //TODO: handle error
         }
 		
@@ -50,7 +50,7 @@ class Account:ALBNoSQLDBObject {
     }
 	
     convenience init?(key:String) {
-		if let value = ALBNoSQLDB.dictValueForKey(table: kAccountsTable, key: key) {
+		if let value = ALBNoSQLDB.dictValueForKey(table: Table.accounts, key: key) {
 			self.init(keyValue: key,dictValue: value)
 		} else {
 			return nil

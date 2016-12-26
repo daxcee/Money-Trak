@@ -28,7 +28,7 @@ class OSSpecific {
 		if let dict = notification.userInfo as? [String: UpcomingTransaction] {
 			let transaction = dict["transaction"]!
 
-			let hasKey = ALBNoSQLDB.tableHasKey(table: kNotifiedTransactionsTable, key: transaction.key)
+			let hasKey = ALBNoSQLDB.tableHasKey(table: Table.notifiedTransactions, key: transaction.key)
 			if hasKey != nil && hasKey! {
 				return
 			}
@@ -57,7 +57,7 @@ class OSSpecific {
 					UIApplication.shared.scheduleLocalNotification(notification)
 				}
 
-				let _ = ALBNoSQLDB.setValue(table: kNotifiedTransactionsTable, key: transaction.key, value: "{}", autoDeleteAfter: nil)
+				let _ = ALBNoSQLDB.setValue(table: Table.notifiedTransactions, key: transaction.key, value: "{}", autoDeleteAfter: nil)
 			}
 		}
 	}

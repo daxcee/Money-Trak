@@ -98,13 +98,13 @@ struct SummaryMatrix {
 		var amounts = [Int]()
 
 		func save() {
-			if !ALBNoSQLDB.setValue(table: kMonthlySummaryEntriesTable, key: key, value: jsonValue()) {
+			if !ALBNoSQLDB.setValue(table: Table.monthlySummaryEntries, key: key, value: jsonValue()) {
 				// TODO: handle error
 			}
 		}
 
 		convenience init?(key: String) {
-			if let value = ALBNoSQLDB.dictValueForKey(table: kMonthlySummaryEntriesTable, key: key) {
+			if let value = ALBNoSQLDB.dictValueForKey(table: Table.monthlySummaryEntries, key: key) {
 				self.init(keyValue: key, dictValue: value)
 			} else {
 				return nil
@@ -180,7 +180,7 @@ struct SummaryMatrix {
 						}
 
 						// save month to table
-						let _ = ALBNoSQLDB.setValue(table: kMonthlySummaryEntriesTable, key: monthKey, value: monthEntries.jsonValue(), autoDeleteAfter: nil)
+						let _ = ALBNoSQLDB.setValue(table: Table.monthlySummaryEntries, key: monthKey, value: monthEntries.jsonValue(), autoDeleteAfter: nil)
 					}
 
 					monthStartDates.append(monthEntries.startDate)

@@ -21,7 +21,7 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 	var transactionKeys = [String]() {
 		didSet {
 			if let text = self.searchbar.text, text.characters.count > 0 {
-				_sum = CommonDB.sumTransactions(transactionKeys, table: kTransactionsTable)
+				_sum = CommonDB.sumTransactions(transactionKeys, table: Table.transactions)
 			} else {
 				_sum = nil
 			}
@@ -47,7 +47,7 @@ final class TransactionsController: UITableViewController, EditTransactionProtoc
 				accountView.delegate = self
 				updateAccountInfo()
 
-				if let searchbar = searchbar, let keys = ALBNoSQLDB.keysInTable(kReconcilationsTable, sortOrder: nil), keys.count > 0 {
+				if let searchbar = searchbar, let keys = ALBNoSQLDB.keysInTable(Table.reconciliations, sortOrder: nil), keys.count > 0 {
 					searchbar.showsScopeBar = true
 					searchbar.scopeButtonTitles = ["All", "Outstanding", "Cleared"]
 					searchbar.backgroundColor = UIColor.white
@@ -305,7 +305,7 @@ extension TransactionsController {
 			if recurringTransactions {
 				let transaction = RecurringTransaction(key: transactionKeys[(indexPath as NSIndexPath).row])!
 				let recurringCondition = DBCondition(set: 0, objectKey: "recurringTransactionKey", conditionOperator: .equal, value: transaction.recurringTransactionKey as AnyObject)
-				let keys = ALBNoSQLDB.keysInTableForConditions(kUpcomingTransactionsTable, sortOrder: nil, conditions: [recurringCondition])
+				let keys = ALBNoSQLDB.keysInTableForConditions(Table.upcomingTransactions, sortOrder: nil, conditions: [recurringCondition])
 				if keys == nil {
 					delay(0.5, closure: { () -> () in
 						self.tableView.setEditing(false, animated: true)

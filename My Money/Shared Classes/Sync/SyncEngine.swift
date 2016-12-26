@@ -45,7 +45,7 @@ class SyncDevice: ALBNoSQLDBObject {
 	var netNode: ALBPeer?
 
 	convenience init?(key: String) {
-		if let value = ALBNoSQLDB.dictValueForKey(table: kDevicesTable, key: key) {
+		if let value = ALBNoSQLDB.dictValueForKey(table: Table.devices, key: key) {
 			self.init(keyValue: key, dictValue: value)
 		} else {
 			return nil
@@ -75,7 +75,7 @@ class SyncDevice: ALBNoSQLDBObject {
 	}
 
 	func save() {
-		let _ = ALBNoSQLDB.setValue(table: kDevicesTable, key: key, value: jsonValue(), autoDeleteAfter: nil)
+		let _ = ALBNoSQLDB.setValue(table: Table.devices, key: key, value: jsonValue(), autoDeleteAfter: nil)
 	}
 
 	override func dictionaryValue() -> [String: AnyObject] {
@@ -114,7 +114,7 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 	private var _identityKey = ""
 
 	init?(name: String) {
-		if let deviceKeys = ALBNoSQLDB.keysInTable(kDevicesTable, sortOrder: "name") {
+		if let deviceKeys = ALBNoSQLDB.keysInTable(Table.devices, sortOrder: "name") {
 			for deviceKey in deviceKeys {
 				if let offlineDevice = SyncDevice(key: deviceKey) {
 					offlineDevices.append(offlineDevice)
@@ -183,7 +183,7 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 	}
 
 	func completeDeviceUnlink(_ device: SyncDevice) {
-		let _ = ALBNoSQLDB.deleteForKey(table: kDevicesTable, key: device.key)
+		let _ = ALBNoSQLDB.deleteForKey(table: Table.devices, key: device.key)
 		device.linked = false
 		if offlineDevices.filter({ $0.key == device.key }).count > 0 {
 			offlineDevices = offlineDevices.filter({ $0.key != device.key })
@@ -364,7 +364,7 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 			connection.sendData(data)
 			connection.disconnect()
 
-			let _ = ALBNoSQLDB.deleteForKey(table: kDevicesTable, key: device.key)
+			let _ = ALBNoSQLDB.deleteForKey(table: Table.devices, key: device.key)
 			device.linked = false
 			device.status = .idle
 			notifyStatusChanged(device)
@@ -461,9 +461,9 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 		connection.disconnect()
 
 		syncQueue.async(execute: { () -> Void in
-			if let summaryKeys = ALBNoSQLDB.keysInTable(kMonthlySummaryEntriesTable, sortOrder: nil) {
+			if let summaryKeys = ALBNoSQLDB.keysInTable(Table.monthlySummaryEntries, sortOrder: nil) {
 				for key in summaryKeys {
-					let _ = ALBNoSQLDB.deleteForKey(table: kMonthlySummaryEntriesTable, key: key)
+					let _ = ALBNoSQLDB.deleteForKey(table: Table.monthlySummaryEntries, key: key)
 				}
 			}
 

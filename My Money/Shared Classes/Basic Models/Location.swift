@@ -14,13 +14,13 @@ class Location:ALBNoSQLDBObject {
     var categoryKey:String?
     
     func save() {
-        if !ALBNoSQLDB.setValue(table: kLocationsTable, key: key, value: jsonValue()) {
+        if !ALBNoSQLDB.setValue(table: Table.locations, key: key, value: jsonValue()) {
             // TODO: handle error
         }
     }
     
     convenience init?(key:String) {
-		if let value = ALBNoSQLDB.dictValueForKey(table: kLocationsTable, key: key) {
+		if let value = ALBNoSQLDB.dictValueForKey(table: Table.locations, key: key) {
 			self.init(keyValue: key,dictValue: value)
 		} else {
 			return nil
@@ -53,14 +53,14 @@ class LocationAddress:ALBNoSQLDBObject {
     var locationKey = ""
     
     func  save() {
-        if !ALBNoSQLDB.setValue(table: kLocationAddressesTable, key: key, value: jsonValue()) {
+        if !ALBNoSQLDB.setValue(table: Table.locationAddresses, key: key, value: jsonValue()) {
             // TODO: handle error
         }
     }
     
 	
     convenience init?(key:String) {
-		if let value = ALBNoSQLDB.dictValueForKey(table: kLocationAddressesTable, key: key) {
+		if let value = ALBNoSQLDB.dictValueForKey(table: Table.locationAddresses, key: key) {
 			self.init(keyValue:key, dictValue:value)
 		} else {
 			return nil

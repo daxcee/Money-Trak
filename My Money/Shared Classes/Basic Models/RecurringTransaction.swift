@@ -71,7 +71,7 @@ class RecurringTransaction: Transaction {
 	}
 	
 	convenience init?(key: String) {
-		if let value = ALBNoSQLDB.dictValueForKey(table: kRecurringTransactionsTable, key: key) {
+		if let value = ALBNoSQLDB.dictValueForKey(table: Table.recurringTransactions, key: key) {
 			self.init(keyValue: key, dictValue: value)
 		} else {
 			return nil
@@ -114,12 +114,12 @@ class RecurringTransaction: Transaction {
 		}
 		dbInstanceKey = ALBNoSQLDB.dbInstanceKey()!
 		
-		if !ALBNoSQLDB.setValue(table: kRecurringTransactionsTable, key: key, value: jsonValue()) {
+		if !ALBNoSQLDB.setValue(table: Table.recurringTransactions, key: key, value: jsonValue()) {
 			// TODO: Handle Error
 		}
 	}
 	
 	override func delete() {
-		let _ = ALBNoSQLDB.deleteForKey(table: kRecurringTransactionsTable, key: key)
+		let _ = ALBNoSQLDB.deleteForKey(table: Table.recurringTransactions, key: key)
 	}
 }

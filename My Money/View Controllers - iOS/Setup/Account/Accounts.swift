@@ -33,7 +33,7 @@ class AccountsController: UITableViewController, EditAccountDelegate {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		if let accounts = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: "name") {
+		if let accounts = ALBNoSQLDB.keysInTable(Table.accounts, sortOrder: "name") {
 			accountKeys = accounts
 		}
 	}
@@ -94,35 +94,35 @@ class AccountsController: UITableViewController, EditAccountDelegate {
 		var error = false
 
 		// delete relevant reconciliations
-		if let reconciliationKeys = ALBNoSQLDB.keysInTableForConditions(kReconcilationsTable, sortOrder: nil, conditions: [accountCondition]) {
+		if let reconciliationKeys = ALBNoSQLDB.keysInTableForConditions(Table.reconciliations, sortOrder: nil, conditions: [accountCondition]) {
 			for key in reconciliationKeys {
-				let _ = ALBNoSQLDB.deleteForKey(table: kReconcilationsTable, key: key)
+				let _ = ALBNoSQLDB.deleteForKey(table: Table.reconciliations, key: key)
 			}
 		} else {
 			error = true
 		}
 
 		// delete transactions
-		if !error, let transactionKeys = ALBNoSQLDB.keysInTableForConditions(kTransactionsTable, sortOrder: nil, conditions: [accountCondition]) {
+		if !error, let transactionKeys = ALBNoSQLDB.keysInTableForConditions(Table.transactions, sortOrder: nil, conditions: [accountCondition]) {
 			for key in transactionKeys {
-				let _ = ALBNoSQLDB.deleteForKey(table: kTransactionsTable, key: key)
+				let _ = ALBNoSQLDB.deleteForKey(table: Table.transactions, key: key)
 			}
 		} else {
 			error = true
 		}
 
 		// delete upcoming transactions
-		if !error, let upcomingKeys = ALBNoSQLDB.keysInTableForConditions(kUpcomingTransactionsTable, sortOrder: nil, conditions: [accountCondition]) {
+		if !error, let upcomingKeys = ALBNoSQLDB.keysInTableForConditions(Table.upcomingTransactions, sortOrder: nil, conditions: [accountCondition]) {
 			for key in upcomingKeys {
-				let _ = ALBNoSQLDB.deleteForKey(table: kUpcomingTransactionsTable, key: key)
+				let _ = ALBNoSQLDB.deleteForKey(table: Table.upcomingTransactions, key: key)
 			}
 		} else {
 			error = true
 		}
 		// delete recurring transactions
-		if !error, let recurringKeys = ALBNoSQLDB.keysInTableForConditions(kRecurringTransactionsTable, sortOrder: nil, conditions: [accountCondition]) {
+		if !error, let recurringKeys = ALBNoSQLDB.keysInTableForConditions(Table.recurringTransactions, sortOrder: nil, conditions: [accountCondition]) {
 			for key in recurringKeys {
-				let _ = ALBNoSQLDB.deleteForKey(table: kRecurringTransactionsTable, key: key)
+				let _ = ALBNoSQLDB.deleteForKey(table: Table.recurringTransactions, key: key)
 			}
 		} else {
 			error = true
@@ -130,7 +130,7 @@ class AccountsController: UITableViewController, EditAccountDelegate {
 
 		// delete account
 		if !error {
-			let _ = ALBNoSQLDB.deleteForKey(table: kAccountsTable, key: accountKey)
+			let _ = ALBNoSQLDB.deleteForKey(table: Table.accounts, key: accountKey)
 		}
 
 		if error {

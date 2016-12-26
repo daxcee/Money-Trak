@@ -51,7 +51,7 @@ class Transaction: ALBNoSQLDBObject {
 				transaction.locationKey = CommonDB.locationForName("Paid with \(Account(key: accountKey)!.name)").key
 				transaction.date = date
 				transaction.categoryKey = defaultPrefix + DefaultCategory.debt.rawValue
-				let _ = ALBNoSQLDB.setValue(table: kTransactionsTable, key: transaction.key, value: transaction.jsonValue())
+				let _ = ALBNoSQLDB.setValue(table: Table.transactions, key: transaction.key, value: transaction.jsonValue())
 				let ccAccount = Account(key: ccAccountKey!)!
 				ccAccount.balance += abs(amount)
 				ccAccount.save()
@@ -89,22 +89,22 @@ class Transaction: ALBNoSQLDBObject {
 		}
 
 		// this must be done last to ensure proper reversals above
-		if !ALBNoSQLDB.setValue(table: kTransactionsTable, key: key, value: jsonValue()) {
+		if !ALBNoSQLDB.setValue(table: Table.transactions, key: key, value: jsonValue()) {
 			// TODO: Handle Error
 		}
 
 		let monthKey = monthKeyFromDate(date)
-		let _ = ALBNoSQLDB.deleteForKey(table: kMonthlySummaryEntriesTable, key: monthKey)
+		let _ = ALBNoSQLDB.deleteForKey(table: Table.monthlySummaryEntries, key: monthKey)
 	}
 
 	func delete() {
 		deleteAmountFromAvailable(self)
 		deleteAmountFromBalances(self)
-		let _ = ALBNoSQLDB.deleteForKey(table: kTransactionsTable, key: key)
+		let _ = ALBNoSQLDB.deleteForKey(table: Table.transactions, key: key)
 	}
 
 	convenience init?(key: String) {
-		if let value = ALBNoSQLDB.dictValueForKey(table: kTransactionsTable, key: key) {
+		if let value = ALBNoSQLDB.dictValueForKey(table: Table.transactions, key: key) {
 			self.init(keyValue: key, dictValue: value)
 		} else {
 			return nil
@@ -213,7 +213,7 @@ class Transaction: ALBNoSQLDBObject {
 		let amountAvailable = defaults.integerForKey(.amountAvailable) + amount
 		defaults.setInteger(amountAvailable, forKey: .amountAvailable)
 
-		let _ = ALBNoSQLDB.setValue(table: kProcessedTransactionsTable, key: key, value: "{}", autoDeleteAfter: nil)
+		let _ = ALBNoSQLDB.setValue(table: Table.processedTransactions, key: key, value: "{}", autoDeleteAfter: nil)
 	}
 
 	func addAmountToBalances() {
@@ -228,7 +228,7 @@ class Transaction: ALBNoSQLDBObject {
 		let amountAvailable = defaults.integerForKey(.amountAvailable) - transaction.amount
 		defaults.setInteger(amountAvailable, forKey: .amountAvailable)
 
-		let _ = ALBNoSQLDB.deleteForKey(table: kProcessedTransactionsTable, key: key)
+		let _ = ALBNoSQLDB.deleteForKey(table: Table.processedTransactions, key: key)
 	}
 
 	func deleteAmountFromBalances(_ transaction: Transaction) {

@@ -31,8 +31,8 @@ class CommonFunctions {
 			if commonFunctions.currentAccountKey == nil {
 				var defaultAccount = CommonFunctions.instance.defaults.stringForKey(.defaultAccount)
 
-				if defaultAccount == nil || !ALBNoSQLDB.tableHasKey(table: kAccountsTable, key: defaultAccount!)! {
-					if let keys = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: nil), keys.filter({ $0 == defaultAccount }).count == 0 {
+				if defaultAccount == nil || !ALBNoSQLDB.tableHasKey(table: Table.accounts, key: defaultAccount!)! {
+					if let keys = ALBNoSQLDB.keysInTable(Table.accounts, sortOrder: nil), keys.filter({ $0 == defaultAccount }).count == 0 {
 						// assign first in list
 						defaultAccount = keys[0]
 						CommonFunctions.instance.defaults.setObject(defaultAccount as AnyObject?, forKey: .defaultAccount)

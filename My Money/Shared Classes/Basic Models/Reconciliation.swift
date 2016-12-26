@@ -28,13 +28,13 @@ class Reconciliation: ALBNoSQLDBObject {
 	private var _transactionSum = 0
 	
 	func save() {
-		if !ALBNoSQLDB.setValue(table: kReconcilationsTable, key: key, value: jsonValue()) {
+		if !ALBNoSQLDB.setValue(table: Table.reconciliations, key: key, value: jsonValue()) {
 			// TODO: Handle Error
 		}
 	}
 	
 	convenience init?(key: String) {
-		if let value = ALBNoSQLDB.dictValueForKey(table: kReconcilationsTable, key: key) {
+		if let value = ALBNoSQLDB.dictValueForKey(table: Table.reconciliations, key: key) {
 			self.init(keyValue: key, dictValue: value)
 		} else {
 			return nil

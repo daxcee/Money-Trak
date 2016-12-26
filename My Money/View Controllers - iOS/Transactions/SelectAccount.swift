@@ -27,11 +27,11 @@ class SelectAccountController: UITableViewController, UsesCurrency {
 	override func viewDidLoad() {
 		if !includeCreditCards || !includeNonCreditCards {
 			let ccCondition = DBCondition(set: 0, objectKey: "type", conditionOperator: (includeCreditCards ? .equal : .notEqual), value: "Credit Card" as AnyObject)
-			if let keys = ALBNoSQLDB.keysInTableForConditions(kAccountsTable, sortOrder: "name", conditions: [ccCondition]) {
+			if let keys = ALBNoSQLDB.keysInTableForConditions(Table.accounts, sortOrder: "name", conditions: [ccCondition]) {
 				_accountKeys = keys
 			}
 		} else {
-			if let keys = ALBNoSQLDB.keysInTable(kAccountsTable, sortOrder: "name") {
+			if let keys = ALBNoSQLDB.keysInTable(Table.accounts, sortOrder: "name") {
 				_accountKeys = keys
 			}
 		}

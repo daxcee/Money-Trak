@@ -46,7 +46,7 @@ class EditReconciliationHeaderController: UITableViewController, UsesCurrency {
 		let accountCondition = DBCondition(set: 0, objectKey: "accountKey", conditionOperator: .equal, value: _reconciliation.accountKey as AnyObject)
 		let reconciliationCondition = DBCondition(set: 0, objectKey: "key", conditionOperator: .notEqual, value: _reconciliation.key as AnyObject)
 
-		if _reconciliation.beginningBalance != 0, let keys = ALBNoSQLDB.keysInTableForConditions(kReconcilationsTable, sortOrder: nil, conditions: [accountCondition, reconciliationCondition]) , keys.count > 0 {
+		if _reconciliation.beginningBalance != 0, let keys = ALBNoSQLDB.keysInTableForConditions(Table.reconciliations, sortOrder: nil, conditions: [accountCondition, reconciliationCondition]) , keys.count > 0 {
 			startingBalance.isEnabled = false
 		}
 

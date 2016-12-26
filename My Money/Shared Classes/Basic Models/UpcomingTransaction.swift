@@ -19,7 +19,7 @@ class UpcomingTransaction: Transaction {
 	}
 	
 	convenience init?(key: String) {
-		if let value = ALBNoSQLDB.dictValueForKey(table: kUpcomingTransactionsTable, key: key) {
+		if let value = ALBNoSQLDB.dictValueForKey(table: Table.upcomingTransactions, key: key) {
 			self.init(keyValue: key, dictValue: value)
 		} else {
 			return nil
@@ -66,7 +66,7 @@ class UpcomingTransaction: Transaction {
 	override func save() {
 		if !isNew {
 			let oldTransaction = UpcomingTransaction(key: key)!
-			let hasKey = ALBNoSQLDB.tableHasKey(table: kProcessedTransactionsTable, key: key)
+			let hasKey = ALBNoSQLDB.tableHasKey(table: Table.processedTransactions, key: key)
 			if hasKey != nil && hasKey! {
 				deleteAmountFromAvailable(oldTransaction)
 			}
@@ -76,17 +76,17 @@ class UpcomingTransaction: Transaction {
 		processAmountAvailable()
 		
 		// this must be done last to ensure proper reversals
-		if !ALBNoSQLDB.setValue(table: kUpcomingTransactionsTable, key: key, value: jsonValue()) {
+		if !ALBNoSQLDB.setValue(table: Table.upcomingTransactions, key: key, value: jsonValue()) {
 			// TODO: Handle Error
 		}
 	}
 	
 	override func delete() {
-		let hasKey = ALBNoSQLDB.tableHasKey(table: kProcessedTransactionsTable, key: key)
+		let hasKey = ALBNoSQLDB.tableHasKey(table: Table.processedTransactions, key: key)
 		if hasKey != nil && hasKey! {
 			deleteAmountFromAvailable(self)
 		}
-		let _ = ALBNoSQLDB.deleteForKey(table: kUpcomingTransactionsTable, key: key)
+		let _ = ALBNoSQLDB.deleteForKey(table: Table.upcomingTransactions, key: key)
 	}
 	
 	func processAmountAvailable() {
@@ -121,7 +121,7 @@ class UpcomingTransaction: Transaction {
 			let depositCondition = DBCondition(set: 0, objectKey: "type", conditionOperator: .equal, value: "deposit" as AnyObject)
 			let dateCondition = DBCondition(set: 0, objectKey: "date", conditionOperator: .lessThanOrEqual, value: processDate.stringValue() as AnyObject)
 			
-			let depositKeys = ALBNoSQLDB.keysInTableForConditions(kUpcomingTransactionsTable, sortOrder: "date", conditions: [accountCondition, depositCondition, dateCondition])
+			let depositKeys = ALBNoSQLDB.keysInTableForConditions(Table.upcomingTransactions, sortOrder: "date", conditions: [accountCondition, depositCondition, dateCondition])
 			if depositKeys != nil && depositKeys!.count > 0 {
 				let deposit = UpcomingTransaction(key: depositKeys![0])!
 				if deposit.date < processDate {

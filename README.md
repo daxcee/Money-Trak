@@ -11,7 +11,6 @@ Money Trak is an app available for free on the App Store that has been open sour
 - Add Unit and UI Testing
 - Add Accessibility compliance
 - Add Localization
-- Replace GCDAsyncSocket with socket class written in Swift
 
 ## Description
 A new approach to managing your money, this app gives you the answer you want right up-front. How much money do you have to spend? A single number lets you know how much disposable income you have for spending.

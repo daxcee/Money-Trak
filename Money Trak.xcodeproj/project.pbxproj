@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		6BCCCFE8575706F755F38A36 /* Pods_Money_TrakTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2306FD22FA6B99B28944298B /* Pods_Money_TrakTests.framework */; };
-		6C3E32C2F8D789BEBDC8402D /* Pods_Money_Trak.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7378A1575EEC212C89C33855 /* Pods_Money_Trak.framework */; };
 		8909E1921B514133002F511E /* ColumnHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8909E18F1B514133002F511E /* ColumnHeader.xib */; };
 		8909E1931B514133002F511E /* DataCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8909E1901B514133002F511E /* DataCell.xib */; };
 		8909E1941B514133002F511E /* RowHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8909E1911B514133002F511E /* RowHeader.xib */; };
@@ -55,12 +54,6 @@
 		899891721CC30A8200E3C870 /* Segues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8998916F1CC30A8200E3C870 /* Segues.swift */; };
 		899891741CC3B18100E3C870 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899891731CC3B18100E3C870 /* TransactionCell.swift */; };
 		899891781CC44E5F00E3C870 /* Transactions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 899891771CC44E5F00E3C870 /* Transactions.storyboard */; };
-		89A02F571B985B310088601D /* ALBPeer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A02F4F1B985B310088601D /* ALBPeer.swift */; };
-		89A02F581B985B310088601D /* ALBPeerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A02F501B985B310088601D /* ALBPeerClient.swift */; };
-		89A02F591B985B310088601D /* ALBPeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A02F511B985B310088601D /* ALBPeerConnection.swift */; };
-		89A02F5A1B985B310088601D /* ALBPeerPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A02F521B985B310088601D /* ALBPeerPacket.swift */; };
-		89A02F5B1B985B310088601D /* ALBPeerServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A02F531B985B310088601D /* ALBPeerServer.swift */; };
-		89A02F5C1B985B310088601D /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 89A02F561B985B310088601D /* GCDAsyncSocket.m */; };
 		89A443421AEBC02600946BDE /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 89A443311AEBC02600946BDE /* ioapi.c */; };
 		89A443431AEBC02600946BDE /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 89A443331AEBC02600946BDE /* mztools.c */; };
 		89A443441AEBC02600946BDE /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 89A443351AEBC02600946BDE /* unzip.c */; };
@@ -95,6 +88,7 @@
 		89EDA5281C94776500E3C870 /* Reconciliations.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 89EDA5271C94776500E3C870 /* Reconciliations.storyboard */; };
 		89EDA52C1C947B3600E3C870 /* AmountField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89EDA52B1C947B3600E3C870 /* AmountField.swift */; };
 		89F1C4D91A263F8100DC4BCD /* OSSpecific - iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F1C4D81A263F8100DC4BCD /* OSSpecific - iOS.swift */; };
+		EEEDC2C10062DFDC7CB02053 /* Pods_Money_Trak.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7378A1575EEC212C89C33855 /* Pods_Money_Trak.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -170,13 +164,6 @@
 		8998916F1CC30A8200E3C870 /* Segues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Segues.swift; sourceTree = "<group>"; };
 		899891731CC3B18100E3C870 /* TransactionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		899891771CC44E5F00E3C870 /* Transactions.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Transactions.storyboard; sourceTree = "<group>"; };
-		89A02F4F1B985B310088601D /* ALBPeer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ALBPeer.swift; sourceTree = "<group>"; };
-		89A02F501B985B310088601D /* ALBPeerClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ALBPeerClient.swift; sourceTree = "<group>"; };
-		89A02F511B985B310088601D /* ALBPeerConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ALBPeerConnection.swift; sourceTree = "<group>"; };
-		89A02F521B985B310088601D /* ALBPeerPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ALBPeerPacket.swift; sourceTree = "<group>"; };
-		89A02F531B985B310088601D /* ALBPeerServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ALBPeerServer.swift; sourceTree = "<group>"; };
-		89A02F551B985B310088601D /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
-		89A02F561B985B310088601D /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
 		89A443301AEBC02600946BDE /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		89A443311AEBC02600946BDE /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
 		89A443321AEBC02600946BDE /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
@@ -242,7 +229,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				890B75081BD28A730035A37C /* libz.tbd in Frameworks */,
-				6C3E32C2F8D789BEBDC8402D /* Pods_Money_Trak.framework in Frameworks */,
+				EEEDC2C10062DFDC7CB02053 /* Pods_Money_Trak.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,32 +360,9 @@
 			path = "iOS Traits";
 			sourceTree = "<group>";
 		};
-		89A02F4E1B985B310088601D /* Connection Classes */ = {
-			isa = PBXGroup;
-			children = (
-				89A02F4F1B985B310088601D /* ALBPeer.swift */,
-				89A02F501B985B310088601D /* ALBPeerClient.swift */,
-				89A02F511B985B310088601D /* ALBPeerConnection.swift */,
-				89A02F521B985B310088601D /* ALBPeerPacket.swift */,
-				89A02F531B985B310088601D /* ALBPeerServer.swift */,
-				89A02F541B985B310088601D /* TCP */,
-			);
-			path = "Connection Classes";
-			sourceTree = "<group>";
-		};
-		89A02F541B985B310088601D /* TCP */ = {
-			isa = PBXGroup;
-			children = (
-				89A02F551B985B310088601D /* GCDAsyncSocket.h */,
-				89A02F561B985B310088601D /* GCDAsyncSocket.m */,
-			);
-			path = TCP;
-			sourceTree = "<group>";
-		};
 		89A443251AEBC02600946BDE /* Sync */ = {
 			isa = PBXGroup;
 			children = (
-				89A02F4E1B985B310088601D /* Connection Classes */,
 				89A4432F1AEBC02600946BDE /* minizip */,
 				89A443391AEBC02600946BDE /* SSZipArchive.h */,
 				89A4433A1AEBC02600946BDE /* SSZipArchive.m */,
@@ -580,13 +544,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 89C39271199462E10020B6DC /* Build configuration list for PBXNativeTarget "Money Trak" */;
 			buildPhases = (
-				EF183735B8E553193E147194 /* [CP] Check Pods Manifest.lock */,
+				73C17088FF0CA6CE3F4F3428 /* [CP] Check Pods Manifest.lock */,
 				89C39251199462E00020B6DC /* Sources */,
 				89C39252199462E00020B6DC /* Frameworks */,
 				89C39253199462E00020B6DC /* Resources */,
 				89166FB419979729007B1694 /* Embed Frameworks */,
-				96065D07E8C6284F21B14A0D /* [CP] Embed Pods Frameworks */,
-				580FC6A1025F9877FB2E4CAE /* [CP] Copy Pods Resources */,
+				31553534EC00C22A16893ABC /* [CP] Embed Pods Frameworks */,
+				2A03578ECD9E182D30CA5FB4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -605,7 +569,7 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Aaron L. Bratcher";
 				TargetAttributes = {
 					890CD3B91C94A7AC00E3C870 = {
@@ -615,6 +579,7 @@
 					};
 					89C39254199462E00020B6DC = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = BJL688BZ75;
 						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.DataProtection = {
@@ -674,6 +639,36 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2A03578ECD9E182D30CA5FB4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Money Trak/Pods-Money Trak-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		31553534EC00C22A16893ABC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Money Trak/Pods-Money Trak-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		4AFD3F416BBA12949F63E65D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -687,21 +682,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		580FC6A1025F9877FB2E4CAE /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Money Trak/Pods-Money Trak-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		631072D673F6EC761363B0F3 /* [CP] Embed Pods Frameworks */ = {
@@ -719,6 +699,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Money TrakTests/Pods-Money TrakTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		73C17088FF0CA6CE3F4F3428 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		7406313FDA705F4467AC3510 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -732,36 +727,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Money TrakTests/Pods-Money TrakTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		96065D07E8C6284F21B14A0D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Money Trak/Pods-Money Trak-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EF183735B8E553193E147194 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -787,7 +752,6 @@
 				89BC3CD619E1F344003B2A75 /* SetUpdate.swift in Sources */,
 				89C511B01B62671C0067CC72 /* AFBlurSegue.m in Sources */,
 				8916B9671B0FB0110026CD5D /* DeviceCell.swift in Sources */,
-				89A02F591B985B310088601D /* ALBPeerConnection.swift in Sources */,
 				89BC3CCC19E080AB003B2A75 /* SelectLocation.swift in Sources */,
 				89752AF41D8C087400E3C870 /* MonthlySummaryEntry.swift in Sources */,
 				89E218001A42FDC500F79443 /* Reconciliations.swift in Sources */,
@@ -796,7 +760,6 @@
 				89C3925B199462E10020B6DC /* AppDelegate.swift in Sources */,
 				89A443451AEBC02600946BDE /* zip.c in Sources */,
 				890CD3D31C94EB8400E3C870 /* DefaultManager.swift in Sources */,
-				89A02F5B1B985B310088601D /* ALBPeerServer.swift in Sources */,
 				89A443461AEBC02600946BDE /* SSZipArchive.m in Sources */,
 				89343D851A1D2C70005D1530 /* AccountView.swift in Sources */,
 				89EDA52C1C947B3600E3C870 /* AmountField.swift in Sources */,
@@ -818,8 +781,6 @@
 				89752AE71D8B582E00E3C870 /* Location.swift in Sources */,
 				890CD3CC1C94A9C700E3C870 /* Numbers.swift in Sources */,
 				89ADDD231AB759CC00CBE08D /* SweetAlert.swift in Sources */,
-				89A02F5C1B985B310088601D /* GCDAsyncSocket.m in Sources */,
-				89A02F581B985B310088601D /* ALBPeerClient.swift in Sources */,
 				89E5D3021BE6915800E3C870 /* CozyLoadingActivity.swift in Sources */,
 				8998916B1CC2882A00E3C870 /* ClearAllCell.swift in Sources */,
 				895B98AE1A38B95B0048A61E /* EditHeader.swift in Sources */,
@@ -831,7 +792,6 @@
 				89752AF21D8C085600E3C870 /* BudgetEntry.swift in Sources */,
 				89BF2B9E1A4F53BE002A6959 /* MonthlySummary.swift in Sources */,
 				890CD3D11C94EB8000E3C870 /* NotificationManager.swift in Sources */,
-				89A02F5A1B985B310088601D /* ALBPeerPacket.swift in Sources */,
 				899891701CC30A8200E3C870 /* NibLoadable.swift in Sources */,
 				894B8FE919B0B03200C4D28C /* CommonDB.swift in Sources */,
 				899891741CC3B18100E3C870 /* TransactionCell.swift in Sources */,
@@ -840,7 +800,6 @@
 				89B6E6901A1E91380003562D /* SetMemo.swift in Sources */,
 				8950D99219AA7CE4000F3F57 /* CommonFunctions.swift in Sources */,
 				892A932F19E0241A0049CDDB /* EditTransactionControllers.swift in Sources */,
-				89A02F571B985B310088601D /* ALBPeer.swift in Sources */,
 				89B90EFF1CA6BBA300E3C870 /* StringExtensions.swift in Sources */,
 				89A443471AEBC02600946BDE /* SyncEngine.swift in Sources */,
 				89752AEA1D8B585900E3C870 /* RecurringTransaction.swift in Sources */,
@@ -1004,11 +963,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E9841E080C540DF4C2BB3B15 /* Pods-Money Trak.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = BJL688BZ75;
 				INFOPLIST_FILE = "My Money/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1027,11 +987,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5D86949BDE714EA367062E48 /* Pods-Money Trak.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = BJL688BZ75;
 				INFOPLIST_FILE = "My Money/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

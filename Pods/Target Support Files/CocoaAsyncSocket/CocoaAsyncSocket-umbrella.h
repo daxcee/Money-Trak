@@ -10,7 +10,9 @@
 #endif
 #endif
 
+#import "GCDAsyncSocket.h"
+#import "GCDAsyncUdpSocket.h"
 
-FOUNDATION_EXPORT double Pods_Money_TrakTestsVersionNumber;
-FOUNDATION_EXPORT const unsigned char Pods_Money_TrakTestsVersionString[];
+FOUNDATION_EXPORT double CocoaAsyncSocketVersionNumber;
+FOUNDATION_EXPORT const unsigned char CocoaAsyncSocketVersionString[];
 

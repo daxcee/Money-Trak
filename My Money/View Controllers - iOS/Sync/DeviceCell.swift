@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class UnknownDeviceCell: UITableViewCell {
+class UnknownDeviceCell: UITableViewCell, Reusable {
 	@IBOutlet weak var deviceName: UILabel!
 	@IBOutlet weak var linkButtonView: UIView!
 	@IBOutlet weak var progressWheel: UIActivityIndicatorView!
@@ -36,7 +36,7 @@ class UnknownDeviceCell: UITableViewCell {
 	}
 }
 
-class KnownDeviceCell: UITableViewCell {
+class KnownDeviceCell: UITableViewCell, Reusable {
 
 	@IBOutlet weak var deviceName: UILabel!
 	@IBOutlet weak var statusLabel: UILabel!

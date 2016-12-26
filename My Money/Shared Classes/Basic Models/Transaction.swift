@@ -12,7 +12,7 @@ import ALBNoSQLDB
 enum TransactionType: String {
 	case purchase
 	case deposit
-	case ccPayment
+	case ccPayment = "payment"
 }
 
 // MARK: - Log Entry

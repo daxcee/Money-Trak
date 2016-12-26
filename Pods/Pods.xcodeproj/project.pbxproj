@@ -7,118 +7,204 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00D8DAFBB939E454EB1676DDD25C6A8B /* Pods-Money TrakTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A02693812D62B67A9767D2A3850C0719 /* Pods-Money TrakTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0ADE9243D7A566D5671D80D95AD2DF42 /* ALBNoSQLDB-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F3FE3BB8ADEF425721584CF387DB1E9 /* ALBNoSQLDB-dummy.m */; };
-		0DF1ED07B722AB71C76C22181A6B008E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
-		22230FEAF2D1B08CD3341B9BF6B57ACB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
-		366C728A2A558742F04F0A1E7762797A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
-		489C24244EF759FA8CC3AE303699B83D /* TableViewHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 7315C694E57951F416205B3E0401A950 /* TableViewHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4BEC0D574416EF36E6367BC478135F49 /* TableViewHelper-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 90682EF416DE07DF71977A9E0249C26E /* TableViewHelper-dummy.m */; };
-		5D0AC824F032FCA4430D0B07110DFB11 /* Pods-Money TrakTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 47133A9ADF0E4244E847A3F65FBA6C15 /* Pods-Money TrakTests-dummy.m */; };
-		6CD3BC31EF1DCC68161BAED704BEF6A3 /* TableViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A04ADB3C7408EB8596E228EEB8A2C5E /* TableViewHelper.swift */; };
-		7655527058A93622F2C003C59851EB39 /* Pods-Money Trak-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 247552E48DC4B622498D50C16B966EC6 /* Pods-Money Trak-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		951878A8899251C66FA15672FDB23E84 /* ALBNoSQLDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F52CA6594B6FCC9B5B10DD3491E228D /* ALBNoSQLDB.swift */; };
-		A34D476EE4BF52A2BDE61C4372247302 /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 4621DCB0E707FD3AD43BE0E9AAB07B68 /* sqlite3.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C85124CE89527849176DCEC58B75FC97 /* Pods-Money Trak-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B36E16ECC3001838E443B3E8083C882 /* Pods-Money Trak-dummy.m */; };
-		CB5270C44BF1AA822A422E6D4B483F81 /* ALBNoSQLDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 03DB7826C730DB6D4892304BD90838D7 /* ALBNoSQLDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D50E6E45C440495D333229E6CA2F0CD2 /* TableViewHelper-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A01A98FF1791211914D538F9EB2FF0A5 /* TableViewHelper-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E7B0F69A6F4DDD0662CBEB9C75629FF7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
-		FA3DBFA194D597AF43D43095846DD5CC /* ALBNoSQLDB-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 111631E02FF34EF20B53709EBFB24059 /* ALBNoSQLDB-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		034DE26EA29BA8D3A799AC1431BE7EEF /* TableViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDED18624281DCB62FA8E4683690C90 /* TableViewHelper.swift */; };
+		047AA3AE6959F875EAD62B9C6742DA60 /* GCDAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = D6CBD24E800D63F6FDE0F99BBF4939DD /* GCDAsyncSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		05629B47FB22128104B86B94EA4B246A /* CocoaAsyncSocket-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CE33FFE0E1799D24D723AB0AECB2AF /* CocoaAsyncSocket-dummy.m */; };
+		0A3499D71DC90BE019A13A1A108009D9 /* ALBPeerServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3616E15E8224230478FED8550C875EA /* ALBPeerServer.swift */; };
+		1624CA16A99F7BA15E8D7CFF7DD1FA71 /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91BA6F6CCD385509DC9FF3B1ACE3E309 /* CocoaAsyncSocket.framework */; };
+		170EEA6ED1A82D3668B01A6DB091E95C /* TableViewHelper-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B7C3BF701752E6BC5948E2475148E153 /* TableViewHelper-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A1253566E9D9FB8C460885E43F639DA /* ALBPeerPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7FFA3B8255A7DF39E01A65BCAE5D76 /* ALBPeerPacket.swift */; };
+		1B77B289945A10A75792C9243C813705 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CAC461E8D0D0B8EC85A1606B640DDCF /* Foundation.framework */; };
+		1D04903B9D16D7CC9354C31969C1DA35 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BC800BF4836017C2B05FE561B6BDEAB /* GCDAsyncUdpSocket.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		2B4C2151B8C1584EB8EFF2EE78E4E0EE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CAC461E8D0D0B8EC85A1606B640DDCF /* Foundation.framework */; };
+		2D97EB8AE08E4B41874BE85F2F81DC1A /* ALBPeerConnection-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DAF16C8DC035DCC10A330A16D2F859D /* ALBPeerConnection-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		31001976BCE1EB09F25CF0639DD00C8C /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 237B028EE4FFAA754A0C8BDFDE8ECB77 /* sqlite3.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		33BB9BE7B0DB097FD6028DED6024DCF0 /* ALBNoSQLDB-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2654FA912D12DBF965D38BCDA1C7DC /* ALBNoSQLDB-dummy.m */; };
+		384703991E25CBD85B9275CAEEFBF4EC /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DBFD25B9D84D637C083AC25DA350FD /* Security.framework */; };
+		477D44AAE641A2072B01DDAF2418C283 /* TableViewHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = EDCD291067CE3017807E57FC2D70E6E7 /* TableViewHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4C4ED5FB7A77F1EE4A4A6B36CE4A3378 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CAC461E8D0D0B8EC85A1606B640DDCF /* Foundation.framework */; };
+		4CF87893449CB3E5939656E890CF11DB /* GCDAsyncUdpSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = FA9DE91A34DDDA1F54ADA79726EC26FD /* GCDAsyncUdpSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		50D92DFE8D91BADF63512775C7A70D3B /* ALBNoSQLDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 0B6194810B9FDAC30C6049AEF7835B1E /* ALBNoSQLDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5C13D7DC891A942DA85B92F3EDD95891 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 863BC71AA2A8CAD96F8378A00CB271AA /* GCDAsyncSocket.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		6B9AA3BA28B91AC10A6F34CD5072DF54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CAC461E8D0D0B8EC85A1606B640DDCF /* Foundation.framework */; };
+		6FD7BA173517DB56F3CBEA67AC2B8754 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CAC461E8D0D0B8EC85A1606B640DDCF /* Foundation.framework */; };
+		719582DB38CED27D1BBDFA0D12F0CCA1 /* Pods-Money TrakTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 47133A9ADF0E4244E847A3F65FBA6C15 /* Pods-Money TrakTests-dummy.m */; };
+		7C7B3E78E4551CCDA3CAE0600C0F9321 /* ALBPeerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B8C77C0B0F007643B705317498567C /* ALBPeerClient.swift */; };
+		86A6356B026F883533F14AA540C0E883 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CAC461E8D0D0B8EC85A1606B640DDCF /* Foundation.framework */; };
+		8ABB53E07E91EE51F3F314275DBACB0C /* Pods-Money Trak-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B36E16ECC3001838E443B3E8083C882 /* Pods-Money Trak-dummy.m */; };
+		913B187A0D4E3DBE555E84EB3ED79935 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C3D4D886229900C32F095A36901F6BB /* CFNetwork.framework */; };
+		99FC35C76E38BF45F3640D70EB26623C /* ALBPeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F3059318C8F91B9C10F117BDACD872 /* ALBPeerConnection.swift */; };
+		A478F6972219D73A5212A3D948867621 /* ALBNoSQLDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50094D9BB99CA094AC3FF004409089A3 /* ALBNoSQLDB.swift */; };
+		AE4993BF0D630B294BEC2D6334DDFE15 /* Pods-Money Trak-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 247552E48DC4B622498D50C16B966EC6 /* Pods-Money Trak-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B76664DFC8B01C9045EF38CB175D9898 /* Pods-Money TrakTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A02693812D62B67A9767D2A3850C0719 /* Pods-Money TrakTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B7A9127E9C6AC0BA437098B7C78604F0 /* ALBNoSQLDB-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B27CC4BDC9335CD25CB89965E9B78A3 /* ALBNoSQLDB-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2FC227E81E9A2C418C51A37D569F869 /* TableViewHelper-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D51B1254E69E3AA97EC65E73B72F4FD0 /* TableViewHelper-dummy.m */; };
+		D06A64792E3FFF7B0B6CA4615489086E /* ALBPeer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652A01F387FE0D278AE3F2918707DAED /* ALBPeer.swift */; };
+		DF82805630288F3DB687150D48062378 /* ALBPeerConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E87EE9008A0A59392DCB7552C8F336B /* ALBPeerConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F8150BED1776A2C22DA5B58D477E205C /* CocoaAsyncSocket-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF2F1323B5159DD0586538A5EDA6DF5 /* CocoaAsyncSocket-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FBBBDF4EB03B81A6C01FB02AA7650419 /* ALBPeerConnection-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F65F46356DFE175F58A5E37DA2A42E2 /* ALBPeerConnection-dummy.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		18D2362CEE163C42640E9DC50F148F9C /* PBXContainerItemProxy */ = {
+		485571B668C413F166C087018194FD05 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 60AD7A1A7D848DB9C28BAB01BD33902E;
-			remoteInfo = ALBNoSQLDB;
+			remoteGlobalIDString = 2FF8107500243A748BB8566B22FF3DCC;
+			remoteInfo = CocoaAsyncSocket;
 		};
-		299E0340AC11FEF57FFB07308ADEC78E /* PBXContainerItemProxy */ = {
+		5DB33C43C8FC64554E648D82D2D2E8DD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 08DE23D5F6029C9AC785AB32C6C5EC6F;
+			remoteGlobalIDString = 2FF8107500243A748BB8566B22FF3DCC;
+			remoteInfo = CocoaAsyncSocket;
+		};
+		662D350AEFB87B9B7791F3B9EDD970EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0CBAD2C02C2692876F93354EF097C00C;
+			remoteInfo = ALBPeerConnection;
+		};
+		AB5F76AD535DC5F17DE82B652DD31A3E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2ACD368E10E96A4A5D4DA0080671ABC3;
 			remoteInfo = TableViewHelper;
+		};
+		EDE00C3EBB716A9C1ED280D6ABC85230 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CF43C95CD697B0FB58A49178C9907824;
+			remoteInfo = ALBNoSQLDB;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		03DB7826C730DB6D4892304BD90838D7 /* ALBNoSQLDB.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ALBNoSQLDB.h; path = ALBNoSQLDB/ALBNoSQLDB/ALBNoSQLDB.h; sourceTree = "<group>"; };
-		0F52CA6594B6FCC9B5B10DD3491E228D /* ALBNoSQLDB.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ALBNoSQLDB.swift; path = ALBNoSQLDB/ALBNoSQLDB/ALBNoSQLDB.swift; sourceTree = "<group>"; };
-		111631E02FF34EF20B53709EBFB24059 /* ALBNoSQLDB-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ALBNoSQLDB-umbrella.h"; sourceTree = "<group>"; };
+		01890B6F219782B6983FD67F907A3DEF /* Pods_Money_Trak.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Money_Trak.framework; path = "Pods-Money Trak.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B6194810B9FDAC30C6049AEF7835B1E /* ALBNoSQLDB.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ALBNoSQLDB.h; path = ALBNoSQLDB/ALBNoSQLDB/ALBNoSQLDB.h; sourceTree = "<group>"; };
+		0BC800BF4836017C2B05FE561B6BDEAB /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncUdpSocket.m; path = Source/GCD/GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
+		0E7FFA3B8255A7DF39E01A65BCAE5D76 /* ALBPeerPacket.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ALBPeerPacket.swift; path = ALBPeerConnection/ALBPeerConnection/ALBPeerPacket.swift; sourceTree = "<group>"; };
+		1CFDFCA148F8F48680353D10994624FE /* ALBNoSQLDB-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ALBNoSQLDB-prefix.pch"; sourceTree = "<group>"; };
+		1F8A44D3F71AEA2C67364793C12F8813 /* ALBPeerConnection-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ALBPeerConnection-prefix.pch"; sourceTree = "<group>"; };
+		237B028EE4FFAA754A0C8BDFDE8ECB77 /* sqlite3.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = ALBNoSQLDB/ALBNoSQLDB/sqlite3.h; sourceTree = "<group>"; };
 		247552E48DC4B622498D50C16B966EC6 /* Pods-Money Trak-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Money Trak-umbrella.h"; sourceTree = "<group>"; };
-		2626366A337888D58B916C6DD40D18FC /* TableViewHelper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TableViewHelper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		27626980AA936A8066D2FEA3A11E9166 /* CocoaAsyncSocket-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CocoaAsyncSocket-prefix.pch"; sourceTree = "<group>"; };
+		2CAC461E8D0D0B8EC85A1606B640DDCF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		2DAF16C8DC035DCC10A330A16D2F859D /* ALBPeerConnection-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ALBPeerConnection-umbrella.h"; sourceTree = "<group>"; };
+		2F65F46356DFE175F58A5E37DA2A42E2 /* ALBPeerConnection-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ALBPeerConnection-dummy.m"; sourceTree = "<group>"; };
 		2F71544B13AD7ED94EFBC6DE38F21108 /* Pods-Money TrakTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Money TrakTests-acknowledgements.plist"; sourceTree = "<group>"; };
-		2FC9700E7583F895AC2758261E41C397 /* Pods-Money TrakTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Money TrakTests.modulemap"; sourceTree = "<group>"; };
+		2FC9700E7583F895AC2758261E41C397 /* Pods-Money TrakTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-Money TrakTests.modulemap"; sourceTree = "<group>"; };
 		3132B0BE7A89976D9866FB26F14C62CB /* Pods-Money TrakTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Money TrakTests.release.xcconfig"; sourceTree = "<group>"; };
-		3188B06A4C644496F198E27A9837777A /* ALBNoSQLDB-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ALBNoSQLDB-prefix.pch"; sourceTree = "<group>"; };
 		3305ACBE3DC52858FEE32F0C1D273AD8 /* Pods-Money TrakTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Money TrakTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		3B2654FA912D12DBF965D38BCDA1C7DC /* ALBNoSQLDB-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ALBNoSQLDB-dummy.m"; sourceTree = "<group>"; };
+		3B27CC4BDC9335CD25CB89965E9B78A3 /* ALBNoSQLDB-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ALBNoSQLDB-umbrella.h"; sourceTree = "<group>"; };
 		3B36E16ECC3001838E443B3E8083C882 /* Pods-Money Trak-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Money Trak-dummy.m"; sourceTree = "<group>"; };
-		403DCE4182F335864554454B3E54852E /* TableViewHelper.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TableViewHelper.xcconfig; sourceTree = "<group>"; };
-		4621DCB0E707FD3AD43BE0E9AAB07B68 /* sqlite3.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = ALBNoSQLDB/ALBNoSQLDB/sqlite3.h; sourceTree = "<group>"; };
+		46D64C93A68DBFF04159863C9CE5E431 /* ALBNoSQLDB.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ALBNoSQLDB.xcconfig; sourceTree = "<group>"; };
 		47133A9ADF0E4244E847A3F65FBA6C15 /* Pods-Money TrakTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Money TrakTests-dummy.m"; sourceTree = "<group>"; };
+		50094D9BB99CA094AC3FF004409089A3 /* ALBNoSQLDB.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ALBNoSQLDB.swift; path = ALBNoSQLDB/ALBNoSQLDB/ALBNoSQLDB.swift; sourceTree = "<group>"; };
 		582D17490750B5702171A5D76917136F /* Pods-Money Trak-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Money Trak-resources.sh"; sourceTree = "<group>"; };
+		58ECB2DAE5D2CC441E3DCB36709B69DA /* Pods_Money_TrakTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Money_TrakTests.framework; path = "Pods-Money TrakTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A592E253B8955595494A544A9619D9A /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		609314F2086E549542EA58174C65603C /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		632C13152D7D0ED7F55B32F755A58D3B /* Pods-Money Trak.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Money Trak.modulemap"; sourceTree = "<group>"; };
-		6A04ADB3C7408EB8596E228EEB8A2C5E /* TableViewHelper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TableViewHelper.swift; path = TableViewHelper/TableViewHelper/TableViewHelper.swift; sourceTree = "<group>"; };
+		5D6BE177B6C0D767105DF9AEBC0C5F98 /* ALBPeerConnection.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ALBPeerConnection.xcconfig; sourceTree = "<group>"; };
+		632C13152D7D0ED7F55B32F755A58D3B /* Pods-Money Trak.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-Money Trak.modulemap"; sourceTree = "<group>"; };
+		63FD5F13AD6AAA9A9D70049B4F0A891F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		652A01F387FE0D278AE3F2918707DAED /* ALBPeer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ALBPeer.swift; path = ALBPeerConnection/ALBPeerConnection/ALBPeer.swift; sourceTree = "<group>"; };
+		6A2271BF836DDC80FE6605CC05D20979 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A763F94E638F9DD3AA9210765963872 /* Pods-Money Trak-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Money Trak-frameworks.sh"; sourceTree = "<group>"; };
 		6EA48762438509D13A085DDC048B365D /* Pods-Money Trak-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Money Trak-acknowledgements.plist"; sourceTree = "<group>"; };
-		71A92EF214C5CC37326320AA0A3E7F77 /* TableViewHelper.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = TableViewHelper.modulemap; sourceTree = "<group>"; };
-		7315C694E57951F416205B3E0401A950 /* TableViewHelper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TableViewHelper.h; path = TableViewHelper/TableViewHelper/TableViewHelper.h; sourceTree = "<group>"; };
+		74D53CCCAAE7C58BDB1E0C9DC9364A47 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		77408F68D5CBA749445568BF2299953C /* ALBNoSQLDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = ALBNoSQLDB.framework; path = ALBNoSQLDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A43C4B59640990C43EF620C021B9536 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		88E9C73077DC5D3C01F8ACFB951E35F4 /* ALBNoSQLDB.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = ALBNoSQLDB.modulemap; sourceTree = "<group>"; };
-		8F3FE3BB8ADEF425721584CF387DB1E9 /* ALBNoSQLDB-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ALBNoSQLDB-dummy.m"; sourceTree = "<group>"; };
-		90682EF416DE07DF71977A9E0249C26E /* TableViewHelper-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "TableViewHelper-dummy.m"; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		7C5D516A215B15A676FC4EDA68B15F49 /* CocoaAsyncSocket.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = CocoaAsyncSocket.modulemap; sourceTree = "<group>"; };
+		82A00ABF4498A4483C231885973C4EEB /* ALBPeerConnection.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = ALBPeerConnection.modulemap; sourceTree = "<group>"; };
+		8331690D40B632E8E39BB9BB354FBB8D /* TableViewHelper-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TableViewHelper-prefix.pch"; sourceTree = "<group>"; };
+		84DBFD25B9D84D637C083AC25DA350FD /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		863BC71AA2A8CAD96F8378A00CB271AA /* GCDAsyncSocket.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncSocket.m; path = Source/GCD/GCDAsyncSocket.m; sourceTree = "<group>"; };
+		8674B70228F35EA16B0CD779633E9843 /* ALBPeerConnection.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = ALBPeerConnection.framework; path = ALBPeerConnection.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C3D4D886229900C32F095A36901F6BB /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
+		8CC47EE805E0FA4DB8C0347974FA68C3 /* TableViewHelper.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TableViewHelper.xcconfig; sourceTree = "<group>"; };
+		8EF2F1323B5159DD0586538A5EDA6DF5 /* CocoaAsyncSocket-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CocoaAsyncSocket-umbrella.h"; sourceTree = "<group>"; };
+		91BA6F6CCD385509DC9FF3B1ACE3E309 /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CocoaAsyncSocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		92CA0B242F5E7AE82B54BC0A8C852B13 /* ALBNoSQLDB.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = ALBNoSQLDB.modulemap; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		96F02FFA55D2A1F78EB16AF6F29F09F1 /* Pods-Money TrakTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Money TrakTests-resources.sh"; sourceTree = "<group>"; };
-		A01A98FF1791211914D538F9EB2FF0A5 /* TableViewHelper-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TableViewHelper-umbrella.h"; sourceTree = "<group>"; };
+		9A26AD918DECA973B2CA863DDF87D0E0 /* TableViewHelper.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = TableViewHelper.modulemap; sourceTree = "<group>"; };
+		9E87EE9008A0A59392DCB7552C8F336B /* ALBPeerConnection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ALBPeerConnection.h; path = ALBPeerConnection/ALBPeerConnection/ALBPeerConnection.h; sourceTree = "<group>"; };
 		A02693812D62B67A9767D2A3850C0719 /* Pods-Money TrakTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Money TrakTests-umbrella.h"; sourceTree = "<group>"; };
 		A6A813AB7C7943C377706431832348B0 /* Pods-Money Trak.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Money Trak.debug.xcconfig"; sourceTree = "<group>"; };
-		B054EA2EAB3C6266788FE292C1EB19D4 /* ALBNoSQLDB.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ALBNoSQLDB.xcconfig; sourceTree = "<group>"; };
+		A72F89FA6F5096686A3FB7521F2D3369 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B07A8074317D33F44536BCD208DAB975 /* Pods-Money Trak.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Money Trak.release.xcconfig"; sourceTree = "<group>"; };
-		BB292D94BC5F472324A3D79253C5962D /* TableViewHelper-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TableViewHelper-prefix.pch"; sourceTree = "<group>"; };
-		C22122894A7C54F1B889FAB63A91E139 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B3616E15E8224230478FED8550C875EA /* ALBPeerServer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ALBPeerServer.swift; path = ALBPeerConnection/ALBPeerConnection/ALBPeerServer.swift; sourceTree = "<group>"; };
+		B7C3BF701752E6BC5948E2475148E153 /* TableViewHelper-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TableViewHelper-umbrella.h"; sourceTree = "<group>"; };
+		C7F3059318C8F91B9C10F117BDACD872 /* ALBPeerConnection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ALBPeerConnection.swift; path = ALBPeerConnection/ALBPeerConnection/ALBPeerConnection.swift; sourceTree = "<group>"; };
+		C9CE33FFE0E1799D24D723AB0AECB2AF /* CocoaAsyncSocket-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "CocoaAsyncSocket-dummy.m"; sourceTree = "<group>"; };
 		CE89EE607E960E7B3C115602B754CE16 /* Pods-Money Trak-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Money Trak-acknowledgements.markdown"; sourceTree = "<group>"; };
-		CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		D0B8A20953C0CE9550837302E23535FC /* Pods_Money_Trak.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Money_Trak.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D441C0541B646173730DC95958F7EE81 /* Pods-Money TrakTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Money TrakTests.debug.xcconfig"; sourceTree = "<group>"; };
-		D8AC55732913629CD16C60C76CCB98ED /* Pods_Money_TrakTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Money_TrakTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4B8C77C0B0F007643B705317498567C /* ALBPeerClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ALBPeerClient.swift; path = ALBPeerConnection/ALBPeerConnection/ALBPeerClient.swift; sourceTree = "<group>"; };
+		D4E58F6C6892249A0975A2DF8815A4FA /* TableViewHelper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = TableViewHelper.framework; path = TableViewHelper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D51B1254E69E3AA97EC65E73B72F4FD0 /* TableViewHelper-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "TableViewHelper-dummy.m"; sourceTree = "<group>"; };
+		D6CBD24E800D63F6FDE0F99BBF4939DD /* GCDAsyncSocket.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDAsyncSocket.h; path = Source/GCD/GCDAsyncSocket.h; sourceTree = "<group>"; };
 		D9F9DDB70902D339843F7554B525FCD7 /* Pods-Money TrakTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Money TrakTests-frameworks.sh"; sourceTree = "<group>"; };
-		EEE016E292D02B74B28635D92085F1C9 /* ALBNoSQLDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ALBNoSQLDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB46321F0731B3E9EBAACAA268B26EF6 /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CocoaAsyncSocket.framework; path = CocoaAsyncSocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCDED18624281DCB62FA8E4683690C90 /* TableViewHelper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TableViewHelper.swift; path = TableViewHelper/TableViewHelper/TableViewHelper.swift; sourceTree = "<group>"; };
+		EDCD291067CE3017807E57FC2D70E6E7 /* TableViewHelper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TableViewHelper.h; path = TableViewHelper/TableViewHelper/TableViewHelper.h; sourceTree = "<group>"; };
+		F70C75B2BDEC3F1C24531D15DEA9EE79 /* CocoaAsyncSocket.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = CocoaAsyncSocket.xcconfig; sourceTree = "<group>"; };
+		FA9DE91A34DDDA1F54ADA79726EC26FD /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDAsyncUdpSocket.h; path = Source/GCD/GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		4781BE4BE867B069AB60B5C14CE0FE15 /* Frameworks */ = {
+		191D1ABCCFFCF127CEC5961F3E9FC85E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E7B0F69A6F4DDD0662CBEB9C75629FF7 /* Foundation.framework in Frameworks */,
+				913B187A0D4E3DBE555E84EB3ED79935 /* CFNetwork.framework in Frameworks */,
+				1B77B289945A10A75792C9243C813705 /* Foundation.framework in Frameworks */,
+				384703991E25CBD85B9275CAEEFBF4EC /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5CE9B21023B4C7FA4706FF694322A3EB /* Frameworks */ = {
+		1E5B04AB7761AC6870D9289686600B43 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				366C728A2A558742F04F0A1E7762797A /* Foundation.framework in Frameworks */,
+				6FD7BA173517DB56F3CBEA67AC2B8754 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A4BEF123EFDD08BA91C8EBF9A3E91890 /* Frameworks */ = {
+		2D4555EE7CE6EDB9E27604CD10B279B5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0DF1ED07B722AB71C76C22181A6B008E /* Foundation.framework in Frameworks */,
+				86A6356B026F883533F14AA540C0E883 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C86876C2897133BD03A97171496C8ACD /* Frameworks */ = {
+		4BD2C2B9AB9B017A149D40AEA4F2ADD3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22230FEAF2D1B08CD3341B9BF6B57ACB /* Foundation.framework in Frameworks */,
+				2B4C2151B8C1584EB8EFF2EE78E4E0EE /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B44A716271F69A0F0F7162B35276385 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1624CA16A99F7BA15E8D7CFF7DD1FA71 /* CocoaAsyncSocket.framework in Frameworks */,
+				6B9AA3BA28B91AC10A6F34CD5072DF54 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D0E33BE3CBE135627EEF82F3F62367D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4C4ED5FB7A77F1EE4A4A6B36CE4A3378 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,30 +220,54 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		115B0C4CF0E6A3C288D79A1B9226156A /* Pods */ = {
+		0E3B3D5198E03AE84B0F40A505531DE3 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				9186530CFA9555DDD4A9EE55CFDF27A5 /* ALBNoSQLDB */,
-				51988AD35966652C7F93A547F48534D1 /* TableViewHelper */,
+				7C5D516A215B15A676FC4EDA68B15F49 /* CocoaAsyncSocket.modulemap */,
+				F70C75B2BDEC3F1C24531D15DEA9EE79 /* CocoaAsyncSocket.xcconfig */,
+				C9CE33FFE0E1799D24D723AB0AECB2AF /* CocoaAsyncSocket-dummy.m */,
+				27626980AA936A8066D2FEA3A11E9166 /* CocoaAsyncSocket-prefix.pch */,
+				8EF2F1323B5159DD0586538A5EDA6DF5 /* CocoaAsyncSocket-umbrella.h */,
+				6A2271BF836DDC80FE6605CC05D20979 /* Info.plist */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/CocoaAsyncSocket";
+			sourceTree = "<group>";
+		};
+		43B9DC0A3D2D5351FB1F7E8A4DC59FB0 /* ALBPeerConnection */ = {
+			isa = PBXGroup;
+			children = (
+				652A01F387FE0D278AE3F2918707DAED /* ALBPeer.swift */,
+				D4B8C77C0B0F007643B705317498567C /* ALBPeerClient.swift */,
+				9E87EE9008A0A59392DCB7552C8F336B /* ALBPeerConnection.h */,
+				C7F3059318C8F91B9C10F117BDACD872 /* ALBPeerConnection.swift */,
+				0E7FFA3B8255A7DF39E01A65BCAE5D76 /* ALBPeerPacket.swift */,
+				B3616E15E8224230478FED8550C875EA /* ALBPeerServer.swift */,
+				9B7B433FC621B024A7FB90C69FBE7668 /* Support Files */,
+			);
+			name = ALBPeerConnection;
+			path = ALBPeerConnection;
+			sourceTree = "<group>";
+		};
+		484FF559732273D91870467471863548 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				908714E9916F9A494E6B37DF4358012C /* ALBNoSQLDB */,
+				43B9DC0A3D2D5351FB1F7E8A4DC59FB0 /* ALBPeerConnection */,
+				D837403DE1C62B13B3619D5A0274D2D1 /* CocoaAsyncSocket */,
+				5DB61BD921AD01AEFADFDDFA504DDAFA /* TableViewHelper */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		3DCAB2B7CDE207B3958B6CB957FCC758 /* iOS */ = {
+		5DB61BD921AD01AEFADFDDFA504DDAFA /* TableViewHelper */ = {
 			isa = PBXGroup;
 			children = (
-				CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */,
+				EDCD291067CE3017807E57FC2D70E6E7 /* TableViewHelper.h */,
+				DCDED18624281DCB62FA8E4683690C90 /* TableViewHelper.swift */,
+				D86DC6DD4A7D4C06832D1BD61E015FB3 /* Support Files */,
 			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
-		51988AD35966652C7F93A547F48534D1 /* TableViewHelper */ = {
-			isa = PBXGroup;
-			children = (
-				7315C694E57951F416205B3E0401A950 /* TableViewHelper.h */,
-				6A04ADB3C7408EB8596E228EEB8A2C5E /* TableViewHelper.swift */,
-				80F639FE77565C6FE5F9BF86A29D94F1 /* Support Files */,
-			);
+			name = TableViewHelper;
 			path = TableViewHelper;
 			sourceTree = "<group>";
 		};
@@ -179,53 +289,50 @@
 			path = "Target Support Files/Pods-Money TrakTests";
 			sourceTree = "<group>";
 		};
-		6CBA8EF8EAB166B232571B60BAFDEA5A /* Support Files */ = {
+		73B041D7A3DCA9F9F93452A92B4F74A8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				88E9C73077DC5D3C01F8ACFB951E35F4 /* ALBNoSQLDB.modulemap */,
-				B054EA2EAB3C6266788FE292C1EB19D4 /* ALBNoSQLDB.xcconfig */,
-				8F3FE3BB8ADEF425721584CF387DB1E9 /* ALBNoSQLDB-dummy.m */,
-				3188B06A4C644496F198E27A9837777A /* ALBNoSQLDB-prefix.pch */,
-				111631E02FF34EF20B53709EBFB24059 /* ALBNoSQLDB-umbrella.h */,
-				609314F2086E549542EA58174C65603C /* Info.plist */,
+				77408F68D5CBA749445568BF2299953C /* ALBNoSQLDB.framework */,
+				8674B70228F35EA16B0CD779633E9843 /* ALBPeerConnection.framework */,
+				DB46321F0731B3E9EBAACAA268B26EF6 /* CocoaAsyncSocket.framework */,
+				01890B6F219782B6983FD67F907A3DEF /* Pods_Money_Trak.framework */,
+				58ECB2DAE5D2CC441E3DCB36709B69DA /* Pods_Money_TrakTests.framework */,
+				D4E58F6C6892249A0975A2DF8815A4FA /* TableViewHelper.framework */,
 			);
-			name = "Support Files";
-			path = "../Target Support Files/ALBNoSQLDB";
+			name = Products;
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
 			isa = PBXGroup;
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
-				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
-				115B0C4CF0E6A3C288D79A1B9226156A /* Pods */,
-				B9260CBDC4753701BFB25AAEB2FCBBEA /* Products */,
+				E57D8BB42B7367E2EA1AB4BAF61E5D44 /* Frameworks */,
+				484FF559732273D91870467471863548 /* Pods */,
+				73B041D7A3DCA9F9F93452A92B4F74A8 /* Products */,
 				094DE42D14F943FE5C437335AC2DE074 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		80F639FE77565C6FE5F9BF86A29D94F1 /* Support Files */ = {
+		8E0238DE54B6BD9B85026D35FCE40DFF /* GCD */ = {
 			isa = PBXGroup;
 			children = (
-				C22122894A7C54F1B889FAB63A91E139 /* Info.plist */,
-				71A92EF214C5CC37326320AA0A3E7F77 /* TableViewHelper.modulemap */,
-				403DCE4182F335864554454B3E54852E /* TableViewHelper.xcconfig */,
-				90682EF416DE07DF71977A9E0249C26E /* TableViewHelper-dummy.m */,
-				BB292D94BC5F472324A3D79253C5962D /* TableViewHelper-prefix.pch */,
-				A01A98FF1791211914D538F9EB2FF0A5 /* TableViewHelper-umbrella.h */,
+				D6CBD24E800D63F6FDE0F99BBF4939DD /* GCDAsyncSocket.h */,
+				863BC71AA2A8CAD96F8378A00CB271AA /* GCDAsyncSocket.m */,
+				FA9DE91A34DDDA1F54ADA79726EC26FD /* GCDAsyncUdpSocket.h */,
+				0BC800BF4836017C2B05FE561B6BDEAB /* GCDAsyncUdpSocket.m */,
 			);
-			name = "Support Files";
-			path = "../Target Support Files/TableViewHelper";
+			name = GCD;
 			sourceTree = "<group>";
 		};
-		9186530CFA9555DDD4A9EE55CFDF27A5 /* ALBNoSQLDB */ = {
+		908714E9916F9A494E6B37DF4358012C /* ALBNoSQLDB */ = {
 			isa = PBXGroup;
 			children = (
-				03DB7826C730DB6D4892304BD90838D7 /* ALBNoSQLDB.h */,
-				0F52CA6594B6FCC9B5B10DD3491E228D /* ALBNoSQLDB.swift */,
-				4621DCB0E707FD3AD43BE0E9AAB07B68 /* sqlite3.h */,
-				6CBA8EF8EAB166B232571B60BAFDEA5A /* Support Files */,
+				0B6194810B9FDAC30C6049AEF7835B1E /* ALBNoSQLDB.h */,
+				50094D9BB99CA094AC3FF004409089A3 /* ALBNoSQLDB.swift */,
+				237B028EE4FFAA754A0C8BDFDE8ECB77 /* sqlite3.h */,
+				E39C1E65EBB7090F4D3F8EAD2BB16886 /* Support Files */,
 			);
+			name = ALBNoSQLDB;
 			path = ALBNoSQLDB;
 			sourceTree = "<group>";
 		};
@@ -247,73 +354,183 @@
 			path = "Target Support Files/Pods-Money Trak";
 			sourceTree = "<group>";
 		};
-		B9260CBDC4753701BFB25AAEB2FCBBEA /* Products */ = {
+		9B7B433FC621B024A7FB90C69FBE7668 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				EEE016E292D02B74B28635D92085F1C9 /* ALBNoSQLDB.framework */,
-				D0B8A20953C0CE9550837302E23535FC /* Pods_Money_Trak.framework */,
-				D8AC55732913629CD16C60C76CCB98ED /* Pods_Money_TrakTests.framework */,
-				2626366A337888D58B916C6DD40D18FC /* TableViewHelper.framework */,
+				82A00ABF4498A4483C231885973C4EEB /* ALBPeerConnection.modulemap */,
+				5D6BE177B6C0D767105DF9AEBC0C5F98 /* ALBPeerConnection.xcconfig */,
+				2F65F46356DFE175F58A5E37DA2A42E2 /* ALBPeerConnection-dummy.m */,
+				1F8A44D3F71AEA2C67364793C12F8813 /* ALBPeerConnection-prefix.pch */,
+				2DAF16C8DC035DCC10A330A16D2F859D /* ALBPeerConnection-umbrella.h */,
+				74D53CCCAAE7C58BDB1E0C9DC9364A47 /* Info.plist */,
 			);
-			name = Products;
+			name = "Support Files";
+			path = "../Target Support Files/ALBPeerConnection";
 			sourceTree = "<group>";
 		};
-		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
+		D837403DE1C62B13B3619D5A0274D2D1 /* CocoaAsyncSocket */ = {
 			isa = PBXGroup;
 			children = (
-				3DCAB2B7CDE207B3958B6CB957FCC758 /* iOS */,
+				8E0238DE54B6BD9B85026D35FCE40DFF /* GCD */,
+				0E3B3D5198E03AE84B0F40A505531DE3 /* Support Files */,
+			);
+			name = CocoaAsyncSocket;
+			path = CocoaAsyncSocket;
+			sourceTree = "<group>";
+		};
+		D86DC6DD4A7D4C06832D1BD61E015FB3 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				A72F89FA6F5096686A3FB7521F2D3369 /* Info.plist */,
+				9A26AD918DECA973B2CA863DDF87D0E0 /* TableViewHelper.modulemap */,
+				8CC47EE805E0FA4DB8C0347974FA68C3 /* TableViewHelper.xcconfig */,
+				D51B1254E69E3AA97EC65E73B72F4FD0 /* TableViewHelper-dummy.m */,
+				8331690D40B632E8E39BB9BB354FBB8D /* TableViewHelper-prefix.pch */,
+				B7C3BF701752E6BC5948E2475148E153 /* TableViewHelper-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/TableViewHelper";
+			sourceTree = "<group>";
+		};
+		E39C1E65EBB7090F4D3F8EAD2BB16886 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				92CA0B242F5E7AE82B54BC0A8C852B13 /* ALBNoSQLDB.modulemap */,
+				46D64C93A68DBFF04159863C9CE5E431 /* ALBNoSQLDB.xcconfig */,
+				3B2654FA912D12DBF965D38BCDA1C7DC /* ALBNoSQLDB-dummy.m */,
+				1CFDFCA148F8F48680353D10994624FE /* ALBNoSQLDB-prefix.pch */,
+				3B27CC4BDC9335CD25CB89965E9B78A3 /* ALBNoSQLDB-umbrella.h */,
+				63FD5F13AD6AAA9A9D70049B4F0A891F /* Info.plist */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/ALBNoSQLDB";
+			sourceTree = "<group>";
+		};
+		E57D8BB42B7367E2EA1AB4BAF61E5D44 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				91BA6F6CCD385509DC9FF3B1ACE3E309 /* CocoaAsyncSocket.framework */,
+				F1056ED30FE41FD9259BE5087D586C59 /* iOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F1056ED30FE41FD9259BE5087D586C59 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				8C3D4D886229900C32F095A36901F6BB /* CFNetwork.framework */,
+				2CAC461E8D0D0B8EC85A1606B640DDCF /* Foundation.framework */,
+				84DBFD25B9D84D637C083AC25DA350FD /* Security.framework */,
+			);
+			name = iOS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		24D24765602AC1A12833B809DE5BEB8A /* Headers */ = {
+		17FC11747970D31A359E9050D6441121 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00D8DAFBB939E454EB1676DDD25C6A8B /* Pods-Money TrakTests-umbrella.h in Headers */,
+				AE4993BF0D630B294BEC2D6334DDFE15 /* Pods-Money Trak-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3651EE7EF0BD57CEB4A47FA0A418D223 /* Headers */ = {
+		1B67632DAFDCA1E1D4A08A9DC2F1D6BC /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA3DBFA194D597AF43D43095846DD5CC /* ALBNoSQLDB-umbrella.h in Headers */,
-				CB5270C44BF1AA822A422E6D4B483F81 /* ALBNoSQLDB.h in Headers */,
-				A34D476EE4BF52A2BDE61C4372247302 /* sqlite3.h in Headers */,
+				2D97EB8AE08E4B41874BE85F2F81DC1A /* ALBPeerConnection-umbrella.h in Headers */,
+				DF82805630288F3DB687150D48062378 /* ALBPeerConnection.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9FC2A85AF73365B712D4B29E4984E567 /* Headers */ = {
+		B90369F956FD119BF7DE872A166DE090 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D50E6E45C440495D333229E6CA2F0CD2 /* TableViewHelper-umbrella.h in Headers */,
-				489C24244EF759FA8CC3AE303699B83D /* TableViewHelper.h in Headers */,
+				B7A9127E9C6AC0BA437098B7C78604F0 /* ALBNoSQLDB-umbrella.h in Headers */,
+				50D92DFE8D91BADF63512775C7A70D3B /* ALBNoSQLDB.h in Headers */,
+				31001976BCE1EB09F25CF0639DD00C8C /* sqlite3.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DA7E94907947B72F257DD487B75D62F1 /* Headers */ = {
+		BFAE9C7D6904B8A017DD5F8516A8636D /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7655527058A93622F2C003C59851EB39 /* Pods-Money Trak-umbrella.h in Headers */,
+				170EEA6ED1A82D3668B01A6DB091E95C /* TableViewHelper-umbrella.h in Headers */,
+				477D44AAE641A2072B01DDAF2418C283 /* TableViewHelper.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D75EF905EFA0BAC1AAC1F9571D56CBC1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B76664DFC8B01C9045EF38CB175D9898 /* Pods-Money TrakTests-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA06E277A480FD3BA05E536A665A53B5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8150BED1776A2C22DA5B58D477E205C /* CocoaAsyncSocket-umbrella.h in Headers */,
+				047AA3AE6959F875EAD62B9C6742DA60 /* GCDAsyncSocket.h in Headers */,
+				4CF87893449CB3E5939656E890CF11DB /* GCDAsyncUdpSocket.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		08DE23D5F6029C9AC785AB32C6C5EC6F /* TableViewHelper */ = {
+		0CBAD2C02C2692876F93354EF097C00C /* ALBPeerConnection */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 83F5E2999308E7820B17F01AB0A469E6 /* Build configuration list for PBXNativeTarget "TableViewHelper" */;
+			buildConfigurationList = C636FA0E001C5ACF3393D0CD927F285B /* Build configuration list for PBXNativeTarget "ALBPeerConnection" */;
 			buildPhases = (
-				4A1A835226B61B492760E11AC59AC682 /* Sources */,
-				5CE9B21023B4C7FA4706FF694322A3EB /* Frameworks */,
-				9FC2A85AF73365B712D4B29E4984E567 /* Headers */,
+				4197951CFBB34565F0FF4747571C90AE /* Sources */,
+				5B44A716271F69A0F0F7162B35276385 /* Frameworks */,
+				1B67632DAFDCA1E1D4A08A9DC2F1D6BC /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AB989B7148E517A4DC76B17B0ED90CA9 /* PBXTargetDependency */,
+			);
+			name = ALBPeerConnection;
+			productName = ALBPeerConnection;
+			productReference = 8674B70228F35EA16B0CD779633E9843 /* ALBPeerConnection.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		17201471EBC07C758EB35551AD54BB58 /* Pods-Money Trak */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3932881037F045FFDD7808E80952A893 /* Build configuration list for PBXNativeTarget "Pods-Money Trak" */;
+			buildPhases = (
+				6DA06F218571E9F437F91E28ED9E7659 /* Sources */,
+				8D0E33BE3CBE135627EEF82F3F62367D /* Frameworks */,
+				17FC11747970D31A359E9050D6441121 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5B719109AE8AF8C2F236300DC2C4F2FA /* PBXTargetDependency */,
+				F6CB19B91FAFE8C21B24E08F34AA1F03 /* PBXTargetDependency */,
+				8DB7FF047C9BA294A023FE5806B6A65C /* PBXTargetDependency */,
+				C22CF02B2F79922C0DFA9C971367FB92 /* PBXTargetDependency */,
+			);
+			name = "Pods-Money Trak";
+			productName = "Pods-Money Trak";
+			productReference = 01890B6F219782B6983FD67F907A3DEF /* Pods_Money_Trak.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		2ACD368E10E96A4A5D4DA0080671ABC3 /* TableViewHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A03CCA80A3F2AB56477E88BBE14FA0CE /* Build configuration list for PBXNativeTarget "TableViewHelper" */;
+			buildPhases = (
+				F652552550A790D94632E8208BB1BAF7 /* Sources */,
+				1E5B04AB7761AC6870D9289686600B43 /* Frameworks */,
+				BFAE9C7D6904B8A017DD5F8516A8636D /* Headers */,
 			);
 			buildRules = (
 			);
@@ -321,52 +538,33 @@
 			);
 			name = TableViewHelper;
 			productName = TableViewHelper;
-			productReference = 2626366A337888D58B916C6DD40D18FC /* TableViewHelper.framework */;
+			productReference = D4E58F6C6892249A0975A2DF8815A4FA /* TableViewHelper.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		60AD7A1A7D848DB9C28BAB01BD33902E /* ALBNoSQLDB */ = {
+		2FF8107500243A748BB8566B22FF3DCC /* CocoaAsyncSocket */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 656DE26693161F5DB6318F25014B73E3 /* Build configuration list for PBXNativeTarget "ALBNoSQLDB" */;
+			buildConfigurationList = DF51F82BCFB7823E191D1B1D70C24082 /* Build configuration list for PBXNativeTarget "CocoaAsyncSocket" */;
 			buildPhases = (
-				BF5A46D7D98929DFCE85B463EE2BE2AF /* Sources */,
-				4781BE4BE867B069AB60B5C14CE0FE15 /* Frameworks */,
-				3651EE7EF0BD57CEB4A47FA0A418D223 /* Headers */,
+				A1195BC03A6014BCC2D7B4205A216F79 /* Sources */,
+				191D1ABCCFFCF127CEC5961F3E9FC85E /* Frameworks */,
+				FA06E277A480FD3BA05E536A665A53B5 /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = ALBNoSQLDB;
-			productName = ALBNoSQLDB;
-			productReference = EEE016E292D02B74B28635D92085F1C9 /* ALBNoSQLDB.framework */;
+			name = CocoaAsyncSocket;
+			productName = CocoaAsyncSocket;
+			productReference = DB46321F0731B3E9EBAACAA268B26EF6 /* CocoaAsyncSocket.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		7C4D4B37BBEEDB9A532E124407E9E65F /* Pods-Money Trak */ = {
+		3A18FA99394AB9F6199B477EF5120383 /* Pods-Money TrakTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 92A37882D29A28BCFD40556CC848D18F /* Build configuration list for PBXNativeTarget "Pods-Money Trak" */;
+			buildConfigurationList = 1AB74FBAA78189284CA30DECE0C28815 /* Build configuration list for PBXNativeTarget "Pods-Money TrakTests" */;
 			buildPhases = (
-				2C4A111AA4DAA17321C0C5C5C7D62B37 /* Sources */,
-				A4BEF123EFDD08BA91C8EBF9A3E91890 /* Frameworks */,
-				DA7E94907947B72F257DD487B75D62F1 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				EF74DB9686C4C5C3BD6B6E508B7B0133 /* PBXTargetDependency */,
-				5E24D121AEDBB2245AB02D75EB10F9F5 /* PBXTargetDependency */,
-			);
-			name = "Pods-Money Trak";
-			productName = "Pods-Money Trak";
-			productReference = D0B8A20953C0CE9550837302E23535FC /* Pods_Money_Trak.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		91DF9B4CC377C3DDF597377420293175 /* Pods-Money TrakTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CCD60CF848F450A429D2D9EB7EBD87DE /* Build configuration list for PBXNativeTarget "Pods-Money TrakTests" */;
-			buildPhases = (
-				036E29B468EA3AA156F3EC1AAE6D8F71 /* Sources */,
-				C86876C2897133BD03A97171496C8ACD /* Frameworks */,
-				24D24765602AC1A12833B809DE5BEB8A /* Headers */,
+				BC6E141B26415BFBA88538AE127D7177 /* Sources */,
+				2D4555EE7CE6EDB9E27604CD10B279B5 /* Frameworks */,
+				D75EF905EFA0BAC1AAC1F9571D56CBC1 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -374,7 +572,24 @@
 			);
 			name = "Pods-Money TrakTests";
 			productName = "Pods-Money TrakTests";
-			productReference = D8AC55732913629CD16C60C76CCB98ED /* Pods_Money_TrakTests.framework */;
+			productReference = 58ECB2DAE5D2CC441E3DCB36709B69DA /* Pods_Money_TrakTests.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		CF43C95CD697B0FB58A49178C9907824 /* ALBNoSQLDB */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B0CC11243CBCC51B522B7FB943F838CF /* Build configuration list for PBXNativeTarget "ALBNoSQLDB" */;
+			buildPhases = (
+				900FBB6A063B7A45989F10D3E11C90E4 /* Sources */,
+				4BD2C2B9AB9B017A149D40AEA4F2ADD3 /* Frameworks */,
+				B90369F956FD119BF7DE872A166DE090 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ALBNoSQLDB;
+			productName = ALBNoSQLDB;
+			productReference = 77408F68D5CBA749445568BF2299953C /* ALBNoSQLDB.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -394,74 +609,117 @@
 				en,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = B9260CBDC4753701BFB25AAEB2FCBBEA /* Products */;
+			productRefGroup = 73B041D7A3DCA9F9F93452A92B4F74A8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				60AD7A1A7D848DB9C28BAB01BD33902E /* ALBNoSQLDB */,
-				7C4D4B37BBEEDB9A532E124407E9E65F /* Pods-Money Trak */,
-				91DF9B4CC377C3DDF597377420293175 /* Pods-Money TrakTests */,
-				08DE23D5F6029C9AC785AB32C6C5EC6F /* TableViewHelper */,
+				CF43C95CD697B0FB58A49178C9907824 /* ALBNoSQLDB */,
+				0CBAD2C02C2692876F93354EF097C00C /* ALBPeerConnection */,
+				2FF8107500243A748BB8566B22FF3DCC /* CocoaAsyncSocket */,
+				17201471EBC07C758EB35551AD54BB58 /* Pods-Money Trak */,
+				3A18FA99394AB9F6199B477EF5120383 /* Pods-Money TrakTests */,
+				2ACD368E10E96A4A5D4DA0080671ABC3 /* TableViewHelper */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		036E29B468EA3AA156F3EC1AAE6D8F71 /* Sources */ = {
+		4197951CFBB34565F0FF4747571C90AE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5D0AC824F032FCA4430D0B07110DFB11 /* Pods-Money TrakTests-dummy.m in Sources */,
+				D06A64792E3FFF7B0B6CA4615489086E /* ALBPeer.swift in Sources */,
+				7C7B3E78E4551CCDA3CAE0600C0F9321 /* ALBPeerClient.swift in Sources */,
+				FBBBDF4EB03B81A6C01FB02AA7650419 /* ALBPeerConnection-dummy.m in Sources */,
+				99FC35C76E38BF45F3640D70EB26623C /* ALBPeerConnection.swift in Sources */,
+				1A1253566E9D9FB8C460885E43F639DA /* ALBPeerPacket.swift in Sources */,
+				0A3499D71DC90BE019A13A1A108009D9 /* ALBPeerServer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2C4A111AA4DAA17321C0C5C5C7D62B37 /* Sources */ = {
+		6DA06F218571E9F437F91E28ED9E7659 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C85124CE89527849176DCEC58B75FC97 /* Pods-Money Trak-dummy.m in Sources */,
+				8ABB53E07E91EE51F3F314275DBACB0C /* Pods-Money Trak-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4A1A835226B61B492760E11AC59AC682 /* Sources */ = {
+		900FBB6A063B7A45989F10D3E11C90E4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BEC0D574416EF36E6367BC478135F49 /* TableViewHelper-dummy.m in Sources */,
-				6CD3BC31EF1DCC68161BAED704BEF6A3 /* TableViewHelper.swift in Sources */,
+				33BB9BE7B0DB097FD6028DED6024DCF0 /* ALBNoSQLDB-dummy.m in Sources */,
+				A478F6972219D73A5212A3D948867621 /* ALBNoSQLDB.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BF5A46D7D98929DFCE85B463EE2BE2AF /* Sources */ = {
+		A1195BC03A6014BCC2D7B4205A216F79 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0ADE9243D7A566D5671D80D95AD2DF42 /* ALBNoSQLDB-dummy.m in Sources */,
-				951878A8899251C66FA15672FDB23E84 /* ALBNoSQLDB.swift in Sources */,
+				05629B47FB22128104B86B94EA4B246A /* CocoaAsyncSocket-dummy.m in Sources */,
+				5C13D7DC891A942DA85B92F3EDD95891 /* GCDAsyncSocket.m in Sources */,
+				1D04903B9D16D7CC9354C31969C1DA35 /* GCDAsyncUdpSocket.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BC6E141B26415BFBA88538AE127D7177 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				719582DB38CED27D1BBDFA0D12F0CCA1 /* Pods-Money TrakTests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F652552550A790D94632E8208BB1BAF7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2FC227E81E9A2C418C51A37D569F869 /* TableViewHelper-dummy.m in Sources */,
+				034DE26EA29BA8D3A799AC1431BE7EEF /* TableViewHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		5E24D121AEDBB2245AB02D75EB10F9F5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = TableViewHelper;
-			target = 08DE23D5F6029C9AC785AB32C6C5EC6F /* TableViewHelper */;
-			targetProxy = 299E0340AC11FEF57FFB07308ADEC78E /* PBXContainerItemProxy */;
-		};
-		EF74DB9686C4C5C3BD6B6E508B7B0133 /* PBXTargetDependency */ = {
+		5B719109AE8AF8C2F236300DC2C4F2FA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = ALBNoSQLDB;
-			target = 60AD7A1A7D848DB9C28BAB01BD33902E /* ALBNoSQLDB */;
-			targetProxy = 18D2362CEE163C42640E9DC50F148F9C /* PBXContainerItemProxy */;
+			target = CF43C95CD697B0FB58A49178C9907824 /* ALBNoSQLDB */;
+			targetProxy = EDE00C3EBB716A9C1ED280D6ABC85230 /* PBXContainerItemProxy */;
+		};
+		8DB7FF047C9BA294A023FE5806B6A65C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CocoaAsyncSocket;
+			target = 2FF8107500243A748BB8566B22FF3DCC /* CocoaAsyncSocket */;
+			targetProxy = 485571B668C413F166C087018194FD05 /* PBXContainerItemProxy */;
+		};
+		AB989B7148E517A4DC76B17B0ED90CA9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CocoaAsyncSocket;
+			target = 2FF8107500243A748BB8566B22FF3DCC /* CocoaAsyncSocket */;
+			targetProxy = 5DB33C43C8FC64554E648D82D2D2E8DD /* PBXContainerItemProxy */;
+		};
+		C22CF02B2F79922C0DFA9C971367FB92 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TableViewHelper;
+			target = 2ACD368E10E96A4A5D4DA0080671ABC3 /* TableViewHelper */;
+			targetProxy = AB5F76AD535DC5F17DE82B652DD31A3E /* PBXContainerItemProxy */;
+		};
+		F6CB19B91FAFE8C21B24E08F34AA1F03 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ALBPeerConnection;
+			target = 0CBAD2C02C2692876F93354EF097C00C /* ALBPeerConnection */;
+			targetProxy = 662D350AEFB87B9B7791F3B9EDD970EB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		2C934D8E8F1DF8511E1B972F04FE4950 /* Release */ = {
+		22B900A3C6D3614449A81202788C8891 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 403DCE4182F335864554454B3E54852E /* TableViewHelper.xcconfig */;
+			baseConfigurationReference = 8CC47EE805E0FA4DB8C0347974FA68C3 /* TableViewHelper.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -491,9 +749,44 @@
 			};
 			name = Release;
 		};
-		2E9267EF09D794927D651598968AEC3B /* Debug */ = {
+		2B216F6D758001D249A68051E032BC71 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B054EA2EAB3C6266788FE292C1EB19D4 /* ALBNoSQLDB.xcconfig */;
+			baseConfigurationReference = 3132B0BE7A89976D9866FB26F14C62CB /* Pods-Money TrakTests.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-Money TrakTests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Money TrakTests/Pods-Money TrakTests.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_Money_TrakTests;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		3DDE438FFCA3FC0C3EA5197D5B64A7EF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A6A813AB7C7943C377706431832348B0 /* Pods-Money Trak.debug.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -506,27 +799,30 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/ALBNoSQLDB/ALBNoSQLDB-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/ALBNoSQLDB/Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-Money Trak/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/ALBNoSQLDB/ALBNoSQLDB.modulemap";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Money Trak/Pods-Money Trak.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = ALBNoSQLDB;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_Money_Trak;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
-		3A145FB73D6C76CB8C0AF4E450583898 /* Debug */ = {
+		51CDCDD31D5F1078FDB7C6BC0A8D29B2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 403DCE4182F335864554454B3E54852E /* TableViewHelper.xcconfig */;
+			baseConfigurationReference = 8CC47EE805E0FA4DB8C0347974FA68C3 /* TableViewHelper.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -601,43 +897,7 @@
 			};
 			name = Debug;
 		};
-		815B6A65B912C3A43FC765763BD2B927 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A6A813AB7C7943C377706431832348B0 /* Pods-Money Trak.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-Money Trak/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-Money Trak/Pods-Money Trak.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_Money_Trak;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		AEFA3E6666F8152F42B37274C39B2D29 /* Debug */ = {
+		618E441F2EAFA5AB1736451C4F2879A4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D441C0541B646173730DC95958F7EE81 /* Pods-Money TrakTests.debug.xcconfig */;
 			buildSettings = {
@@ -671,6 +931,70 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
+		};
+		9188F5A018DC2E78B1068F690A83F765 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F70C75B2BDEC3F1C24531D15DEA9EE79 /* CocoaAsyncSocket.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/CocoaAsyncSocket/CocoaAsyncSocket-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/CocoaAsyncSocket/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/CocoaAsyncSocket/CocoaAsyncSocket.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = CocoaAsyncSocket;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		A62FF04D3AA07BCE1B49A795B32A03E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5D6BE177B6C0D767105DF9AEBC0C5F98 /* ALBPeerConnection.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/ALBPeerConnection/ALBPeerConnection-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/ALBPeerConnection/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/ALBPeerConnection/ALBPeerConnection.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = ALBPeerConnection;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
 		};
 		B7324857C38B065FEB1EEE3105C2367A /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -712,7 +1036,40 @@
 			};
 			name = Release;
 		};
-		E3D52AAFC350818ACD448484D6444864 /* Release */ = {
+		BEB2196BC0A8DBAA21FC137F3F74700F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5D6BE177B6C0D767105DF9AEBC0C5F98 /* ALBPeerConnection.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/ALBPeerConnection/ALBPeerConnection-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/ALBPeerConnection/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/ALBPeerConnection/ALBPeerConnection.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = ALBPeerConnection;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C28E08AE4D43ED2EE5003ED3FE80BFD5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B07A8074317D33F44536BCD208DAB975 /* Pods-Money Trak.release.xcconfig */;
 			buildSettings = {
@@ -747,9 +1104,42 @@
 			};
 			name = Release;
 		};
-		ED2D3B364CC4612D095CC282988040EA /* Release */ = {
+		D760638025E0A8C07F14F6E811B7B603 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3132B0BE7A89976D9866FB26F14C62CB /* Pods-Money TrakTests.release.xcconfig */;
+			baseConfigurationReference = 46D64C93A68DBFF04159863C9CE5E431 /* ALBNoSQLDB.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/ALBNoSQLDB/ALBNoSQLDB-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/ALBNoSQLDB/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/ALBNoSQLDB/ALBNoSQLDB.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = ALBNoSQLDB;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E2399F803A107D230E273ACBD52E4EB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F70C75B2BDEC3F1C24531D15DEA9EE79 /* CocoaAsyncSocket.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -762,29 +1152,26 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-Money TrakTests/Info.plist";
+				GCC_PREFIX_HEADER = "Target Support Files/CocoaAsyncSocket/CocoaAsyncSocket-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/CocoaAsyncSocket/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-Money TrakTests/Pods-Money TrakTests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/CocoaAsyncSocket/CocoaAsyncSocket.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_Money_TrakTests;
+				PRODUCT_NAME = CocoaAsyncSocket;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
-		FB3B88B9F79F01122CEED469F7AE4C41 /* Release */ = {
+		F6E628FD3D603D53DDF0B5E31FFE2D4B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B054EA2EAB3C6266788FE292C1EB19D4 /* ALBNoSQLDB.xcconfig */;
+			baseConfigurationReference = 46D64C93A68DBFF04159863C9CE5E431 /* ALBNoSQLDB.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -817,6 +1204,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1AB74FBAA78189284CA30DECE0C28815 /* Build configuration list for PBXNativeTarget "Pods-Money TrakTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				618E441F2EAFA5AB1736451C4F2879A4 /* Debug */,
+				2B216F6D758001D249A68051E032BC71 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -826,38 +1222,47 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		656DE26693161F5DB6318F25014B73E3 /* Build configuration list for PBXNativeTarget "ALBNoSQLDB" */ = {
+		3932881037F045FFDD7808E80952A893 /* Build configuration list for PBXNativeTarget "Pods-Money Trak" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2E9267EF09D794927D651598968AEC3B /* Debug */,
-				FB3B88B9F79F01122CEED469F7AE4C41 /* Release */,
+				3DDE438FFCA3FC0C3EA5197D5B64A7EF /* Debug */,
+				C28E08AE4D43ED2EE5003ED3FE80BFD5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83F5E2999308E7820B17F01AB0A469E6 /* Build configuration list for PBXNativeTarget "TableViewHelper" */ = {
+		A03CCA80A3F2AB56477E88BBE14FA0CE /* Build configuration list for PBXNativeTarget "TableViewHelper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3A145FB73D6C76CB8C0AF4E450583898 /* Debug */,
-				2C934D8E8F1DF8511E1B972F04FE4950 /* Release */,
+				51CDCDD31D5F1078FDB7C6BC0A8D29B2 /* Debug */,
+				22B900A3C6D3614449A81202788C8891 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		92A37882D29A28BCFD40556CC848D18F /* Build configuration list for PBXNativeTarget "Pods-Money Trak" */ = {
+		B0CC11243CBCC51B522B7FB943F838CF /* Build configuration list for PBXNativeTarget "ALBNoSQLDB" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				815B6A65B912C3A43FC765763BD2B927 /* Debug */,
-				E3D52AAFC350818ACD448484D6444864 /* Release */,
+				D760638025E0A8C07F14F6E811B7B603 /* Debug */,
+				F6E628FD3D603D53DDF0B5E31FFE2D4B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CCD60CF848F450A429D2D9EB7EBD87DE /* Build configuration list for PBXNativeTarget "Pods-Money TrakTests" */ = {
+		C636FA0E001C5ACF3393D0CD927F285B /* Build configuration list for PBXNativeTarget "ALBPeerConnection" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AEFA3E6666F8152F42B37274C39B2D29 /* Debug */,
-				ED2D3B364CC4612D095CC282988040EA /* Release */,
+				BEB2196BC0A8DBAA21FC137F3F74700F /* Debug */,
+				A62FF04D3AA07BCE1B49A795B32A03E3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DF51F82BCFB7823E191D1B1D70C24082 /* Build configuration list for PBXNativeTarget "CocoaAsyncSocket" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9188F5A018DC2E78B1068F690A83F765 /* Debug */,
+				E2399F803A107D230E273ACBD52E4EB9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

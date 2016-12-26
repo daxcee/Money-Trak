@@ -1,15 +1,23 @@
 PODS:
-  - ALBNoSQLDB (4.0)
+  - ALBNoSQLDB (4.1.1)
+  - ALBPeerConnection (3.0):
+    - CocoaAsyncSocket (~> 7.5)
+  - CocoaAsyncSocket (7.5.1):
+    - CocoaAsyncSocket/GCD (= 7.5.1)
+  - CocoaAsyncSocket/GCD (7.5.1)
   - TableViewHelper (2.0)
 
 DEPENDENCIES:
   - ALBNoSQLDB (~> 4.0)
+  - ALBPeerConnection (~> 3.0)
   - TableViewHelper (~> 2.0)
 
 SPEC CHECKSUMS:
-  ALBNoSQLDB: 2c0a43ba4ad239154a911b43caf882d95e32823b
+  ALBNoSQLDB: de7bb40e23ea4f680b1dc4578acd419060ed0984
+  ALBPeerConnection: bb2264365838fc38a8fcffe1cbad9f601703e72a
+  CocoaAsyncSocket: e0a7e93b2ffa411592ff87e58524fbbc9b95b4fa
   TableViewHelper: 9d1cd80c04e7043ce222756fd75a80e102131260
 
-PODFILE CHECKSUM: c634336c92c34e46fccc28a1d717c7aa5d58222d
+PODFILE CHECKSUM: 37b73923af915782ef108226d28c93996818beb7
 
-COCOAPODS: 1.1.0.rc.2
+COCOAPODS: 1.2.0.beta.1

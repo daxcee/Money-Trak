@@ -10,7 +10,8 @@
 #endif
 #endif
 
+#import "ALBPeerConnection.h"
 
-FOUNDATION_EXPORT double Pods_Money_TrakTestsVersionNumber;
-FOUNDATION_EXPORT const unsigned char Pods_Money_TrakTestsVersionString[];
+FOUNDATION_EXPORT double ALBPeerConnectionVersionNumber;
+FOUNDATION_EXPORT const unsigned char ALBPeerConnectionVersionString[];
 

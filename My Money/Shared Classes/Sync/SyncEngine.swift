@@ -8,6 +8,7 @@
 
 import Foundation
 import ALBNoSQLDB
+import ALBPeerConnection
 
 let kSyncComplete = "SyncComplete"
 
@@ -53,9 +54,18 @@ class SyncDevice: ALBNoSQLDBObject {
 
 	override init(keyValue: String, dictValue: [String: AnyObject]? = nil) {
 		if let dictValue = dictValue {
-			self.name = dictValue["name"] as! String
-			self.linked = dictValue["linked"] as! Bool
-			self.lastSequence = dictValue["lastSequence"] as! Int
+			if let name = dictValue["name"] as? String {
+				self.name = name
+			}
+			
+			if let linked = dictValue["linked"] as? Bool {
+				self.linked = linked
+			}
+			
+			if let lastSequence = dictValue["lastSequence"] as? Int {
+				self.lastSequence = lastSequence
+			}
+			
 			if let lastSync = dictValue["lastSync"] as? String {
 				self.lastSync = ALBNoSQLDB.dateValueForString(lastSync)
 			}
@@ -83,12 +93,6 @@ class SyncDevice: ALBNoSQLDBObject {
 }
 
 class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectionDelegate {
-	/**
-	Called when a connection is requested.
-	
-	- parameter remoteNode: An ALBPeer object initialized with a name and a unique identifier.
-	- parameter requestResponse: A closure that is to be called with a Bool indicating whether to allow the connection or not. This can be done asynchronously so a dialog can be invoked, etc.
-	*/
 	var delegate: SyncEngineDelegate? {
 		didSet {
 			for device in nearbyDevices {
@@ -236,6 +240,12 @@ class SyncEngine: ALBPeerServerDelegate, ALBPeerClientDelegate, ALBPeerConnectio
 		print("publishing error: \(errorDict)")
 	}
 
+	/**
+	Called when a connection is requested.
+	
+	- parameter remoteNode: An ALBPeer object initialized with a name and a unique identifier.
+	- parameter requestResponse: A closure that is to be called with a Bool indicating whether to allow the connection or not. This can be done asynchronously so a dialog can be invoked, etc.
+	*/
 	func allowConnectionRequest(_ remoteNode: ALBPeer, requestResponse: @escaping (_ allow: Bool) -> ()) {
 		let device = deviceForNode(remoteNode)
 		if device.linked {

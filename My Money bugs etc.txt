@@ -17,10 +17,3 @@ When saving as fully reconciled, processing upcoming, saving recurring, need to 
 When entering amount in transaction, don't want to scroll tableview
 
 Transactions: Show this month and last by default. Add "show more" at bottom to show an additional month at a time
-
-Bugs:
-When adding a transition, it subtracts from total available even if the account isn't toward total available.
-
-Reconciliations should automatically add 30 days to last date
-
-Reconciliations shouldn't allow you to add transactions later than reconciliation date

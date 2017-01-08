@@ -376,23 +376,23 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 	}
 
 	func hidePickers() {
-		hidePickerNamed("DatePicker", parentName: "Date")
-		hidePickerNamed("FrequencyPicker", parentName: "Frequency")
-		hidePickerNamed("StartDatePicker", parentName: "StartDate")
-		hidePickerNamed("EndDatePicker", parentName: "EndDate")
+		hidePicker(pickerCell: .datePicker, parentCell: .date)
+		hidePicker(pickerCell: .frequencyPicker, parentCell: .frequency)
+		hidePicker(pickerCell: .startDatePicker, parentCell: .startDate)
+		hidePicker(pickerCell: .endDatePicker, parentCell: .endDate)
 	}
 
-	func hidePickerNamed(_ pickerName: String, parentName: String) {
-		_helper.hideCell(pickerName)
-		let cells = _helper.visibleCellsWithName(parentName)
+	func hidePicker(pickerCell: CellName, parentCell: CellName) {
+		_helper.hideCell(pickerCell.rawValue)
+		let cells = _helper.visibleCellsWithName(parentCell.rawValue)
 		if cells.count > 0 {
 			cells[0].detailTextLabel?.textColor = UIColor(white: 0.56, alpha: 1)
 		}
 	}
 
-	func showPickerNamed(_ pickerName: String, parentName: String) {
-		_helper.showCell(pickerName)
-		let cells = _helper.visibleCellsWithName(parentName)
+	func showPicker(pickerCell: CellName, parentCell: CellName) {
+		_helper.showCell(pickerCell.rawValue)
+		let cells = _helper.visibleCellsWithName(parentCell.rawValue)
 		if cells.count > 0 {
 			cells[0].detailTextLabel?.textColor = UIColor.red
 		}
@@ -623,7 +623,7 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 
 			case .date:
 				if !showingDate {
-					showPickerNamed("DatePicker", parentName: "Date")
+					showPicker(pickerCell: .datePicker, parentCell: .date)
 					if let maxDate = maxDate {
 						let datePickerCell = _helper.visibleCellsWithName(CellName.datePicker.rawValue)[0]
 						let datePicker = datePickerCell.viewWithTag(1) as! UIDatePicker
@@ -645,15 +645,15 @@ class EditEntryController: UIViewController, UITableViewDataSource, UITableViewD
 
 			case .startDate:
 				if !showingStartDate {
-					showPickerNamed(CellName.startDatePicker.rawValue, parentName: CellName.startDate.rawValue)
+					showPicker(pickerCell: .startDatePicker, parentCell: .startDate)
 				}
 			case .endDate:
 				if !showingEndDate {
-					showPickerNamed(CellName.endDatePicker.rawValue, parentName: CellName.endDate.rawValue)
+					showPicker(pickerCell: .endDatePicker, parentCell: .endDate)
 				}
 			case.frequency:
 				if !showingFrequency {
-					showPickerNamed(CellName.frequencyPicker.rawValue, parentName: CellName.frequency.rawValue)
+					showPicker(pickerCell: .frequencyPicker, parentCell: .frequency)
 				}
 
 			default:
